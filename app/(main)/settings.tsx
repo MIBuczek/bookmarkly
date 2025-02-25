@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function TabTwoScreen() {
   return (
-    <ThemedView className="flex-1 justify-center items-center">
+    <ThemedView className="flex-1 items-center justify-center">
       <ThemedText>Settings</ThemedText>
     </ThemedView>
   );
