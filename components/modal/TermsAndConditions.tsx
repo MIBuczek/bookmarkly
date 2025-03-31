@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ScrollView, View } from 'react-native';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/button/Button';
 
 interface TermsAndConditionsProps {
   onPress: () => void;
@@ -119,7 +119,7 @@ export const TermsAndConditions = ({ onPress }: Readonly<TermsAndConditionsProps
       </ThemedText>
     </View>
     <View className="px-4">
-      <Button type={'primary'} title={'close'} onPress={onPress} />
+      <Button type={'primary'} title={'Understand'} onPress={onPress} />
     </View>
   </ScrollView>
 );

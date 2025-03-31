@@ -2,12 +2,19 @@ import { MMKV } from 'react-native-mmkv';
 import { IS_WEB } from '@/utils/device-info';
 import { safeJsonParse } from '@/utils/helper';
 
-export const LOCAL_STORAGE_KEY = {} as const;
+export const LOCAL_STORAGE_KEY = {
+  ONBOARDING: 'ONBOARDING',
+  TERMS_AND_CONDITIONS: 'TERMS_AND_CONDITIONS',
+  THEME: 'THEME',
+  FONT_SIZE: 'FONT_SIZE',
+  LANGUAGE: 'LANGUAGE',
+  AVATAR: 'AVATAR',
+} as const;
 
 type KeyOfLocalStorage = keyof typeof LOCAL_STORAGE_KEY;
 type LocalStorageValueType = string | number | boolean | object;
 
-class LocalStorage {
+class LocalAppStorage {
   private storage = new MMKV();
 
   getSize() {
@@ -71,4 +78,4 @@ class LocalStorage {
   }
 }
 
-export const localStorage = new LocalStorage();
+export const localAppStorage = new LocalAppStorage();

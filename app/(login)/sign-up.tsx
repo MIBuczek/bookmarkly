@@ -1,83 +1,281 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ThemedView } from '@/components/ui/ThemedView';
-import { Pressable, View } from 'react-native';
+import { FlatList, Pressable, View } from 'react-native';
 import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/button/Button';
 import { CheckBox } from 'react-native-elements';
-import { BottomSheet } from '@/components/ui/BottomSheet';
-import { TermsAndConditions } from '@/components/TermsAndConditions';
+import { BottomSheet } from '@/components/bottom-sheet/BottomSheet';
+import { TermsAndConditions } from '@/components/modal/TermsAndConditions';
+import { baseColors } from '@assets/theme/base-theme';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, useForm } from 'react-hook-form';
+import { router } from 'expo-router';
+import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
+import { ErrorText } from '@/components/ui/ErrorText';
+import { twMerge } from 'tailwind-merge';
+import { CountryItem } from '@/components/CountryItem';
+import countryList, { Country } from 'country-list';
+import { debounce } from 'lodash-es';
 
+interface SelectCountryBottomSheetProps {
+  countries: Country[];
+  selectedCountry: Country;
+  handleSelection: (country: Country) => void;
+}
+
+/**
+ * SelectCountryBottomSheet component for selecting a country from a list.
+ * @param {SelectCountryBottomSheetProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
+
+const SelectCountryBottomSheet = ({
+                                    countries,
+                                    selectedCountry,
+                                    handleSelection,
+                                  }: Readonly<SelectCountryBottomSheetProps>): React.JSX.Element => {
+  const [searchPhase, setSearchPhase] = useState('');
+  const [filteredCountries, setFilteredCountries] = useState<Country[]>(countries);
+
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((text: string) => {
+        const _filteredCountries = countries.filter(({ name, code }) =>
+          `${name} ${code}`.toLowerCase().includes(text.toLowerCase()),
+        );
+        setFilteredCountries(_filteredCountries);
+      }, 300),
+    [countries],
+  );
+
+  useEffect(() => {
+    debouncedSearch(searchPhase);
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [searchPhase, debouncedSearch]);
+
+  return (
+    <>
+      <View className={'px-4 py-6'}>
+        <Input placeholder={'Search your country'} value={searchPhase} onChangeText={setSearchPhase} />
+      </View>
+      <View className={'flex h-5/6 items-start border-t-primary-500 py-2'}>
+        <FlatList
+          data={filteredCountries}
+          renderItem={({ item: { name, code } }: { item: Country }) => (
+            <CountryItem
+              key={`${name}_${code}`}
+              isoCode={code}
+              icon={false}
+              countryName={name}
+              className={`w-full border-0 border-b px-4 py-6 ${code === selectedCountry.code ? 'bg-primary-200' : 'bg-transparent'}`}
+              onPress={() => handleSelection({ name, code })}
+            />
+          )}
+        />
+        <View className={'w-full p-4'}>
+          <Button type={'secondary'} title={'Close'} onPress={() => handleSelection(selectedCountry)} />
+        </View>
+      </View>
+    </>
+  );
+};
+
+/**
+ * Registration schema using yup for form validation.
+ * @type {yup.ObjectSchema<TRegistrationForm>}
+ */
+export const registrationSchema = yup.object().shape({
+  name: yup
+    .string()
+    .min(2, 'Imię musi mieć co najmniej 2 znaki')
+    .max(50, 'Imię nie może przekraczać 50 znaków')
+    .required('Imię jest wymagane'),
+  email: yup.string().email('Nieprawidłowy adres e-mail').required('E-mail jest wymagany'),
+  country: yup.object<Country>().required('Kraj jest wymagany').shape({
+    code: yup.string().required(),
+    name: yup.string().required(),
+  }),
+  phone: yup
+    .string()
+    .matches(/^[0-9]{9,15}$/, 'Numer telefonu musi mieć od 9 do 15 cyfr')
+    .required('Numer telefonu jest wymagany'),
+  terms: yup.boolean().oneOf([true], 'Musisz napier zaakceptować regulamin'),
+});
+
+type TRegistrationForm = {
+  name: string;
+  email: string;
+  country: Country;
+  phone: string;
+  terms?: boolean | undefined;
+};
+
+const INITIAL_REGISTRATION_FORM: TRegistrationForm = {
+  name: '',
+  email: '',
+  country: { code: 'PL', name: 'Poland' },
+  phone: '',
+  terms: false,
+};
+
+/**
+ * SignUp component for user registration.
+ * @returns {JSX.Element} The rendered component.
+ */
 export default function SignUp() {
-  const [isChecked, setIsChecked] = useState(false);
+  const [showCountryList, setShowCountryList] = useState(false);
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
+  const [countries, setCountries] = useState<Country[]>([]);
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<TRegistrationForm>({
+    defaultValues: INITIAL_REGISTRATION_FORM,
+    resolver: yupResolver(registrationSchema),
+  });
+
+  const selectedCountry = watch('country');
+
+  /**
+   * Loads the list of countries from the country-list library.
+   */
+  const loadCountries = () => {
+    const _countries = countryList.getData();
+    setCountries(_countries);
+  };
+
+  /**
+   * useEffect hook to load countries on component mount.
+   * @effect
+   */
+  useEffect(loadCountries, []);
+
+  const handleCountrySelection = (_country: Country) => {
+    setValue('country', _country);
+    setShowCountryList(false);
+  };
+
+  const onSubmit = (data: TRegistrationForm) => {
+    console.log('onSubmit', data);
+    router.navigate('/(login)/verify-code');
+    reset(INITIAL_REGISTRATION_FORM);
+  };
+
   return (
     <ThemedView withIOSPaddingBottom className="flex-1 items-start justify-start px-4">
       <View className={'mb-10 mt-4 flex w-full gap-2'}>
         <ThemedText type="title" className="text-xl">
           Sign Up
         </ThemedText>
-        <ThemedText className="text-gray-500">Create an account to get started</ThemedText>
+        <ThemedText>Create an account to get started</ThemedText>
       </View>
       <View className="flex w-full gap-6">
-        <Input
-          inputMode={'text'}
-          label={'Name'}
-          value={''}
-          placeholder={'Full name'}
-          onChangeText={(text: string) => {
-            console.log(text);
-          }}
+        <Controller
+          name="name"
+          control={control}
+          render={({ field: { value, onChange, onBlur } }) => (
+            <Input
+              inputMode={'text'}
+              label={'Name'}
+              value={value}
+              placeholder={'Full name'}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              error={errors.name}
+            />
+          )}
         />
-        <Input
-          inputMode={'text'}
-          label={'E-mail'}
-          value={''}
-          placeholder={'name@email.com'}
-          onChangeText={(text: string) => {
-            console.log(text);
-          }}
+        <Controller
+          name="email"
+          control={control}
+          render={({ field: { value, onChange, onBlur } }) => (
+            <Input
+              placeholder={'name@email.com'}
+              inputMode={'text'}
+              label={'E-mail'}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              error={errors.email}
+            />
+          )}
         />
-        <Input
-          inputMode={'numeric'}
-          value={''}
-          placeholder={'00 000-000-000'}
-          onChangeText={(text: string) => {
-            console.log(text);
-          }}
-          label={'Phone'}
+        <View className="flex w-full gap-2">
+          <ThemedText type="title" className={'text-sm text-dark-800'}>
+            Country
+          </ThemedText>
+          <CountryItem
+            isoCode={selectedCountry.code}
+            icon={true}
+            countryName={selectedCountry.name}
+            onPress={() => {
+              setShowCountryList(true);
+            }}
+          />
+          {errors.country && <ErrorText errorMsg={errors.country.message} />}
+        </View>
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field: { value, onChange, onBlur } }) => (
+            <Input
+              label={'Phone'}
+              placeholder={'00 000-000-000'}
+              inputMode={'numeric'}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              error={errors.phone}
+            />
+          )}
         />
       </View>
-      <View className={'mt-auto flex w-full gap-4'}>
-        <View className="flex flex-row items-center justify-start">
-          <CheckBox
-            checked={isChecked}
-            onPress={() => setIsChecked(!isChecked)}
-            iconType="material-community"
-            checkedIcon="checkbox-outline"
-            uncheckedIcon={'checkbox-blank-outline'}
-            size={30}
-            className="bg-red-500"
-            containerStyle={{ padding: 0, margin: 0, width: 30, height: 30, backgroundColor: 'transparent' }}
+      <View className={'mt-auto flex w-full gap-2'}>
+        <View className="flex items-start justify-start">
+          <Controller
+            name="terms"
+            control={control}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <CheckBox
+                title={
+                  <Pressable onPress={() => setShowTermsAndConditions(true)}>
+                    <ThemedText className={twMerge('text-dark-700', errors.terms ? 'text-red-500' : '')}>
+                      I've read and agree with the Terms and Conditions
+                    </ThemedText>
+                  </Pressable>
+                }
+                checked={value}
+                onPress={() => onChange(!value)}
+                onBlur={onBlur}
+                iconType="material-community"
+                checkedIcon="checkbox-outline"
+                uncheckedIcon={'checkbox-blank-outline'}
+                size={30}
+                checkedColor={baseColors.colors.primary['500']}
+                wrapperStyle={{
+                  backgroundColor: 'transparent',
+                  borderWidth: 0,
+                }}
+                containerStyle={{
+                  padding: 0,
+                  marginBottom: 0,
+                  borderWidth: 0,
+                  backgroundColor: 'transparent',
+                }}
+              />
+            )}
           />
-          <View className="flex">
-            <View className="flex flex-row flex-wrap gap-1">
-              <ThemedText className="flex flex-row gap-1">I've read and agree with the</ThemedText>
-              <Pressable className="inline" onPress={() => setShowTermsAndConditions(true)}>
-                <ThemedText type="subtitle" className="text-wrap text-sm text-blue-600">
-                  Terms and Conditions
-                </ThemedText>
-              </Pressable>
-              <Pressable className="inline" onPress={() => setShowTermsAndConditions(true)}>
-                <ThemedText type="subtitle" className="text-wrap text-sm text-blue-600">
-                  and the Privacy Policy.
-                </ThemedText>
-              </Pressable>
-            </View>
-          </View>
         </View>
-        <Button type={'primary'} title={'Register'} onPress={() => {
-        }} />
+        <Button type={'primary'} title={'Register'} buttonClassName={'mt-2'} onPress={handleSubmit(onSubmit)} />
       </View>
       <BottomSheet
         height={90}
@@ -89,8 +287,23 @@ export default function SignUp() {
       >
         <TermsAndConditions
           onPress={() => {
+            localAppStorage.setLocalData(LOCAL_STORAGE_KEY.TERMS_AND_CONDITIONS, true);
             setShowTermsAndConditions(false);
           }}
+        />
+      </BottomSheet>
+      <BottomSheet
+        height={90}
+        title="Select country"
+        visible={showCountryList}
+        onRequestClose={() => {
+          setShowCountryList(false);
+        }}
+      >
+        <SelectCountryBottomSheet
+          countries={countries}
+          selectedCountry={selectedCountry}
+          handleSelection={handleCountrySelection}
         />
       </BottomSheet>
     </ThemedView>

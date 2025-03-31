@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
 import { ThemedView } from '@/components/ui/ThemedView';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
+import { Button } from '@/components/button/Button';
+import { baseColors } from '@assets/theme/base-theme';
+import { useRouter } from 'expo-router';
+import { storeActions, useAppDispatch } from '@/store';
+import { userMock } from '@/store/user';
 
 const CELL_COUNT = 4;
 
 export default function VerifyCodeScreen() {
+  const router = useRouter();
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
+
+  const dispatch = useAppDispatch();
 
   return (
     <ThemedView withIOSPaddingBottom className="flex-1 items-center justify-center px-6">
@@ -47,18 +55,16 @@ export default function VerifyCodeScreen() {
         />
       </View>
       <View className="mt-auto flex w-full gap-2">
-        <TouchableOpacity className="flex items-center justify-center rounded-lg p-4">
-          <ThemedText type="link">Resend code</ThemedText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          className="items-center justify-center rounded-lg bg-blue-500 p-4 dark:bg-amber-300"
+        <Button type={'tertiary'} title={'Resend code'} onPress={() => {
+        }} />
+        <Button
+          type={'primary'}
+          title={'Continue'}
           onPress={() => {
+            dispatch(storeActions.user.setUser({ user: userMock }));
+            router.navigate('/(main)/(dashboard)');
           }}
-        >
-          <ThemedText type="default" className="text-white">
-            Continue
-          </ThemedText>
-        </TouchableOpacity>
+        />
       </View>
     </ThemedView>
   );
@@ -74,10 +80,10 @@ const styles = StyleSheet.create({
     lineHeight: 38,
     fontSize: 24,
     borderWidth: 1,
-    borderColor: '#00000030',
+    borderColor: baseColors.colors.dark['400'],
     textAlign: 'center',
   },
   focusCell: {
-    borderColor: '#000',
+    borderColor: baseColors.colors.dark['600'],
   },
 });

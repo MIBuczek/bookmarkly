@@ -2,6 +2,8 @@ import React from 'react';
 import { TextInput, TextInputProps, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { twMerge } from 'tailwind-merge';
+import { FieldError } from 'react-hook-form';
+import { ErrorText } from '@/components/ui/ErrorText';
 
 interface FieldInputProps extends TextInputProps {
   label?: string;
@@ -11,6 +13,9 @@ interface FieldInputProps extends TextInputProps {
   inputClassName?: string;
   placeholder?: string;
   disabled?: boolean;
+  error?: FieldError | undefined;
+  multiline?: boolean;
+  numberOfLines?: number;
 }
 
 export const Input = ({
@@ -21,24 +26,37 @@ export const Input = ({
                         inputClassName,
                         placeholder,
                         disabled,
+                        error,
+                        multiline,
+                        numberOfLines,
+                        children,
+                        ...rest
                       }: FieldInputProps) => {
   return (
     <View className="flex w-full gap-2">
       {label && (
-        <ThemedText type="title" className={twMerge('text-sm text-gray-600', labelClassName)}>
+        <ThemedText type="title" className={twMerge('text-sm text-dark-800', labelClassName)}>
           {label}
         </ThemedText>
       )}
-      <TextInput
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        editable={!disabled}
-        className={twMerge(
-          'w-full rounded-xl border border-gray-300 p-4 text-gray-600 placeholder:text-gray-400 dark:border-gray-200',
-          inputClassName,
-        )}
-      />
+      <View className={'relative'}>
+        <TextInput
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          editable={!disabled}
+          multiline={multiline}
+          numberOfLines={numberOfLines}
+          className={twMerge(
+            'w-full rounded-xl border border-dark-400 p-4 text-dark-600 placeholder:text-dark-400 dark:border-gray-400 dark:text-dark-400',
+            inputClassName,
+            multiline && 'h-32',
+          )}
+          {...rest}
+        />
+        {children}
+      </View>
+      {error && <ErrorText errorMsg={error.message} />}
     </View>
   );
 };

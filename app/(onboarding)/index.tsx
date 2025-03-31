@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { Animated, Pressable, View } from 'react-native';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/button/Button';
 import { useRouter } from 'expo-router';
+import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
 
 interface SingleSlideDotProps {
   isActive: boolean;
@@ -23,7 +24,7 @@ const SingleSlideDot = ({ isActive, onPress }: Readonly<SingleSlideDotProps>) =>
 
   const backgroundColor = fadeAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['rgb(200, 200, 200)', 'rgb(0, 122, 255)'], // from gray to blue
+    outputRange: ['rgb(200, 200, 200)', 'rgb(255,140,66)'],
   });
 
   return (
@@ -64,11 +65,17 @@ const SlideText = ({ title, description, isActive }: Readonly<SlideTextProps>) =
   );
 };
 
+interface ISwipeContent {
+  img: string;
+  title: string;
+  description: string;
+}
+
 export default function Index() {
   const router = useRouter();
   const [slideIndex, setSlideIndex] = useState<string>('1');
 
-  const swipeContent: { [x: string]: any } = {
+  const swipeContent: { [x: string]: ISwipeContent } = {
     '1': {
       img: '1',
       title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -89,8 +96,16 @@ export default function Index() {
     },
   };
 
+  const checkHasOnboardingBeenDone = () => {
+    const btdt = localAppStorage.getLocalData<boolean>(LOCAL_STORAGE_KEY.ONBOARDING);
+    if (btdt) router.navigate('/(login)');
+  };
+
+  useEffect(checkHasOnboardingBeenDone, []);
+
   const handleSwipeContent = () => {
     if (slideIndex === '3') {
+      localAppStorage.setLocalData<boolean>(LOCAL_STORAGE_KEY.ONBOARDING, true);
       router.navigate('/(login)');
     }
     const nextSwipe = slideIndex === '3' ? '3' : `${Number(slideIndex) + 1}`;
@@ -99,7 +114,7 @@ export default function Index() {
 
   return (
     <ThemedView withIOSPaddingBottom className="flex-1">
-      <View className="flex h-[60%] w-full items-center justify-center bg-blue-200 dark:bg-amber-200">
+      <View className="flex h-[60%] w-full items-center justify-center bg-primary-400 dark:bg-primary-200">
         <ThemedText type={'title'}>{swipeContent[slideIndex].img}</ThemedText>
       </View>
       <View className="h-[30%] w-full items-start px-6 py-10">
