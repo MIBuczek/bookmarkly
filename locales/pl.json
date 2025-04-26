@@ -80,11 +80,11 @@
   "storage_space": "Miejsce na dysku",
   "clear_local_storage": "Wyczyść lokalną pamięć aplikacji",
   "clear_local_storage_confirmation_msg": "Czy na pewno chcesz wyczyścić pamięć aplikacji? Utracisz niektóre dane ustawień, a my przywrócimy domyślne.",
-  "slide_one_title": "Zapisuj Linki Bez Wysiłku",
+  "slide_one_title": "Zapisuj linki bez wysiłku",
   "slide_one_description": "Po prostu wklej adres URL, który chcesz zachować, a my pobierzemy szczegóły za Ciebie.",
-  "slide_two_title": "Inteligentne Rozpoznawanie Linków",
+  "slide_two_title": "Inteligentne rozpoznawanie linków",
   "slide_two_description": "Aplikacja automatycznie pobierze tytuł, opis i zaproponuje tagi, abyś mógł łatwo odnaleźć zapisane treści.",
-  "slide_three_title": "Pozostań Zorganizowany",
+  "slide_three_title": "Pozostań zorganizowany",
   "slide_three_description": "Pamiętaj, zawsze możesz edytować zapisane artykuły lub oznaczyć je jako przeczytane, co ułatwia śledzenie tego, co przejrzałeś i powrót do nich w przyszłości.",
   "next": "Dalej"
 }

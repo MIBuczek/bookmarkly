@@ -6,6 +6,9 @@ import { Button } from '@/components/button/Button';
 import { useRouter } from 'expo-router';
 import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
 import { useTranslation } from 'react-i18next';
+import { PastLink } from '@/components/svg/PastLink';
+import { LinkContent } from '@/components/svg/LinkContent';
+import { CompleteLink } from '@/components/svg/CompleteLink';
 
 interface SingleSlideDotProps {
   isActive: boolean;
@@ -67,7 +70,7 @@ const SlideText = ({ title, description, isActive }: Readonly<SlideTextProps>) =
 };
 
 interface ISwipeContent {
-  img: string;
+  img: React.ReactNode;
   title: string;
   description: string;
 }
@@ -80,17 +83,29 @@ export default function Index() {
 
   const swipeContent: { [x: string]: ISwipeContent } = {
     '1': {
-      img: '1',
+      img: (
+        <View className={'flex-1 pt-20'}>
+          <PastLink width={350} height={350} />
+        </View>
+      ),
       title: t('slide_one_title'),
       description: t('slide_one_description'),
     },
     '2': {
-      img: '2',
+      img: (
+        <View className={'flex-1 pt-20'}>
+          <LinkContent width={350} height={350} />
+        </View>
+      ),
       title: t('slide_two_title'),
       description: t('slide_two_description'),
     },
     '3': {
-      img: '3',
+      img: (
+        <View className={'flex-1 pt-32'}>
+          <CompleteLink width={250} height={250} />
+        </View>
+      ),
       title: t('slide_three_title'),
       description: t('slide_three_description'),
     },
@@ -114,8 +129,8 @@ export default function Index() {
 
   return (
     <ThemedView withIOSPaddingBottom className="flex-1">
-      <View className="flex h-[60%] w-full items-center justify-center bg-primary-400 dark:bg-primary-200">
-        <ThemedText type={'title'}>{swipeContent[slideIndex].img}</ThemedText>
+      <View className="flex h-[60%] w-full items-center justify-center bg-primary-50 pt-20">
+        {swipeContent[slideIndex].img}
       </View>
       <View className="h-[30%] w-full items-start px-6 py-10">
         <View className="h-10 flex-row justify-start gap-3 py-2">
