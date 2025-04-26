@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { StyleSheet, Text, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
@@ -8,11 +8,16 @@ import { baseColors } from '@assets/theme/base-theme';
 import { useRouter } from 'expo-router';
 import { storeActions, useAppDispatch } from '@/store';
 import { userMock } from '@/store/user';
+import { useTranslation } from 'react-i18next';
 
 const CELL_COUNT = 4;
+const START_COUNT_DOWN = 90;
 
 export default function VerifyCodeScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
+
+  const [countDown, setCountDown] = useState(START_COUNT_DOWN);
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -22,14 +27,35 @@ export default function VerifyCodeScreen() {
 
   const dispatch = useAppDispatch();
 
+  const resendCode = () => {
+    console.log('resendCode');
+    setCountDown(START_COUNT_DOWN);
+  };
+
+  const verifyCode = () => {
+    console.log('verifyCode');
+    dispatch(storeActions.user.setUser({ user: userMock }));
+    router.navigate('/(main)/(dashboard)');
+  };
+
+  useEffect(() => {
+    if (countDown > 0) {
+      const interval = setInterval(() => {
+        setCountDown((prevCount) => prevCount - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+    return;
+  }, [countDown]);
+
   return (
     <ThemedView withIOSPaddingBottom className="flex-1 items-center justify-center px-6">
       <View className="flex-1 items-center justify-center gap-4">
         <ThemedText type="title" className="text-xl">
-          Enter confirmation code
+          {t('enter_confirmation_code')}
         </ThemedText>
         <ThemedText type="default" className={'text-center'}>
-          {`A 4-digit code was sent to \n +1 555 555 5555`}
+          {`${t('a_4_digit_code_was_sent_to')} \n +1 555 555 5555`}
         </ThemedText>
         <CodeField
           ref={ref}
@@ -55,16 +81,13 @@ export default function VerifyCodeScreen() {
         />
       </View>
       <View className="mt-auto flex w-full gap-2">
-        <Button type={'tertiary'} title={'Resend code'} onPress={() => {
-        }} />
         <Button
-          type={'primary'}
-          title={'Continue'}
-          onPress={() => {
-            dispatch(storeActions.user.setUser({ user: userMock }));
-            router.navigate('/(main)/(dashboard)');
-          }}
+          type={'tertiary'}
+          disabled={countDown > 0}
+          title={countDown > 0 ? `${t('resend_code')} (${countDown}'s)` : t('resend_code')}
+          onPress={resendCode}
         />
+        <Button type={'primary'} title={t('continue')} onPress={verifyCode} />
       </View>
     </ThemedView>
   );

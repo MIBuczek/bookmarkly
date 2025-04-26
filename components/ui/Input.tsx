@@ -4,6 +4,7 @@ import { ThemedText } from '@/components/ui/ThemedText';
 import { twMerge } from 'tailwind-merge';
 import { FieldError } from 'react-hook-form';
 import { ErrorText } from '@/components/ui/ErrorText';
+import { useTranslation } from 'react-i18next';
 
 interface FieldInputProps extends TextInputProps {
   label?: string;
@@ -32,6 +33,8 @@ export const Input = ({
                         children,
                         ...rest
                       }: FieldInputProps) => {
+  const { t } = useTranslation();
+
   return (
     <View className="flex w-full gap-2">
       {label && (
@@ -56,7 +59,7 @@ export const Input = ({
         />
         {children}
       </View>
-      {error && <ErrorText errorMsg={error.message} />}
+      {error && <ErrorText errorMsg={t(error.message || '')} />}
     </View>
   );
 };

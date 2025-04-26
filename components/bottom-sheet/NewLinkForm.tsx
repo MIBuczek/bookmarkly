@@ -14,9 +14,10 @@ import { Colors } from '@/constants/colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { twMerge } from 'tailwind-merge';
 import { Link, MOCK_LINKS } from '@/store/link';
+import { useTranslation } from 'react-i18next';
 
 const newLinkFormSchema = yup.object().shape({
-  url: yup.string().url('Podaj poprawny adres URL').required('Adres URL jest wymagany'),
+  url: yup.string().url('url_pattern').required('url_required'),
 });
 
 type TNewLinkForm = {
@@ -34,6 +35,8 @@ interface NewLinkFormProps {
 
 export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormProps>) => {
   const theme = useColorScheme() ?? 'light';
+  const { t } = useTranslation();
+
   const [metadataGenerated, setMetadataGenerated] = useState(false);
   const [metadata, setMetadata] = useState<Link | undefined>();
 
@@ -66,7 +69,7 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
   return (
     <BottomSheet
       height={metadataGenerated ? 85 : 32}
-      title={'Add new link'}
+      title={t('add_new_link')}
       visible={visible}
       onRequestClose={onRequestClose}
     >
@@ -80,7 +83,7 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
               inputClassName={'lowercase'}
-              placeholder={'Past url address'}
+              placeholder={t('past_url_address')}
               value={value}
               disabled={metadataGenerated}
               onChangeText={onChange}
@@ -126,11 +129,11 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
         />
         {!metadataGenerated && (
           <View className={'mt-auto w-full flex-row justify-between gap-2'}>
-            <Button buttonClassName={'w-1/2'} type={'secondary'} title={'Cancel'} onPress={onCancel} />
+            <Button buttonClassName={'w-1/2'} type={'secondary'} title={t('cancel')} onPress={onCancel} />
             <Button
               buttonClassName={'w-1/2'}
               type={'primary'}
-              title={'Generate metadata'}
+              title={t('generate_metadata')}
               onPress={handleSubmit(onSubmit)}
             />
           </View>

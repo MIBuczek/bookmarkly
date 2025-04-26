@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { storeActions, useAppDispatch } from '@/store';
 import { Button } from '@/components/button/Button';
 import { Link } from '@/store/link';
+import { useTranslation } from 'react-i18next';
 
 interface LinkCommentFormProps {
   handleClose: () => void;
@@ -30,6 +31,8 @@ const INITIAL_COMMENT_FORM: TCommentForm = {
 };
 
 export const LinkCommentForm = ({ handleClose, link }: Readonly<LinkCommentFormProps>) => {
+  const { t } = useTranslation();
+
   const dispatch = useAppDispatch();
 
   const {
@@ -68,9 +71,9 @@ export const LinkCommentForm = ({ handleClose, link }: Readonly<LinkCommentFormP
         control={control}
         render={({ field: { value, onChange, onBlur } }) => (
           <Input
-            label={`${link?.comments ? 'Edit' : 'Add'} your personal comment`}
+            label={`${link?.comments ? t('edit_your_personal_comment') : t('add_your_personal_comment')}`}
             labelClassName={'pb-2'}
-            placeholder={'Write your comment'}
+            placeholder={t('write_your_comment')}
             inputClassName={'h-32'}
             multiline={true}
             numberOfLines={5}
@@ -82,11 +85,11 @@ export const LinkCommentForm = ({ handleClose, link }: Readonly<LinkCommentFormP
         )}
       />
       <View className={'mt-auto w-full flex-row justify-between gap-2'}>
-        <Button buttonClassName={'w-1/2'} type={'secondary'} title={'Close'} onPress={handleClose} />
+        <Button buttonClassName={'w-1/2'} type={'secondary'} title={t('cancel')} onPress={handleClose} />
         <Button
           buttonClassName={'w-1/2'}
           type={'primary'}
-          title={link?.comments ? 'Edit' : 'Add'}
+          title={link?.comments ? t('edit') : t('add')}
           onPress={handleSubmit(onSubmit)}
         />
       </View>

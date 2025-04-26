@@ -14,19 +14,16 @@ import { ErrorText } from '@/components/ui/ErrorText';
 import { cloneDeep, isNumber } from 'lodash-es';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useTranslation } from 'react-i18next';
 
 const linkFormSchema = yup.object().shape({
-  title: yup
-    .string()
-    .min(2, 'Title must be at least 2 characters')
-    .max(50, 'Title cannot exceed 50 characters')
-    .required('Title is required'),
+  title: yup.string().min(2, 'title_min_length').max(50, 'title_max_length').required('title_required'),
   description: yup
     .string()
-    .min(2, 'Description must be at least 2 characters')
-    .max(100, 'Description cannot exceed 100 characters')
-    .required('Description is required'),
-  tag: yup.string().max(20, 'Tag cannot exceed 50 characters'),
+    .min(2, 'description_min_length')
+    .max(100, 'description_max_length')
+    .required('description_required'),
+  tag: yup.string().max(20, 'Tag cannot exceed 20 characters'),
 });
 
 type TLinkForm = {
@@ -49,7 +46,10 @@ interface LinkFormProps {
 
 export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProps>) => {
   const theme = useColorScheme() ?? 'light';
+  const { t } = useTranslation();
+
   const dispatch = useAppDispatch();
+
   const [formTags, setFormTags] = useState<string[]>([]);
   const [editTagIndex, setEditTagIndex] = useState<number | null>(null);
 
@@ -129,9 +129,9 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
         control={control}
         render={({ field: { value, onChange, onBlur } }) => (
           <Input
-            label={'Title'}
+            label={t('title')}
             labelClassName={'pb-2'}
-            placeholder={'Write your title'}
+            placeholder={t('write_your_title')}
             value={value}
             onChangeText={onChange}
             onBlur={onBlur}
@@ -144,9 +144,9 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
         control={control}
         render={({ field: { value, onChange, onBlur } }) => (
           <Input
-            label={'Description'}
+            label={t('description')}
             labelClassName={'pb-2'}
-            placeholder={'Write your description'}
+            placeholder={t('write_your_description')}
             inputClassName={'h-32'}
             multiline={true}
             numberOfLines={5}
@@ -162,9 +162,9 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
         control={control}
         render={({ field: { value, onChange, onBlur } }) => (
           <Input
-            label={'Add Tag'}
+            label={t('tags')}
             labelClassName={' pb-2'}
-            placeholder={'Write your tag'}
+            placeholder={t('write_your_tag')}
             value={value || ''}
             onChangeText={onChange}
             onBlur={onBlur}
@@ -197,14 +197,14 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
       />
       <View>
         <Tags tags={formTags} onPressAction={editTag} />
-        {formTags.length > 10 && <ErrorText errorMsg={'No more then 10 tags'} />}
+        {formTags.length > 10 && <ErrorText errorMsg={t('no_more_than_10_tags')} />}
       </View>
       <View className={'mt-auto w-full flex-row justify-between gap-2'}>
-        <Button buttonClassName={'w-1/2'} type={'secondary'} title={'Close'} onPress={handleClose} />
+        <Button buttonClassName={'w-1/2'} type={'secondary'} title={t('cancel')} onPress={handleClose} />
         <Button
           buttonClassName={'w-1/2'}
           type={'primary'}
-          title={formState === 'edit' ? 'Edit' : 'Add'}
+          title={formState === 'edit' ? t('edit') : t('add')}
           onPress={handleSubmit(onSubmit)}
         />
       </View>

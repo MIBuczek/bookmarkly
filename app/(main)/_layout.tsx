@@ -25,6 +25,7 @@ export default function MainLayout() {
       <Tabs.Screen
         name="(dashboard)"
         options={{
+          headerTitle: '',
           headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="bookmark" color={color} />,
         }}
@@ -32,6 +33,7 @@ export default function MainLayout() {
       <Tabs.Screen
         name="settings"
         options={{
+          headerTitle: '',
           headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="gear" color={color} />,
         }}

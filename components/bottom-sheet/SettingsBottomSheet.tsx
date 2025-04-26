@@ -14,10 +14,13 @@ import { AVATARS_OPTIONS } from '@/constants/avatars';
 import { AvatarSvg } from '@/components/svg/AvatarIcon';
 import { Options } from '@dicebear/core';
 import { twMerge } from 'tailwind-merge';
+import { useTranslation } from 'react-i18next';
+import * as Localization from 'expo-localization';
 
 type SettingsProps = Readonly<{ handleClose: () => void }>;
 
 export const Notification = ({ handleClose }: SettingsProps) => {
+  const { t } = useTranslation();
   const [notificationPermission, setNotificationPermission] = useState<boolean>(false);
 
   const handleNotificationPermission = () => {
@@ -31,7 +34,7 @@ export const Notification = ({ handleClose }: SettingsProps) => {
       </ThemedText>
       <View className={'w-full flex-row items-center justify-between py-2'}>
         <ThemedText type={'subtitle'} className={'text-base'}>
-          Allow to push notification
+          {t('allow_push_notification')}
         </ThemedText>
         <Switch
           trackColor={{ false: Colors.light.switchInactive, true: Colors.light.switchActive }}
@@ -51,6 +54,8 @@ export const Notification = ({ handleClose }: SettingsProps) => {
 export type ThemeType = 'dark' | 'light';
 
 export const Appearance = ({ handleClose }: SettingsProps) => {
+  const { t } = useTranslation();
+
   const colorNativeWindScheme = useNativeWindColorScheme();
 
   const [fontSize, setFontSize] = useState(1);
@@ -81,7 +86,7 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
       </ThemedText>
       <View className={'w-full flex-row items-center justify-between py-2'}>
         <ThemedText type={'subtitle'} className={'text-base text-gray-800'}>
-          Font size
+          {t('font_size')}
         </ThemedText>
         <View className="flex-row items-center gap-2">
           <TouchableOpacity className={'rounded-md border border-primary-500 p-2'}>
@@ -94,7 +99,7 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
       </View>
       <View className={'w-full flex-row items-center justify-between py-2'}>
         <ThemedText type={'subtitle'} className={'text-base text-gray-800'}>
-          Color schema
+          {t('color_theme')}
         </ThemedText>
         <View className="flex-row items-center gap-2">
           <TouchableOpacity
@@ -115,7 +120,7 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
         {hasChanged ? (
           <Button
             type={'primary'}
-            title={'Apply'}
+            title={t('apply')}
             onPress={() => {
               localAppStorage.setLocalData<number>(LOCAL_STORAGE_KEY.FONT_SIZE, fontSize);
               localAppStorage.setLocalData<string>(LOCAL_STORAGE_KEY.THEME, theme);
@@ -124,7 +129,7 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
             }}
           />
         ) : (
-          <Button type={'tertiary'} title={'Close'} onPress={handleClose} />
+          <Button type={'tertiary'} title={t('close')} onPress={handleClose} />
         )}
       </View>
     </View>
@@ -132,15 +137,17 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
 };
 
 export const Language = ({ handleClose }: SettingsProps) => {
+  const { t, i18n } = useTranslation();
+
   const [hasChanged, setHasChanged] = useState(false);
-  const [lang, setLang] = useState('PL');
+  const [lang, setLang] = useState<string | null>(Localization.getLocales()[0].languageCode);
 
   const langList = useMemo(() => LAND_OPTIONS, []);
 
   const setInitialState = () => {
     const _lang = localAppStorage.getLocalData<string>(LOCAL_STORAGE_KEY.LANGUAGE);
     if (_lang) setLang(_lang);
-    else setLang('EN');
+    else setLang(Localization.getLocales()[0].languageCode);
   };
 
   useEffect(setInitialState, []);
@@ -159,7 +166,7 @@ export const Language = ({ handleClose }: SettingsProps) => {
       </ThemedText>
       <View className={'flex w-full items-start gap-2 py-2'}>
         <ThemedText type={'subtitle'} className={'text-base'}>
-          Application language
+          {t('application_language')}
         </ThemedText>
         <View className="w-full gap-1">
           {langList.map(({ name, isoCode }, index) => (
@@ -179,14 +186,16 @@ export const Language = ({ handleClose }: SettingsProps) => {
         {hasChanged ? (
           <Button
             type={'primary'}
-            title={'Apply'}
-            onPress={() => {
+            title={t('apply')}
+            onPress={async () => {
+              if (!lang) return;
               localAppStorage.setLocalData(LOCAL_STORAGE_KEY.LANGUAGE, lang);
+              void i18n.changeLanguage(lang);
               handleClose();
             }}
           />
         ) : (
-          <Button type={'tertiary'} title={'Close'} onPress={handleClose} />
+          <Button type={'tertiary'} title={t('close')} onPress={handleClose} />
         )}
       </View>
     </View>
@@ -194,6 +203,7 @@ export const Language = ({ handleClose }: SettingsProps) => {
 };
 
 export const Storage = ({ handleClose }: SettingsProps) => {
+  const { t } = useTranslation();
   const [showClearConfirmationModal, setShowClearConfirmationModal] = useState(false);
 
   return (
@@ -203,7 +213,7 @@ export const Storage = ({ handleClose }: SettingsProps) => {
       </ThemedText>
       <View className={'w-full flex-row items-center justify-between py-2'}>
         <ThemedText type={'subtitle'} className={'text-base'}>
-          Storage space {(localAppStorage?.getSize() / (1024 * 1024)).toFixed(2)} (MB)
+          {t('storage_space')} {(localAppStorage?.getSize() / (1024 * 1024)).toFixed(2)} (MB)
         </ThemedText>
         <TouchableOpacity
           className={'rounded-md border border-red-500 p-2'}
@@ -225,17 +235,14 @@ export const Storage = ({ handleClose }: SettingsProps) => {
       >
         <View className={'flex items-center justify-center gap-2 px-4'}>
           <ThemedText type="title" className={'text-lg text-red-500'}>
-            Clear local application storage
+            {t('clear_local_storage')}
           </ThemedText>
-          <ThemedText>
-            Are you sure you want to clear application storage? You'll lost some settings data, and we restore default
-            one.
-          </ThemedText>
+          <ThemedText>{t('clear_local_storage_confirmation_msg')}</ThemedText>
           <View className={'mt-4 flex-row items-center justify-center gap-2'}>
             <Button
               buttonClassName={'flex-1 py-2'}
               type={'tertiary'}
-              title={'Cancel'}
+              title={t('cancel')}
               onPress={() => {
                 setShowClearConfirmationModal(false);
               }}
@@ -243,7 +250,7 @@ export const Storage = ({ handleClose }: SettingsProps) => {
             <Button
               buttonClassName={'flex-1 py-2 bg-red-500 border-red-500'}
               type={'primary'}
-              title={'Clear'}
+              title={t('clear')}
               onPress={() => localAppStorage.clearAllData()}
             />
           </View>
@@ -259,6 +266,8 @@ interface AvatarsProps extends SettingsProps {
 }
 
 export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsProps>) => {
+  const { t } = useTranslation();
+
   const [hasChanged, setHasChanged] = useState<boolean>(false);
   const [selectedAvatar, setSelectedAvatar] = useState<Options | null>(avatar);
 
@@ -277,7 +286,7 @@ export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsP
       </ThemedText>
       <View className={'flex w-full items-start py-2'}>
         <ThemedText type={'subtitle'} className={'text-base'}>
-          Choice your avatar
+          {t('choice_your_avatar')}
         </ThemedText>
       </View>
       <View className="flex w-full flex-row flex-wrap justify-center gap-4">
@@ -300,7 +309,7 @@ export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsP
         {hasChanged ? (
           <Button
             type={'primary'}
-            title={'Apply'}
+            title={t('apply')}
             onPress={() => {
               if (!selectedAvatar) return;
               updateAvatar(selectedAvatar);
@@ -309,7 +318,7 @@ export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsP
             }}
           />
         ) : (
-          <Button type={'tertiary'} title={'Close'} onPress={handleClose} />
+          <Button type={'tertiary'} title={t('close')} onPress={handleClose} />
         )}
       </View>
     </View>

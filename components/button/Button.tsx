@@ -15,7 +15,7 @@ export const Button = ({ type, title, titleClassName, buttonClassName, children,
   const buttonStyles = {
     primary: 'bg-primary-500 border border-primary-500',
     secondary: 'bg-transparent border border-primary-500',
-    tertiary: 'bg-transparent',
+    tertiary: 'bg-transparent disabled:opacity-50',
   };
 
   const textStyles = {

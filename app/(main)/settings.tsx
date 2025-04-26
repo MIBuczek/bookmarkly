@@ -13,20 +13,25 @@ import {
   TSettingsContentSize,
   TSettingsOptions,
 } from '@/utils/setting.const';
-import { useAppSelector } from '@/store';
+import { storeActions, useAppDispatch, useAppSelector } from '@/store';
 import { FontAwesome } from '@expo/vector-icons';
 import { AvatarSvg } from '@/components/svg/AvatarIcon';
 import { Appearance, Avatars, Language, Notification, Storage } from '@/components/bottom-sheet/SettingsBottomSheet';
 import { AVATARS_OPTIONS } from '@/constants/avatars';
 import { Options } from '@dicebear/core';
 import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
+import { useTranslation } from 'react-i18next';
+import { router } from 'expo-router';
 
 export default function SettingScreen() {
+  const { t } = useTranslation();
+
   const [logOutModalVisible, setLogoutModalVisible] = useState<boolean>(false);
   const [settingOption, setSettingOption] = useState<TSettingsOptions>('none');
   const [showBottomSheet, setShowBottomSheet] = useState<boolean>(false);
   const [avatar, setAvatar] = useState<Options | null>(null);
 
+  const dispatch = useAppDispatch();
   const { user } = useAppSelector(({ user }) => user);
 
   const settingsButtons: TSettingsOptions[] = useMemo(() => SETTING_CONTENT_OPTIONS, []);
@@ -63,9 +68,9 @@ export default function SettingScreen() {
 
   return (
     <ThemedView withIOSPaddingBottom withIOSPaddingTop className="flex-1 gap-8 px-6">
-      <View className="flex h-[30%] w-full items-center justify-center gap-4">
-        <ThemedText type={'title'} className={'py-6 text-lg'}>
-          Settings
+      <View className="flex h-[30%] w-full items-center justify-start gap-4">
+        <ThemedText type={'title'} className={'pb-6 text-lg'}>
+          {t('settings')}
         </ThemedText>
         <View className="relative size-28 rounded-3xl border border-primary-500">
           <AvatarSvg options={avatar || AVATARS_OPTIONS[0]} size={100} />
@@ -105,7 +110,7 @@ export default function SettingScreen() {
         <View className={'mt-auto w-full'}>
           <Button
             type={'tertiary'}
-            title={'Log out'}
+            title={t('logout')}
             onPress={() => {
               setLogoutModalVisible(true);
             }}
@@ -131,20 +136,28 @@ export default function SettingScreen() {
       >
         <View className={'flex items-center justify-center gap-2 px-4'}>
           <ThemedText type="title" className={'text-lg'}>
-            Log out
+            {t('logout')}
           </ThemedText>
-          <ThemedText>Are you sure you want to log out? You'll need to login again to use the app.</ThemedText>
+          <ThemedText>{t('are_you_sure_you_want_to_log_out')}</ThemedText>
           <View className={'mt-4 flex-row items-center justify-center gap-2'}>
             <Button
               buttonClassName={'flex-1 py-2'}
               type={'secondary'}
-              title={'Cancel'}
+              title={t('cancel')}
               onPress={() => {
                 setLogoutModalVisible(false);
               }}
             />
-            <Button buttonClassName={'flex-1 py-2'} type={'primary'} title={'Log out'} onPress={() => {
-            }} />
+            <Button
+              buttonClassName={'flex-1 py-2'}
+              type={'primary'}
+              title={t('logout')}
+              onPress={() => {
+                router.navigate('/(login)');
+                dispatch(storeActions.user.logout());
+                setLogoutModalVisible(false);
+              }}
+            />
           </View>
         </View>
       </ModalBackDrop>

@@ -18,6 +18,7 @@ import { twMerge } from 'tailwind-merge';
 import { CountryItem } from '@/components/CountryItem';
 import countryList, { Country } from 'country-list';
 import { debounce } from 'lodash-es';
+import { useTranslation } from 'react-i18next';
 
 interface SelectCountryBottomSheetProps {
   countries: Country[];
@@ -36,6 +37,8 @@ const SelectCountryBottomSheet = ({
                                     selectedCountry,
                                     handleSelection,
                                   }: Readonly<SelectCountryBottomSheetProps>): React.JSX.Element => {
+  const { t } = useTranslation();
+
   const [searchPhase, setSearchPhase] = useState('');
   const [filteredCountries, setFilteredCountries] = useState<Country[]>(countries);
 
@@ -60,7 +63,7 @@ const SelectCountryBottomSheet = ({
   return (
     <>
       <View className={'px-4 py-6'}>
-        <Input placeholder={'Search your country'} value={searchPhase} onChangeText={setSearchPhase} />
+        <Input placeholder={t('search_your_country')} value={searchPhase} onChangeText={setSearchPhase} />
       </View>
       <View className={'flex h-5/6 items-start border-t-primary-500 py-2'}>
         <FlatList
@@ -77,7 +80,7 @@ const SelectCountryBottomSheet = ({
           )}
         />
         <View className={'w-full p-4'}>
-          <Button type={'secondary'} title={'Close'} onPress={() => handleSelection(selectedCountry)} />
+          <Button type={'secondary'} title={t('cancel')} onPress={() => handleSelection(selectedCountry)} />
         </View>
       </View>
     </>
@@ -88,22 +91,18 @@ const SelectCountryBottomSheet = ({
  * Registration schema using yup for form validation.
  * @type {yup.ObjectSchema<TRegistrationForm>}
  */
-export const registrationSchema = yup.object().shape({
-  name: yup
-    .string()
-    .min(2, 'Imię musi mieć co najmniej 2 znaki')
-    .max(50, 'Imię nie może przekraczać 50 znaków')
-    .required('Imię jest wymagane'),
-  email: yup.string().email('Nieprawidłowy adres e-mail').required('E-mail jest wymagany'),
-  country: yup.object<Country>().required('Kraj jest wymagany').shape({
+export const registrationSchema: yup.ObjectSchema<TRegistrationForm> = yup.object().shape({
+  name: yup.string().min(2, 'name_min_length').max(50, 'name_max_length').required('name_required'),
+  email: yup.string().email('invalid_email').required('email_required'),
+  country: yup.object<Country>().required('country_required').shape({
     code: yup.string().required(),
     name: yup.string().required(),
   }),
   phone: yup
     .string()
-    .matches(/^[0-9]{9,15}$/, 'Numer telefonu musi mieć od 9 do 15 cyfr')
-    .required('Numer telefonu jest wymagany'),
-  terms: yup.boolean().oneOf([true], 'Musisz napier zaakceptować regulamin'),
+    .matches(/^[0-9]{9,15}$/, 'phone_number_digits')
+    .required('phone_number_required'),
+  terms: yup.boolean().oneOf([true], 'terms_required'),
 });
 
 type TRegistrationForm = {
@@ -126,7 +125,9 @@ const INITIAL_REGISTRATION_FORM: TRegistrationForm = {
  * SignUp component for user registration.
  * @returns {JSX.Element} The rendered component.
  */
-export default function SignUp() {
+export default function SignUpScreen(): React.JSX.Element {
+  const { t } = useTranslation();
+
   const [showCountryList, setShowCountryList] = useState(false);
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
   const [countries, setCountries] = useState<Country[]>([]);
@@ -174,9 +175,9 @@ export default function SignUp() {
     <ThemedView withIOSPaddingBottom className="flex-1 items-start justify-start px-4">
       <View className={'mb-10 mt-4 flex w-full gap-2'}>
         <ThemedText type="title" className="text-xl">
-          Sign Up
+          {t('register')}
         </ThemedText>
-        <ThemedText>Create an account to get started</ThemedText>
+        <ThemedText>{t('create_an_account_to_get_started')}</ThemedText>
       </View>
       <View className="flex w-full gap-6">
         <Controller
@@ -185,9 +186,9 @@ export default function SignUp() {
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
               inputMode={'text'}
-              label={'Name'}
+              label={t('name')}
               value={value}
-              placeholder={'Full name'}
+              placeholder={t('full_name')}
               onChangeText={onChange}
               onBlur={onBlur}
               error={errors.name}
@@ -201,7 +202,7 @@ export default function SignUp() {
             <Input
               placeholder={'name@email.com'}
               inputMode={'text'}
-              label={'E-mail'}
+              label={t('email')}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -211,7 +212,7 @@ export default function SignUp() {
         />
         <View className="flex w-full gap-2">
           <ThemedText type="title" className={'text-sm text-dark-800'}>
-            Country
+            {t('country')}
           </ThemedText>
           <CountryItem
             isoCode={selectedCountry.code}
@@ -228,7 +229,7 @@ export default function SignUp() {
           control={control}
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
-              label={'Phone'}
+              label={t('phone_number')}
               placeholder={'00 000-000-000'}
               inputMode={'numeric'}
               value={value}
@@ -249,7 +250,7 @@ export default function SignUp() {
                 title={
                   <Pressable onPress={() => setShowTermsAndConditions(true)}>
                     <ThemedText className={twMerge('text-dark-700', errors.terms ? 'text-red-500' : '')}>
-                      I've read and agree with the Terms and Conditions
+                      {t('terms_and_conditions')}
                     </ThemedText>
                   </Pressable>
                 }
@@ -275,11 +276,11 @@ export default function SignUp() {
             )}
           />
         </View>
-        <Button type={'primary'} title={'Register'} buttonClassName={'mt-2'} onPress={handleSubmit(onSubmit)} />
+        <Button type={'primary'} title={t('register')} buttonClassName={'mt-2'} onPress={handleSubmit(onSubmit)} />
       </View>
       <BottomSheet
         height={90}
-        title="Terms and conditions"
+        title={t('terms_and_conditions_title')}
         visible={showTermsAndConditions}
         onRequestClose={() => {
           setShowTermsAndConditions(false);
@@ -294,7 +295,7 @@ export default function SignUp() {
       </BottomSheet>
       <BottomSheet
         height={90}
-        title="Select country"
+        title={t('select_country')}
         visible={showCountryList}
         onRequestClose={() => {
           setShowCountryList(false);

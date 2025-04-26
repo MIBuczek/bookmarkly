@@ -13,10 +13,11 @@ import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storag
 import { Provider } from 'react-redux';
 import { store } from '@/store';
 import { ThemeType } from '@/components/bottom-sheet/SettingsBottomSheet';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18Settings from '../i18n';
 
 /**
  * TODO LIST
- * - Add i18n translate
  * - Add services
  * - Create firebase project with functions
  * - Write js doc
@@ -26,6 +27,8 @@ import { ThemeType } from '@/components/bottom-sheet/SettingsBottomSheet';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const { i18n } = useTranslation();
+
   const colorScheme = useColorScheme();
   const colorNativeWindScheme = useNativeWindColorScheme();
   const [loaded] = useFonts({
@@ -51,10 +54,13 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
-      const btdt = localAppStorage.getLocalData<boolean>(LOCAL_STORAGE_KEY.ONBOARDING);
-      if (btdt) router.navigate('/(login)');
-      else router.navigate('/(onboarding)');
+      SplashScreen.hideAsync().then(() => {
+        const lang = localAppStorage.getLocalData<string>(LOCAL_STORAGE_KEY.LANGUAGE);
+        void i18n.changeLanguage(lang || 'en');
+        const btdt = localAppStorage.getLocalData<boolean>(LOCAL_STORAGE_KEY.ONBOARDING);
+        if (btdt) router.navigate('/(login)');
+        else router.navigate('/(onboarding)');
+      });
     }
   }, [loaded]);
 
@@ -64,17 +70,19 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack initialRouteName="(onboarding)">
-            <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-            <Stack.Screen name="(login)" options={{ headerShown: false }} />
-            <Stack.Screen name="(main)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-          <StatusBar style="auto" />
-        </ThemeProvider>
-      </GestureHandlerRootView>
+      <I18nextProvider i18n={i18Settings}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Stack initialRouteName="(onboarding)">
+              <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+              <Stack.Screen name="(login)" options={{ headerShown: false }} />
+              <Stack.Screen name="(main)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+            <StatusBar style="auto" />
+          </ThemeProvider>
+        </GestureHandlerRootView>
+      </I18nextProvider>
     </Provider>
   );
 }

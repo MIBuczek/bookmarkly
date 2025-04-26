@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { Pressable, View } from 'react-native';
@@ -13,12 +13,13 @@ import { LogoIcon } from '@/components/svg/LogoIcon';
 import { FacebookIcon } from '@/components/svg/FacebookIcon';
 import { GoogleIcon } from '@/components/svg/GoogleIcon';
 import { useAppSelector } from '@/store';
+import { useTranslation } from 'react-i18next';
 
 const loginSchema = yup.object().shape({
   phone: yup
     .string()
-    .matches(/^[0-9]{9,15}$/, 'Numer telefonu musi mieć od 9 do 15 cyfr')
-    .required('Numer telefonu jest wymagany'),
+    .matches(/^[0-9]{9,15}$/, 'phone_number_digits')
+    .required('phone_number_required'),
 });
 
 type TLoginForm = {
@@ -31,7 +32,7 @@ const INITIAL_LOGIN_FORM: TLoginForm = {
 
 export default function Index() {
   const router = useRouter();
-
+  const { t } = useTranslation();
   const { user } = useAppSelector(({ user }) => user);
 
   const {
@@ -49,12 +50,6 @@ export default function Index() {
     reset(INITIAL_LOGIN_FORM);
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (user) router.navigate('/(main)/(dashboard)');
-    }, 100);
-  }, []);
-
   return (
     <ThemedView withIOSPaddingBottom className="flex-1">
       <View className="w-full flex-1 flex-row items-center justify-center bg-primary-100 dark:bg-primary-200">
@@ -65,7 +60,7 @@ export default function Index() {
       </View>
       <View className="flex-1 items-start gap-6 border-t-2 border-t-primary-200 px-6 pt-10 dark:border-t-primary-300">
         <ThemedText type="title" className="text-3xl font-extrabold">
-          Welcome!
+          {t('welcome')}
         </ThemedText>
         <View className="flex w-full gap-10">
           <Controller
@@ -73,7 +68,7 @@ export default function Index() {
             control={control}
             render={({ field: { value, onChange, onBlur } }) => (
               <Input
-                placeholder={'Phone number'}
+                placeholder={t('phone_number')}
                 inputMode={'numeric'}
                 value={value}
                 onBlur={onBlur}
@@ -82,23 +77,23 @@ export default function Index() {
               />
             )}
           />
-          <Button type={'primary'} title={'Login'} onPress={handleSubmit(onSubmit)} />
+          <Button type={'primary'} title={t('login')} onPress={handleSubmit(onSubmit)} />
         </View>
         <View className="w-full flex-row items-center justify-center gap-2">
-          <ThemedText type="default">Not a member ?</ThemedText>
+          <ThemedText type="default">{t('not_a_member')}</ThemedText>
           <Pressable
             onPress={() => {
               router.navigate('./(login)/sign-up');
             }}
           >
             <ThemedText type="subtitle" className="text-sm font-semibold text-primary-600">
-              Register now
+              {t('register')}
             </ThemedText>
           </Pressable>
         </View>
         <View
           className="flex w-full items-center justify-center gap-4 border-t border-dark-400 pt-6 dark:border-gray-500">
-          <ThemedText type="default">or continue with</ThemedText>
+          <ThemedText type="default">{t('or_continue_with')}</ThemedText>
           <View className="flex-row items-center justify-center gap-4">
             <RoundButton className={'border-4 border-gray-500 p-0'} onPress={() => {
             }}>

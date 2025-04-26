@@ -5,6 +5,7 @@ import { Animated, Pressable, View } from 'react-native';
 import { Button } from '@/components/button/Button';
 import { useRouter } from 'expo-router';
 import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
+import { useTranslation } from 'react-i18next';
 
 interface SingleSlideDotProps {
   isActive: boolean;
@@ -73,26 +74,25 @@ interface ISwipeContent {
 
 export default function Index() {
   const router = useRouter();
+  const { t } = useTranslation();
+
   const [slideIndex, setSlideIndex] = useState<string>('1');
 
   const swipeContent: { [x: string]: ISwipeContent } = {
     '1': {
       img: '1',
-      title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      description:
-        'nteger ullamcorper enim non nisi convallis, in tempus justo congue. Etiam at urna eu dui iaculis bibendum.',
+      title: t('slide_one_title'),
+      description: t('slide_one_description'),
     },
     '2': {
       img: '2',
-      title: 'Morbi suscipit est quis lobortis bibendum.',
-      description:
-        'Duis maximus et felis et aliquam. Sed condimentum tortor neque, vitae fermentum mauris interdum vitae. Nulla facilisis porta libero, quis pulvinar neque porttitor id.',
+      title: t('slide_two_title'),
+      description: t('slide_two_description'),
     },
     '3': {
       img: '3',
-      title: 'Nulla sagittis non lacus sed congue.',
-      description:
-        'Etiam vel lorem scelerisque, luctus libero a, laoreet nisi. Donec sodales tortor non dolor placerat, id cursus lacus congue. Duis tincidunt lectus ac rhoncus auctor. ',
+      title: t('slide_three_title'),
+      description: t('slide_three_description'),
     },
   };
 
@@ -133,7 +133,7 @@ export default function Index() {
         ))}
       </View>
       <View className="h-[10%] w-full px-6">
-        <Button type={'primary'} title={slideIndex === '3' ? 'Close' : 'Next'} onPress={handleSwipeContent} />
+        <Button type={'primary'} title={slideIndex === '3' ? t('close') : t('next')} onPress={handleSwipeContent} />
       </View>
     </ThemedView>
   );

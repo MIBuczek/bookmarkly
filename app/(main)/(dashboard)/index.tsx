@@ -1,6 +1,6 @@
+import React, { useEffect, useMemo, useState } from 'react';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ThemedView } from '@/components/ui/ThemedView';
-import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, LayoutAnimation, Platform, TouchableOpacity, UIManager, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Button } from '@/components/button/Button';
@@ -12,6 +12,7 @@ import LinkItem from '@/components/LinkItem';
 import { ActionButton } from '@/components/button/ActionButton';
 import { Link } from '@/store/link';
 import { NewLinkForm } from '@/components/bottom-sheet/NewLinkForm';
+import { useTranslation } from 'react-i18next';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -22,6 +23,8 @@ if (Platform.OS === 'android') {
 type DashboardBaseFilters = 'unread' | 'read' | 'all';
 
 export default function DashboardScreen() {
+  const { t } = useTranslation();
+
   const [selectedFilterLinks, setSelectedFilterLinks] = useState<DashboardBaseFilters>('all');
   const [showAddLink, setShowAddLink] = useState<boolean>(false);
   const [showSearch, setShowSearch] = useState<boolean>(false);
@@ -72,7 +75,7 @@ export default function DashboardScreen() {
     <ThemedView withIOSPaddingBottom withIOSPaddingTop className="flex-1 px-6">
       <View className="relative flex w-full items-center justify-center gap-4 py-6">
         <ThemedText type={'title'} className={'text-lg'}>
-          Dashboard
+          {t('dashboard')}
         </ThemedText>
         <TouchableOpacity className={'absolute right-2 top-6 size-10'} onPress={() => setShowSearch(!showSearch)}>
           <AntDesign name="search1" size={20} color={baseColors.colors.primary['500']} />
@@ -96,7 +99,7 @@ export default function DashboardScreen() {
               `m-auto text-sm ${selectedFilterLinks === 'unread' ? 'dark:text-dark:100 text-gray-100' : 'text-dark-700'}`,
             )}
           >
-            Unread
+            {t('unread')}
           </ThemedText>
         </TouchableOpacity>
         <View className={'h-6 w-0.5 bg-gray-200 dark:bg-gray-500'} />
@@ -112,7 +115,7 @@ export default function DashboardScreen() {
               `m-auto text-sm ${selectedFilterLinks === 'read' ? 'dark:text-dark:100 text-gray-100' : 'text-dark-700'}`,
             )}
           >
-            Read
+            {t('read')}
           </ThemedText>
         </TouchableOpacity>
       </View>
@@ -125,21 +128,31 @@ export default function DashboardScreen() {
               renderItem={({ item }) => <LinkItem link={item} />}
               keyExtractor={(item) => item.id}
             />
-            <ActionButton title={'Add link'} buttonClassName={'px-2 py-3'} onPress={toggleAddLink} />
+            <ActionButton title={t('add_link')} buttonClassName={'px-2 py-3'} onPress={toggleAddLink} />
           </>
         )}
         {!filteredLinks.length && (
           <View className={'item-center flex-1 justify-center gap-4 px-4'}>
             <View className={'mb-4 flex w-full items-center px-4'}>
               <ThemedText type={'title'} className={'text-lg'}>
-                Nothing here. For now.
+                {t('nothing_here')}
               </ThemedText>
-              <ThemedText>This is where youll find your saved links.</ThemedText>
+              <ThemedText>{t('saved_links')}</ThemedText>
+            </View>
+          </View>
+        )}
+        {!links.length && (
+          <View className={'item-center flex-1 justify-center gap-4 px-4'}>
+            <View className={'mb-4 flex w-full items-center px-4'}>
+              <ThemedText type={'title'} className={'text-lg'}>
+                {t('nothing_here')}
+              </ThemedText>
+              <ThemedText>{t('saved_links')}</ThemedText>
             </View>
             <Button
               buttonClassName={'w-28 px-2 rounded-2xl mx-auto'}
               type={'primary'}
-              title={'Add link'}
+              title={t('add_link')}
               onPress={toggleAddLink}
             />
           </View>

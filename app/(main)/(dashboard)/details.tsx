@@ -18,10 +18,13 @@ import { Colors } from '@/constants/colors';
 import { LinkCommentForm } from '@/components/bottom-sheet/LinkCommentForm';
 import { LinkForm } from '@/components/bottom-sheet/LinkForm';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useTranslation } from 'react-i18next';
 
 export default function DetailsScreen() {
   const theme = useColorScheme() ?? 'light';
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { t } = useTranslation();
+
   const [showActions, setShowActions] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showCommentForm, setShowCommentForm] = useState<boolean>(false);
@@ -83,19 +86,19 @@ export default function DetailsScreen() {
       </View>
       <View className={'flex gap-2'}>
         <ThemedText type={'title'} className={'text-sm'}>
-          Tags
+          {t('tags')}
         </ThemedText>
         <Tags tags={selectedLink?.tags ?? []} />
       </View>
       <View className="flex w-full gap-2">
         <ThemedText type="title" className={'text-sm text-dark-800'}>
-          My comments
+          {t('my_comments')}
         </ThemedText>
-        <ThemedText>{`${selectedLink?.comments ? selectedLink?.comments : 'Not added yet'}`}</ThemedText>
+        <ThemedText>{`${selectedLink?.comments ? selectedLink?.comments : t('not_added_yet')}`}</ThemedText>
       </View>
       <View className={'flex w-full gap-2'}>
         <ThemedText type="title" className={'text-sm text-dark-800'}>
-          Mark as read
+          {t('mark_as_read')}
         </ThemedText>
         <View className={'mr-auto scale-75'}>
           <Switch
@@ -111,7 +114,7 @@ export default function DetailsScreen() {
         <ExternalLink href={selectedLink?.url ?? ''}>
           <View className={'w-full flex-row items-center justify-center gap-3 px-4 py-6'}>
             <ThemedText type={'subtitle'} className={'pt-1 text-sm uppercase text-blue-600'}>
-              Redirect to page
+              {t('redirect_to_page')}
             </ThemedText>
             <View className={'flex items-center justify-center'}>
               <Feather name="external-link" size={16} color={'#2563eb'} />
@@ -125,7 +128,7 @@ export default function DetailsScreen() {
       <BottomSheet onRequestClose={handleActionBottomSheet} visible={showActions} height={25}>
         <View className={'flex h-full w-full items-stretch justify-center gap-2 px-4'}>
           <ActionButtonBottomSheet
-            title={selectedLink?.comments ? 'Edit comment' : 'Add comment'}
+            title={selectedLink?.comments ? t('edit') : t('add')}
             buttonClassName={'bg-primary-400 rounded-t-xl'}
             titleClassName={'text-white'}
             onPress={handleCommentFormBottomSheet}
@@ -133,14 +136,14 @@ export default function DetailsScreen() {
             <FontAwesome name="commenting" size={16} color={'white'} />
           </ActionButtonBottomSheet>
           <ActionButtonBottomSheet
-            title={'Edit'}
+            title={t('edit')}
             buttonClassName={'border-b border-primary-500'}
             onPress={handleLinkFormBottomSheet}
           >
             <Feather name="edit" size={16} color={Colors[theme].icon} />
           </ActionButtonBottomSheet>
           <ActionButtonBottomSheet
-            title={'Delete'}
+            title={t('delete')}
             titleClassName={'text-red-500'}
             onPress={handleDeleteModalConfirmation}
           >

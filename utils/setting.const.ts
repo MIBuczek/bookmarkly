@@ -5,19 +5,19 @@ export type TSettingsContentSize = { [x in TSettingsOptions]: number };
 export const LAND_OPTIONS = [
   {
     name: 'United State',
-    isoCode: 'US',
+    isoCode: 'en',
   },
   {
     name: 'German',
-    isoCode: 'DE',
+    isoCode: 'de',
   },
   {
     name: 'France',
-    isoCode: 'FR',
+    isoCode: 'fr',
   },
   {
     name: 'Polish',
-    isoCode: 'PL',
+    isoCode: 'pl',
   },
 ] as const;
 
