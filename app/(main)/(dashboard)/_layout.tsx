@@ -14,8 +14,7 @@ export default function DashboardLayout() {
         headerStyle: {
           backgroundColor: Colors[colorScheme ?? 'light'].background,
         },
-      }}
-    >
+      }}>
       <Stack.Screen name="index" />
       <Stack.Screen
         name="details"
@@ -24,11 +23,7 @@ export default function DashboardLayout() {
           title: '',
           headerShadowVisible: false,
           headerLeft: () => (
-            <ArrowBackButton
-              onPress={() => {
-                router.back();
-              }}
-            />
+            <ArrowBackButton onPress={() => router.back()} />
           ),
         }}
       />

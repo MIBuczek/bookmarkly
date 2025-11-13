@@ -17,12 +17,20 @@ export const userMock: User = {
 
 type UserState = {
   user: User | null;
-  lastLoggedIn: Date | null;
+  phone: string | null;
+  otpCode: string | null;
+  token: string | null;
+  isLoggedIn: boolean;
+  lastLoggedIn: string | null;
   error: Error | null;
 };
 
 const initialState: UserState = {
-  user: userMock,
+  user: null,
+  phone: null,
+  otpCode: null,
+  token: null,
+  isLoggedIn: false,
   lastLoggedIn: null,
   error: null,
 };
@@ -31,8 +39,17 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setPhone: (state, action: PayloadAction<{ phone: string }>) => {
+      return { ...state, ...action.payload };
+    },
+    setOtpCode: (state, action: PayloadAction<{ otpCode: string }>) => {
+      return { ...state, ...action.payload };
+    },
     setUser: (state, action: PayloadAction<{ user: User }>) => {
-      return { ...state, ...action.payload, isLoggedIn: true };
+      return { ...state, ...action.payload, isLoggedIn: true, lastLoggedIn: new Date().toISOString() };
+    },
+    setToken: (state, action: PayloadAction<{ token: string }>) => {
+      return { ...state, ...action.payload };
     },
     updateUser: (state, action: PayloadAction<Partial<User>>) => {
       return { ...state, ...action.payload };

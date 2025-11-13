@@ -10,6 +10,6 @@ interface ErrorTextProps {
 export const ErrorText = ({ errorMsg }: Readonly<ErrorTextProps>) => (
   <View className={'flex flex-row gap-1'}>
     <IconSymbol name={'exclamationmark.circle'} color={'#ef4444'} size={16} />
-    <ThemedText className={'text-sm text-red-500'}>{errorMsg}</ThemedText>
+    <ThemedText className={'text-sm text-red-500 dark:text-red-400'}>{errorMsg}</ThemedText>
   </View>
 );

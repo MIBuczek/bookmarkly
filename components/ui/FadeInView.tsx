@@ -1,20 +1,38 @@
-import React, { useEffect, useRef } from 'react';
 import { Animated } from 'react-native';
+import React, { PropsWithChildren, useEffect, useRef } from 'react';
+import { twMerge } from 'tailwind-merge';
 
-interface FadeInViewProps {
-  children: React.ReactNode;
+interface FadeInViewProps extends PropsWithChildren {
+  isActive: boolean;
+  className?: string;
 }
 
-export const FadeInView = ({ children }: Readonly<FadeInViewProps>) => {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+export const FadeInView = ({
+                             isActive, className, children,
+                           }: Readonly<FadeInViewProps>) => {
+  const fadeAnimOpacity = useRef(new Animated.Value(0)).current;
+
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
+    Animated.timing(fadeAnimOpacity, {
+      toValue: isActive ? 1 : 0.2,
       duration: 500,
       useNativeDriver: true,
     }).start();
-  }, [fadeAnim]);
+  }, [isActive, fadeAnimOpacity]);
 
-  return <Animated.View style={{ opacity: fadeAnim }}>{children}</Animated.View>;
+  return (
+    <Animated.View
+      style={{
+        opacity: fadeAnimOpacity,
+        display: isActive ? 'flex' : 'none',
+      }}
+      className={twMerge(
+        'w-full h-full',
+        className,
+      )}
+    >
+      {children}
+    </Animated.View>
+  );
 };
