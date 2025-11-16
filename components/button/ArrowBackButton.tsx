@@ -6,8 +6,8 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 export const ArrowBackButton = ({ onPress, ...rest }: Readonly<PressableProps>) => {
   const iconColor = useThemeColor('icon');
   return (
-    <Pressable onPress={onPress} {...rest} >
-      <AntDesign name={'arrowleft'} size={24} color={iconColor} />
+    <Pressable onPress={onPress} {...rest}>
+      <AntDesign name={'left'} size={24} color={iconColor} />
     </Pressable>
   );
 };

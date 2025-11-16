@@ -7,11 +7,8 @@ interface FadeInViewProps extends PropsWithChildren {
   className?: string;
 }
 
-export const FadeInView = ({
-                             isActive, className, children,
-                           }: Readonly<FadeInViewProps>) => {
+export const FadeInView = ({ isActive, className, children }: Readonly<FadeInViewProps>) => {
   const fadeAnimOpacity = useRef(new Animated.Value(0)).current;
-
 
   useEffect(() => {
     Animated.timing(fadeAnimOpacity, {
@@ -27,10 +24,7 @@ export const FadeInView = ({
         opacity: fadeAnimOpacity,
         display: isActive ? 'flex' : 'none',
       }}
-      className={twMerge(
-        'w-full h-full',
-        className,
-      )}
+      className={twMerge('h-full w-full', className)}
     >
       {children}
     </Animated.View>

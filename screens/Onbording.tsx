@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ThemedView } from '@/components/ui/ThemedView';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { Animated, Pressable, View } from 'react-native';
 import { Button } from '@/components/button/Button';
@@ -9,6 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { PastLink } from '@/components/svg/PastLink';
 import { LinkContent } from '@/components/svg/LinkContent';
 import { CompleteLink } from '@/components/svg/CompleteLink';
+import { ScreenContainer } from '@/components/ui/ScreenContainer';
+import { ScreenHeight } from 'react-native-elements/dist/helpers';
 
 interface SingleSlideDotProps {
   isActive: boolean;
@@ -33,7 +34,7 @@ const SingleSlideDot = ({ isActive, onPress }: Readonly<SingleSlideDotProps>) =>
 
   return (
     <Pressable onPress={onPress}>
-      <Animated.View style={{ backgroundColor }} className="size-3 rounded-full" />
+      <Animated.View style={{ backgroundColor, height: 10, width: 10 }} className="size-3 rounded-full" />
     </Pressable>
   );
 };
@@ -61,7 +62,7 @@ const SlideText = ({ title, description, isActive }: Readonly<SlideTextProps>) =
         opacity: fadeAnimOpacity,
         display: isActive ? 'flex' : 'none',
       }}
-      className="h-full items-start justify-start gap-6 py-6"
+      className="flex items-start justify-start gap-6 py-6"
     >
       <ThemedText type={'title'}>{title}</ThemedText>
       <ThemedText type={'default'}>{description}</ThemedText>
@@ -84,7 +85,7 @@ export default function OnboardingScreen() {
   const swipeContent: { [x: string]: ISwipeContent } = {
     '1': {
       img: (
-        <View className={'flex-1 pt-20'}>
+        <View className={'flex justify-center'} style={{ height: ScreenHeight * 0.6 }}>
           <PastLink width={350} height={350} />
         </View>
       ),
@@ -93,7 +94,7 @@ export default function OnboardingScreen() {
     },
     '2': {
       img: (
-        <View className={'flex-1 pt-20'}>
+        <View className={'flex justify-center'} style={{ height: ScreenHeight * 0.6 }}>
           <LinkContent width={350} height={350} />
         </View>
       ),
@@ -102,7 +103,7 @@ export default function OnboardingScreen() {
     },
     '3': {
       img: (
-        <View className={'flex-1 pt-32'}>
+        <View className={'flex justify-center'} style={{ height: ScreenHeight * 0.6 }}>
           <CompleteLink width={250} height={250} />
         </View>
       ),
@@ -128,11 +129,11 @@ export default function OnboardingScreen() {
   };
 
   return (
-    <ThemedView withIOSPaddingBottom className="flex-1">
-      <View className="flex h-[60%] w-full items-center justify-center bg-primary-50 pt-20">
+    <ScreenContainer>
+      <View className="flex items-center justify-center bg-primary-100 dark:bg-primary-200">
         {swipeContent[slideIndex].img}
       </View>
-      <View className="h-[30%] w-full items-start px-6 py-10">
+      <View className="flex-1">
         <View className="h-10 flex-row justify-start gap-3 py-2">
           {Object.keys(swipeContent).map((k) => (
             <SingleSlideDot key={`single_dot_${k}`} isActive={k === slideIndex} onPress={() => setSlideIndex(k)} />
@@ -146,10 +147,10 @@ export default function OnboardingScreen() {
             description={swipeContent[k].description}
           />
         ))}
+        <View className="mt-auto w-full px-6">
+          <Button type={'primary'} title={slideIndex === '3' ? t('close') : t('next')} onPress={handleSwipeContent} />
+        </View>
       </View>
-      <View className="h-[10%] w-full px-6">
-        <Button type={'primary'} title={slideIndex === '3' ? t('close') : t('next')} onPress={handleSwipeContent} />
-      </View>
-    </ThemedView>
+    </ScreenContainer>
   );
 }

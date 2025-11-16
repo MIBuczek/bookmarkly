@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { ThemedView } from '@/components/ui/ThemedView';
 import { StyleSheet, Text, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
@@ -9,14 +8,16 @@ import { useRouter } from 'expo-router';
 import { RootState, storeActions, useAppDispatch, useAppSelector } from '@/store';
 import { useTranslation } from 'react-i18next';
 import authServices from '@/services/auth.services';
+import { ScreenContainer } from '@/components/ui/ScreenContainer';
+import { ArrowBackButton } from '@/components/button/ArrowBackButton';
 
 const CELL_COUNT = 6;
 const START_COUNT_DOWN = 90;
 
 export type TVerifyCodeForm = {
-  phone: string,
-  otp: string
-}
+  phone: string;
+  otp: string;
+};
 
 export default function VerifyCodeScreen() {
   const router = useRouter();
@@ -70,13 +71,18 @@ export default function VerifyCodeScreen() {
   }, [countDown]);
 
   return (
-    <ThemedView withIOSPaddingBottom className="flex-1 items-center justify-center px-6">
+    <ScreenContainer>
+      <ArrowBackButton
+        onPress={() => {
+          router.back();
+        }}
+      />
       <View className="flex-1 items-center justify-center gap-4">
         <ThemedText type="title" className="text-xl">
           {t('enter_confirmation_code')}
         </ThemedText>
         <ThemedText type="default" className={'text-center'}>
-          {`${t('a_4_digit_code_was_sent_to')} \n +1 555 555 5555`}
+          {`${t('a_4_digit_code_was_sent_to')} \n ${phone || '(unknown)'}`}
         </ThemedText>
         <CodeField
           ref={ref}
@@ -110,9 +116,9 @@ export default function VerifyCodeScreen() {
         />
         <Button type={'primary'} title={t('continue')} onPress={verifyCode} />
       </View>
-    </ThemedView>
+    </ScreenContainer>
   );
-};
+}
 
 const styles = StyleSheet.create({
   root: { flex: 1, padding: 20 },

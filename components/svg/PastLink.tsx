@@ -9,70 +9,18 @@ interface PastLinkProps {
 export const PastLink = ({ width, height }: Readonly<PastLinkProps>) => (
   <Svg width={width} height={height} viewBox="0 0 1024.348 646.395">
     <G id="Group_100" data-name="Group 100" transform="translate(-687.104 -195.327)">
-      <Rect
-        width="443.631"
-        height="232.938"
-        transform="translate(976.375 285.062)"
-        fill="#B8B8B8"
-      />
-      <Rect
-        width="443.631"
-        height="27.004"
-        transform="translate(976.104 284.702)"
-        fill="#FF8C42"
-      />
-      <Rect
-        width="423"
-        height="185"
-        transform="translate(986.334 320)"
-        fill="#fff"
-      />
-      <Circle
-        cx="4.467"
-        cy="4.467"
-        r="4.467"
-        transform="translate(1013.676 293.667)"
-        fill="#fff"
-      />
-      <Circle
-        cx="4.467"
-        cy="4.467"
-        r="4.467"
-        transform="translate(1030.631 293.667)"
-        fill="#fff"
-      />
-      <Circle
-        cx="4.467"
-        cy="4.467"
-        r="4.467"
-        transform="translate(996.676 293.667)"
-        fill="#fff"
-      />
+      <Rect width="443.631" height="232.938" transform="translate(976.375 285.062)" fill="#B8B8B8" />
+      <Rect width="443.631" height="27.004" transform="translate(976.104 284.702)" fill="#FF8C42" />
+      <Rect width="423" height="185" transform="translate(986.334 320)" fill="#fff" />
+      <Circle cx="4.467" cy="4.467" r="4.467" transform="translate(1013.676 293.667)" fill="#fff" />
+      <Circle cx="4.467" cy="4.467" r="4.467" transform="translate(1030.631 293.667)" fill="#fff" />
+      <Circle cx="4.467" cy="4.467" r="4.467" transform="translate(996.676 293.667)" fill="#fff" />
       <G id="Group_31-3" data-name="Group 31" transform="translate(706.104 199)">
-        <Rect
-          width="324.331"
-          height="14.455"
-          transform="translate(329.785 168.635)"
-          fill="#B8B8B8"
-        />
-        <Rect
-          width="115.639"
-          height="14.455"
-          transform="translate(329.785 204.773)"
-          fill="#B8B8B8"
-        />
-        <Rect
-          width="230.375"
-          height="14.455"
-          transform="translate(329.785 240.91)"
-          fill="#B8B8B8"
-        />
+        <Rect width="324.331" height="14.455" transform="translate(329.785 168.635)" fill="#B8B8B8" />
+        <Rect width="115.639" height="14.455" transform="translate(329.785 204.773)" fill="#B8B8B8" />
+        <Rect width="230.375" height="14.455" transform="translate(329.785 240.91)" fill="#B8B8B8" />
       </G>
-      <Path
-        d="M502.342,89.215l-20.851,11.551,22.237-7.842Z"
-        transform="translate(706.104 208)"
-        fill="#fff"
-      />
+      <Path d="M502.342,89.215l-20.851,11.551,22.237-7.842Z" transform="translate(706.104 208)" fill="#fff" />
       <Ellipse
         cx="5.817"
         cy="11.72"
@@ -81,24 +29,10 @@ export const PastLink = ({ width, height }: Readonly<PastLinkProps>) => (
         transform="translate(1205.07 288.087) rotate(-17.994)"
         fill="#3f3d56"
       />
-      <Path
-        d="M509.46,82.667l13.83-4.992,2.94,8.142-13.385,9.041Z"
-        transform="translate(706.104 208)"
-        fill="#3f3d56"
-      />
-      <Path
-        d="M1041.275,730h-381a1,1,0,0,1,0-2h381a1,1,0,0,1,0,2Z"
-        transform="translate(438.439 90)"
-        fill="#B8B8B8"
-      />
+      <Path d="M509.46,82.667l13.83-4.992,2.94,8.142-13.385,9.041Z" transform="translate(706.104 208)" fill="#3f3d56" />
+      <Path d="M1041.275,730h-381a1,1,0,0,1,0-2h381a1,1,0,0,1,0,2Z" transform="translate(438.439 90)" fill="#B8B8B8" />
       <G id="Group_97" data-name="Group 97" transform="translate(-22102.055 -7512.349)">
-        <Circle
-          cx="36.581"
-          cy="36.581"
-          r="36.581"
-          transform="translate(23363.723 7896.116)"
-          fill="#6c63ff"
-        />
+        <Circle cx="36.581" cy="36.581" r="36.581" transform="translate(23363.723 7896.116)" fill="#6c63ff" />
         <Circle
           cx="36.581"
           cy="36.581"
@@ -109,12 +43,7 @@ export const PastLink = ({ width, height }: Readonly<PastLinkProps>) => (
           stroke-miterlimit="10"
           stroke-width="1"
         />
-        <Rect
-          width="99.989"
-          height="9.755"
-          transform="translate(23353.357 7994.276)"
-          fill="#B8B8B8"
-        />
+        <Rect width="99.989" height="9.755" transform="translate(23353.357 7994.276)" fill="#B8B8B8" />
         <Path
           d="M794.967,355.327l6.1-13.413s14.633-39.02,1.219-31.7-18.291,26.826-18.291,26.826l-3.658,12.194Z"
           transform="translate(22520.084 7493.995)"
@@ -140,13 +69,7 @@ export const PastLink = ({ width, height }: Readonly<PastLinkProps>) => (
           transform="translate(22526.42 7535.72)"
           fill="#2f2e41"
         />
-        <Circle
-          cx="29.265"
-          cy="29.265"
-          r="29.265"
-          transform="translate(23386.385 7774.331)"
-          fill="#a0616a"
-        />
+        <Circle cx="29.265" cy="29.265" r="29.265" transform="translate(23386.385 7774.331)" fill="#a0616a" />
         <Path
           d="M898.89,320.673s-1.219,43.9,4.878,51.214-52.433-6.1-52.433-6.1,13.413-28.046,4.878-46.336S898.89,320.673,898.89,320.673Z"
           transform="translate(22535.66 7494.506)"

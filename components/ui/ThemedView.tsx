@@ -1,7 +1,7 @@
-import { Platform, View, type ViewProps } from 'react-native';
+import { View, type ViewProps } from 'react-native';
 import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { twMerge } from 'tailwind-merge';
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 export type ThemedViewProps = ViewProps & {
   className?: string;
@@ -17,13 +17,11 @@ export function ThemedView({
                              children,
                              ...otherProps
                            }: ThemedViewProps) {
+  const colorScheme = useColorScheme();
+
   return (
-    <SafeAreaProvider>
-      <View className={twMerge('bg-gray-300 dark:bg-dark-800', className)} {...otherProps}>
-        {Platform.OS === 'ios' && withIOSPaddingTop && <View className="h-16" />}
-        {children}
-        {Platform.OS === 'ios' && withIOSPaddingBottom && <View className="h-16" />}
-      </View>
-    </SafeAreaProvider>
+    <View className={twMerge('flex-1 bg-gray-300 dark:bg-dark-800', className)} style={style} {...otherProps}>
+      {children}
+    </View>
   );
 }

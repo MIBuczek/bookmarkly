@@ -16,11 +16,11 @@ export default function LoginLayout() {
         },
       }}
     >
-      <Stack.Screen name="login" />
+      <Stack.Screen name="index" />
       <Stack.Screen
         name="sign-up"
         options={{
-          headerShown: true,
+          headerShown: false,
           title: '',
           headerShadowVisible: false,
           headerLeft: () => (
@@ -35,7 +35,7 @@ export default function LoginLayout() {
       <Stack.Screen
         name="verify-code"
         options={{
-          headerShown: true,
+          headerShown: false,
           title: '',
           headerShadowVisible: false,
           headerLeft: () => (

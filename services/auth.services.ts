@@ -5,7 +5,6 @@ import { TRegistrationForm } from '@/screens/SingUp';
 import { TVerifyCodeForm } from '@/screens/VerifyCode';
 import { User } from '@/store/user';
 
-
 const singIn = async (payload: TLoginForm) => {
   try {
     const response = await axios.post(AUTH_SING_IN_URL, payload);
@@ -25,10 +24,10 @@ const singUp = async (payload: TRegistrationForm) => {
 };
 
 type TVerifyCodeResponse = {
-  message: string,
-  user: User,
-  token: string
-}
+  message: string;
+  user: User;
+  token: string;
+};
 
 const verifyCode = async (payload: TVerifyCodeForm): Promise<AxiosResponse<TVerifyCodeResponse>> => {
   try {

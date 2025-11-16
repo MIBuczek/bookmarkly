@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ThemedText } from '@/components/ui/ThemedText';
-import { ThemedView } from '@/components/ui/ThemedView';
-import { FlatList, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/button/Button';
 import { CheckBox } from 'react-native-elements';
@@ -19,6 +19,9 @@ import { CountryItem } from '@/components/CountryItem';
 import countryList, { Country } from 'country-list';
 import { debounce } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
+import { ScreenContainer } from '@/components/ui/ScreenContainer';
+import { ArrowBackButton } from '@/components/button/ArrowBackButton';
+import { ScreenWidth } from 'react-native-elements/dist/helpers';
 
 interface SelectCountryBottomSheetProps {
   countries: Country[];
@@ -61,20 +64,21 @@ const SelectCountryBottomSheet = ({
   }, [searchPhase, debouncedSearch]);
 
   return (
-    <>
+    <View className={'flex-1'}>
       <View className={'px-4 py-6'}>
         <Input placeholder={t('search_your_country')} value={searchPhase} onChangeText={setSearchPhase} />
       </View>
       <View className={'flex h-5/6 items-start border-t-primary-500 py-2'}>
         <FlatList
+          style={{ width: ScreenWidth }}
           data={filteredCountries}
+          keyExtractor={({ name, code }) => `${name}_${code}`}
           renderItem={({ item: { name, code } }: { item: Country }) => (
             <CountryItem
-              key={`${name}_${code}`}
               isoCode={code}
               icon={false}
               countryName={name}
-              className={`w-full border-0 border-b px-4 py-6 ${code === selectedCountry.code ? 'bg-primary-200' : 'bg-transparent'}`}
+              className={`border-0 border-b px-4 py-6 rounded-none ${code === selectedCountry.code ? 'bg-primary-200' : 'bg-transparent'}`}
               onPress={() => handleSelection({ name, code })}
             />
           )}
@@ -83,7 +87,7 @@ const SelectCountryBottomSheet = ({
           <Button type={'secondary'} title={t('cancel')} onPress={() => handleSelection(selectedCountry)} />
         </View>
       </View>
-    </>
+    </View>
   );
 };
 
@@ -172,7 +176,12 @@ export default function SignUpScreen(): React.JSX.Element {
   };
 
   return (
-    <ThemedView withIOSPaddingBottom className="flex-1 items-start justify-start px-4">
+    <ScreenContainer>
+      <ArrowBackButton
+        onPress={() => {
+          router.back();
+        }}
+      />
       <View className={'mb-10 mt-4 flex w-full gap-2'}>
         <ThemedText type="title" className="text-xl">
           {t('register')}
@@ -307,6 +316,6 @@ export default function SignUpScreen(): React.JSX.Element {
           handleSelection={handleCountrySelection}
         />
       </BottomSheet>
-    </ThemedView>
+    </ScreenContainer>
   );
 }

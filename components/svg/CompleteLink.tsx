@@ -7,13 +7,7 @@ interface CompleteLinkProps {
 }
 
 export const CompleteLink = ({ width, height }: Readonly<CompleteLinkProps>) => (
-  <Svg
-    width={width}
-    height={height}
-    viewBox="0 0 732.85335 614.57198"
-    role="img"
-
-  >
+  <Svg width={width} height={height} viewBox="0 0 732.85335 614.57198" role="img">
     <Polygon points="322.091 232.107 486.005 91.904 486.765 93.962 323.429 233.671 322.091 232.107" fill="#2f2e41" />
     <Circle cx="499.94653" cy="99.61248" r="24.02225" fill="#FF8C42" />
     <Path
