@@ -15,6 +15,8 @@ import { store } from '@/store';
 import { ThemeType } from '@/components/bottom-sheet/SettingsBottomSheet';
 import { I18nextProvider, useTranslation } from 'react-i18next';
 import i18Settings from '../i18n';
+import { ToastProvider } from 'react-native-toast-notifications';
+import { ToastMessage } from '@/components/ToastMessage';
 
 /**
  * TODO LIST
@@ -73,13 +75,15 @@ export default function RootLayout() {
       <I18nextProvider i18n={i18Settings}>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <Stack initialRouteName="(onboarding)">
-              <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-              <Stack.Screen name="(login)" options={{ headerShown: false }} />
-              <Stack.Screen name="(main)" options={{ headerShown: false }} />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-            <StatusBar style="auto" />
+            <ToastProvider placement="top" offset={10} renderToast={(props) => <ToastMessage {...props} />}>
+              <Stack initialRouteName="(onboarding)">
+                <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+                <Stack.Screen name="(login)" options={{ headerShown: false }} />
+                <Stack.Screen name="(main)" options={{ headerShown: false }} />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+              <StatusBar style="auto" />
+            </ToastProvider>
           </ThemeProvider>
         </GestureHandlerRootView>
       </I18nextProvider>

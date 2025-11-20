@@ -9,6 +9,7 @@ export const LOCAL_STORAGE_KEY = {
   FONT_SIZE: 'FONT_SIZE',
   LANGUAGE: 'LANGUAGE',
   AVATAR: 'AVATAR',
+  PHONE_CODE: 'PHONE_CODE',
 } as const;
 
 type KeyOfLocalStorage = keyof typeof LOCAL_STORAGE_KEY;

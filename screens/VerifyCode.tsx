@@ -47,8 +47,7 @@ export default function VerifyCodeScreen() {
   const verifyCode = async () => {
     if (!otp || otp.length !== CELL_COUNT || !phone) return;
     try {
-      const { data } = await authServices.verifyCode({ phone, otp });
-      const { user, token } = data;
+      const { user, token } = await authServices.verifyCode({ phone, otp });
       dispatch(storeActions.user.setUser({ user }));
       dispatch(storeActions.user.setOtpCode({ otpCode: otp }));
       dispatch(storeActions.user.setToken({ token }));

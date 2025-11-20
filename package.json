@@ -32,6 +32,7 @@
     "@reduxjs/toolkit": "^2.10.1",
     "axios": "^1.13.2",
     "country-list": "^2.4.1",
+    "country-telephone-data": "^0.6.3",
     "expo": "~54.0.23",
     "expo-blur": "~15.0.7",
     "expo-clipboard": "^8.0.7",
@@ -42,6 +43,7 @@
     "expo-linking": "~8.0.8",
     "expo-localization": "~17.0.7",
     "expo-notifications": "^0.32.12",
+    "expo-permissions": "^14.4.0",
     "expo-router": "~6.0.14",
     "expo-splash-screen": "^31.0.10",
     "expo-status-bar": "~3.0.8",
@@ -78,6 +80,7 @@
   "devDependencies": {
     "@babel/core": "^7.28.5",
     "@types/country-list": "^2.1.4",
+    "@types/country-telephone-data": "^0.6.3",
     "@types/jest": "^29.5.14",
     "@types/lodash-es": "^4.17.12",
     "@types/react": "~19.1.10",

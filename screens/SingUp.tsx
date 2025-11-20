@@ -22,6 +22,10 @@ import { useTranslation } from 'react-i18next';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
 import { ArrowBackButton } from '@/components/button/ArrowBackButton';
 import { ScreenWidth } from 'react-native-elements/dist/helpers';
+import countryTelData, { Country as PhoneCountryCode } from 'country-telephone-data';
+import authServices from '@/services/auth.services';
+import { storeActions, useAppDispatch } from '@/store';
+import { useToast } from 'react-native-toast-notifications';
 
 interface SelectCountryBottomSheetProps {
   countries: Country[];
@@ -78,7 +82,7 @@ const SelectCountryBottomSheet = ({
               isoCode={code}
               icon={false}
               countryName={name}
-              className={`border-0 border-b px-4 py-6 rounded-none ${code === selectedCountry.code ? 'bg-primary-200' : 'bg-transparent'}`}
+              className={`border-0 border-b border-dark-100 px-4 py-6 rounded-none ${code === selectedCountry.code ? 'bg-primary-200' : 'bg-transparent'}`}
               onPress={() => handleSelection({ name, code })}
             />
           )}
@@ -131,6 +135,8 @@ const INITIAL_REGISTRATION_FORM: TRegistrationForm = {
  */
 export default function SignUpScreen(): React.JSX.Element {
   const { t } = useTranslation();
+  const toast = useToast();
+  const dispatch = useAppDispatch();
 
   const [showCountryList, setShowCountryList] = useState(false);
   const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
@@ -169,10 +175,26 @@ export default function SignUpScreen(): React.JSX.Element {
     setShowCountryList(false);
   };
 
-  const onSubmit = (data: TRegistrationForm) => {
-    console.log('onSubmit', data);
-    router.navigate('/(login)/verify-code');
-    reset(INITIAL_REGISTRATION_FORM);
+  const countriesPhoneCodes: PhoneCountryCode[] = useMemo(() => {
+    return countryTelData.allCountries;
+  }, []);
+
+  const onSubmit = async (data: TRegistrationForm) => {
+    const selectedPhoneCodes = countriesPhoneCodes.find((c) => c.iso2 === data.country.code);
+    const phone = `+${selectedPhoneCodes?.dialCode}${data.phone}`;
+    try {
+      await authServices.singUp({ ...data, phone });
+      toast.show('[Success] : You will get verification code', { type: 'success' });
+      dispatch(storeActions.user.setPhone({ phone }));
+
+      router.navigate('/(login)/verify-code');
+      reset(INITIAL_REGISTRATION_FORM);
+
+    } catch (e) {
+      toast.show('[Error] : Wrong phone number', { type: 'error' });
+      console.log(e);
+
+    }
   };
 
   return (
@@ -188,7 +210,7 @@ export default function SignUpScreen(): React.JSX.Element {
         </ThemedText>
         <ThemedText>{t('create_an_account_to_get_started')}</ThemedText>
       </View>
-      <View className="flex w-full gap-6">
+      <View className="flex-1 justify-start gap-6">
         <Controller
           name="name"
           control={control}

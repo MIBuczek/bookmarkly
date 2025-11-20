@@ -7,7 +7,7 @@ export const ArrowBackButton = ({ onPress, ...rest }: Readonly<PressableProps>) 
   const iconColor = useThemeColor('icon');
   return (
     <Pressable onPress={onPress} {...rest}>
-      <AntDesign name={'left'} size={24} color={iconColor} />
+      <AntDesign name={'left'} size={20} color={iconColor} />
     </Pressable>
   );
 };
