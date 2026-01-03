@@ -26,16 +26,14 @@ const COLORS: Record<string, { bg: string; border: string; text: string }> = {
   },
 };
 
-export const ToastMessage: React.FC<ToastProps> = ({
-                                                     type = 'info',
-                                                     message,
-                                                   }) => {
+export const ToastMessage: React.FC<ToastProps> = ({ type = 'info', message }) => {
   const colors = COLORS[type];
   return (
-    <View className={'flex-row items-center gap-2 rounded-xl px-2 py-3 mt-2 border'}
-          style={{ backgroundColor: colors.bg, borderColor: colors.border }}>
-      <View className={'w-1 rounded-full self-stretch mr-3'}
-            style={{ backgroundColor: colors.border }} />
+    <View
+      className={'mt-2 flex-row items-center gap-2 rounded-xl border px-2 py-3'}
+      style={{ backgroundColor: colors.bg, borderColor: colors.border }}
+    >
+      <View className={'mr-3 w-1 self-stretch rounded-full'} style={{ backgroundColor: colors.border }} />
       <View className={'flex-shrink'}>
         <Text className={'text-sm font-medium'} style={[{ color: colors.text }]} numberOfLines={2}>
           {message}

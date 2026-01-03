@@ -6,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { storeActions, useAppDispatch } from '@/store';
 import { Button } from '@/components/button/Button';
-import { Link } from '@/store/link';
 import { Tags } from '@/components/Tags';
 import { FontAwesome } from '@expo/vector-icons';
 import { Colors } from '@/constants/colors';
@@ -15,6 +14,7 @@ import { cloneDeep, isNumber } from 'lodash-es';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useTranslation } from 'react-i18next';
+import { TLink } from '@/types/links.type';
 
 const linkFormSchema = yup.object().shape({
   title: yup.string().min(2, 'title_min_length').max(50, 'title_max_length').required('title_required'),
@@ -23,13 +23,13 @@ const linkFormSchema = yup.object().shape({
     .min(2, 'description_min_length')
     .max(100, 'description_max_length')
     .required('description_required'),
-  tag: yup.string().max(20, 'Tag cannot exceed 20 characters'),
+  tag: yup.string().defined().default('').max(20, 'Tag cannot exceed 20 characters'),
 });
 
 type TLinkForm = {
   title: string;
   description: string;
-  tag?: string | undefined;
+  tag: string;
 };
 
 const INITIAL_LINK_FORM: TLinkForm = {
@@ -40,7 +40,7 @@ const INITIAL_LINK_FORM: TLinkForm = {
 
 interface LinkFormProps {
   handleClose: () => void;
-  link?: Link;
+  link?: TLink;
   formState: 'new' | 'edit';
 }
 
@@ -123,7 +123,7 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
   );
 
   return (
-    <View className={'flex-1 items-center justify-start gap-6 px-8 pt-2'}>
+    <View className={'flex-1 justify-start gap-6 px-8 pt-2'}>
       <Controller
         name="title"
         control={control}
@@ -172,17 +172,17 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
           >
             <View
               className={
-                'absolute bottom-0 right-0 h-[47px] flex-row gap-1 rounded-r-xl border-2 border-primary-500 bg-primary-500 p-1'
+                'absolute bottom-0 right-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 border-primary-500 bg-primary-500 p-1'
               }
             >
               <TouchableOpacity
-                className={'flex items-center justify-center rounded-full bg-white px-3 py-2'}
+                className={'flex items-center justify-center rounded-2xl bg-white px-4 py-2'}
                 onPress={clearTag}
               >
                 <FontAwesome name="trash" size={18} color={'#ef4444'} />
               </TouchableOpacity>
               <TouchableOpacity
-                className={'flex items-center justify-center rounded-full bg-white px-2 py-1'}
+                className={'flex items-center justify-center rounded-2xl bg-white px-3 py-1'}
                 onPress={addTag}
               >
                 {isNumber(editTagIndex) ? (

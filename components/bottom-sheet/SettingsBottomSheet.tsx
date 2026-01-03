@@ -16,6 +16,7 @@ import { Options } from '@dicebear/core';
 import { twMerge } from 'tailwind-merge';
 import { useTranslation } from 'react-i18next';
 import * as Localization from 'expo-localization';
+import { useUpdateSettings } from '@/hooks/useUpdateSettings';
 
 type SettingsProps = Readonly<{ handleClose: () => void }>;
 
@@ -23,6 +24,7 @@ export const Notification = ({ handleClose }: SettingsProps) => {
   const { t } = useTranslation();
   const [notificationPermission, setNotificationPermission] = useState<boolean>(false);
 
+  //TODO integrate with os native permission and api
   const handleNotificationPermission = () => {
     setNotificationPermission(!notificationPermission);
   };
@@ -30,7 +32,7 @@ export const Notification = ({ handleClose }: SettingsProps) => {
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
       <ThemedText className={'w-full'}>
-        Phasellus vitae pharetra erat. Aliquam in tristique est, eu lobortis ex. Sed et turpis odio.
+        {t('notification_preview_text')}
       </ThemedText>
       <View className={'w-full flex-row items-center justify-between py-2'}>
         <ThemedText type={'subtitle'} className={'text-base'}>
@@ -45,7 +47,7 @@ export const Notification = ({ handleClose }: SettingsProps) => {
         />
       </View>
       <View className="mt-auto w-full">
-        <Button type={'tertiary'} title={'Close'} onPress={handleClose} />
+        <Button type={'tertiary'} title={t('close')} onPress={handleClose} />
       </View>
     </View>
   );
@@ -81,9 +83,7 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
 
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
-      <ThemedText className={'w-full'}>
-        Phasellus vitae pharetra erat. Aliquam in tristique est, eu lobortis ex. Sed et turpis odio.
-      </ThemedText>
+      <ThemedText className={'w-full'}>{t('appearance_preview_text')}</ThemedText>
       <View className={'w-full flex-row items-center justify-between py-2'}>
         <ThemedText type={'subtitle'} className={'text-base text-gray-800'}>
           {t('font_size')}
@@ -138,6 +138,7 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
 
 export const Language = ({ handleClose }: SettingsProps) => {
   const { t, i18n } = useTranslation();
+  const { updateSettings } = useUpdateSettings();
 
   const [hasChanged, setHasChanged] = useState(false);
   const [lang, setLang] = useState<string | null>(Localization.getLocales()[0].languageCode);
@@ -159,10 +160,23 @@ export const Language = ({ handleClose }: SettingsProps) => {
 
   useEffect(handleChange, [lang]);
 
+  const applyChanges = async () => {
+    if (!lang) return;
+    try {
+      await updateSettings({ language: lang });
+      await i18n.changeLanguage(lang);
+      localAppStorage.setLocalData(LOCAL_STORAGE_KEY.LANGUAGE, lang);
+    } catch (error) {
+      console.log('[applyChanges]:', error);
+    } finally {
+      handleClose();
+    }
+  };
+
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
       <ThemedText className={'w-full'}>
-        Phasellus vitae pharetra erat. Aliquam in tristique est, eu lobortis ex. Sed et turpis odio.
+        {t('language_preview_text')}
       </ThemedText>
       <View className={'flex w-full items-start gap-2 py-2'}>
         <ThemedText type={'subtitle'} className={'text-base'}>
@@ -187,11 +201,8 @@ export const Language = ({ handleClose }: SettingsProps) => {
           <Button
             type={'primary'}
             title={t('apply')}
-            onPress={async () => {
-              if (!lang) return;
-              localAppStorage.setLocalData(LOCAL_STORAGE_KEY.LANGUAGE, lang);
-              void i18n.changeLanguage(lang);
-              handleClose();
+            onPress={() => {
+              void applyChanges();
             }}
           />
         ) : (
@@ -209,7 +220,7 @@ export const Storage = ({ handleClose }: SettingsProps) => {
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
       <ThemedText className={'w-full'}>
-        Phasellus vitae pharetra erat. Aliquam in tristique est, eu lobortis ex. Sed et turpis odio.
+        {t('storage_preview_text')}
       </ThemedText>
       <View className={'w-full flex-row items-center justify-between py-2'}>
         <ThemedText type={'subtitle'} className={'text-base'}>
@@ -267,7 +278,7 @@ interface AvatarsProps extends SettingsProps {
 
 export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsProps>) => {
   const { t } = useTranslation();
-
+  const { updateSettings } = useUpdateSettings();
   const [hasChanged, setHasChanged] = useState<boolean>(false);
   const [selectedAvatar, setSelectedAvatar] = useState<Options | null>(avatar);
 
@@ -279,10 +290,22 @@ export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsP
 
   useEffect(handleChange, [selectedAvatar]);
 
+  const applyChanges = async () => {
+    if (!selectedAvatar) return;
+    try {
+      await updateSettings({ avatar: selectedAvatar.seed });
+      localAppStorage.setLocalData(LOCAL_STORAGE_KEY.AVATAR, selectedAvatar);
+      updateAvatar(selectedAvatar);
+    } catch (error) {
+      console.log('[applyChanges]:', error);
+    } finally {
+      handleClose();
+    }
+  };
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
       <ThemedText className={'w-full'}>
-        Phasellus vitae pharetra erat. Aliquam in tristique est, eu lobortis ex. Sed et turpis odio.
+        {t('avatars_preview_text')}
       </ThemedText>
       <View className={'flex w-full items-start py-2'}>
         <ThemedText type={'subtitle'} className={'text-base'}>
@@ -311,10 +334,7 @@ export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsP
             type={'primary'}
             title={t('apply')}
             onPress={() => {
-              if (!selectedAvatar) return;
-              updateAvatar(selectedAvatar);
-              localAppStorage.setLocalData(LOCAL_STORAGE_KEY.AVATAR, selectedAvatar);
-              handleClose();
+              void applyChanges();
             }}
           />
         ) : (

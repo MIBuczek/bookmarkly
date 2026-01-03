@@ -23,6 +23,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from '@/constants/colors';
 import { debounce } from 'lodash-es';
 import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
+import { ErrorText } from '@/components/ui/ErrorText';
 
 export type PhoneCodeItemProps = Country & {
   className?: string;
@@ -36,22 +37,24 @@ export const PhoneCodeItem = memo(function({
                                              iso2,
                                              className,
                                            }: Readonly<PhoneCodeItemProps>) {
-    return (
-      <Pressable
-        onPress={onPress}
-        className={twMerge(`flex-row items-center justify-between gap-1 rounded-lg border border-dark-200 p-4`, className)}>
-        <View className={'flex-row gap-2'}>
-          <CountryFlag isoCode={iso2} size={16} />
-          <ThemedText className={'px-1 text-sm capitalize'}>{`(${dialCode}) ${name}`}</ThemedText>
-        </View>
-        <View>
-          <IconSymbol size={20} name={'chevron.right'} color={Colors.light.icon} />
-        </View>
-      </Pressable>
-    );
-  },
-);
-
+  return (
+    <Pressable
+      onPress={onPress}
+      className={twMerge(
+        `flex-row items-center justify-between gap-1 rounded-lg border border-dark-200 p-4`,
+        className,
+      )}
+    >
+      <View className={'flex-row gap-2'}>
+        <CountryFlag isoCode={iso2} size={16} />
+        <ThemedText className={'px-1 text-sm capitalize'}>{`(${dialCode}) ${name}`}</ThemedText>
+      </View>
+      <View>
+        <IconSymbol size={20} name={'chevron.right'} color={Colors.light.icon} />
+      </View>
+    </Pressable>
+  );
+});
 
 type Props = {
   selectedItem: Country | null;
@@ -89,7 +92,7 @@ export const PhoneCodeBottomSheet: React.FC<Props> = ({ selectedItem, onDismiss,
 
   return (
     <View className={'flex-1'}>
-      <View className={'px-4 py-6 h-20'}>
+      <View className={'h-20 px-4 py-6'}>
         <Input placeholder={'search'} value={searchPhase} onChangeText={setSearchPhase} />
       </View>
       <View className={'flex-1 items-start border-t-primary-500 py-2'}>
@@ -100,7 +103,7 @@ export const PhoneCodeBottomSheet: React.FC<Props> = ({ selectedItem, onDismiss,
           renderItem={({ item }) => (
             <PhoneCodeItem
               {...item}
-              className={`border-0 border-b px-4 py-6 rounded-none ${item.dialCode === selectedItem?.dialCode ? 'bg-primary-200' : 'bg-transparent'}`}
+              className={`rounded-none border-0 border-b px-4 py-6 ${item.dialCode === selectedItem?.dialCode ? 'bg-primary-200' : 'bg-transparent'}`}
               onPress={() => onPress(item)}
             />
           )}
@@ -113,7 +116,7 @@ export const PhoneCodeBottomSheet: React.FC<Props> = ({ selectedItem, onDismiss,
   );
 };
 
-const loginSchema = yup.object().shape({
+const signInSchema = yup.object().shape({
   phone: yup
     .string()
     .matches(/^[+]?[0-9]{9,15}$/, 'phone_number_digits')
@@ -128,7 +131,7 @@ const INITIAL_LOGIN_FORM: TLoginForm = {
   phone: '',
 };
 
-export default function LoginScreen() {
+export default function SignInScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const toast = useToast();
@@ -142,7 +145,7 @@ export default function LoginScreen() {
     reset,
     formState: { errors },
   } = useForm<TLoginForm>({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(signInSchema),
   });
 
   const dispatch = useAppDispatch();
@@ -178,38 +181,41 @@ export default function LoginScreen() {
         <ThemedText type="title" className="text-3xl font-extrabold">
           {t('welcome')}
         </ThemedText>
-        <View className="flex w-full gap-10">
+        <View className="w-full flex-1 gap-2">
           <Controller
             name="phone"
             control={control}
             render={({ field: { value, onChange, onBlur } }) => (
-              <View className="w-full h-fit flex flex-row items-center rounded-xl border border-dark-400">
-                <Pressable
-                  onPress={() => setShowDirectNumberList((prev) => !prev)}
-                  className="flex-row items-center px-4 rounded-l-xl h-full  bg-primary-100 dark:bg-primary-200 ">
-                  <ThemedText type="subtitle" className="text-sm font-semibold text-primary-600">
-                    {selectedPhoneCodes ? `+${selectedPhoneCodes?.dialCode}` : '00'}
-                  </ThemedText>
-                </Pressable>
-                <Input
-                  inputClassName={'border-0'}
-                  placeholder={t('phone_number')}
-                  inputMode={'numeric'}
-                  value={value}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  error={errors.phone}
-                />
-              </View>
+              <>
+                <View className="flex h-fit w-full flex-row items-center rounded-xl border border-dark-400">
+                  <Pressable
+                    onPress={() => setShowDirectNumberList((prev) => !prev)}
+                    className="h-full flex-row items-center rounded-l-xl bg-primary-100 px-4 dark:bg-primary-200"
+                  >
+                    <ThemedText type="subtitle" className="text-sm font-semibold text-primary-600">
+                      {selectedPhoneCodes ? `+${selectedPhoneCodes?.dialCode}` : '00'}
+                    </ThemedText>
+                  </Pressable>
+                  <Input
+                    inputClassName={'border-0'}
+                    placeholder={t('phone_number')}
+                    inputMode={'numeric'}
+                    value={value}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                  />
+                </View>
+                {errors.phone && <ErrorText errorMsg={t(errors.phone.message || '')} />}
+              </>
             )}
           />
-          <Button type={'primary'} title={t('login')} onPress={handleSubmit(onSubmit)} />
+          <Button type={'primary'} title={t('login')} buttonClassName={'mt-auto'} onPress={handleSubmit(onSubmit)} />
         </View>
         <View className="w-full flex-row items-center justify-center gap-2">
           <ThemedText type="default">{t('not_a_member')}</ThemedText>
           <Pressable
             onPress={() => {
-              router.navigate('./(login)/sign-up');
+              router.navigate('/(login)/sign-up');
             }}
           >
             <ThemedText type="subtitle" className="text-sm font-semibold text-primary-600">
@@ -224,7 +230,8 @@ export default function LoginScreen() {
         visible={showDirectNumberList}
         onRequestClose={() => {
           setShowDirectNumberList(false);
-        }}>
+        }}
+      >
         <PhoneCodeBottomSheet
           selectedItem={selectedPhoneCodes}
           onDismiss={() => {

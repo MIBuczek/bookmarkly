@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import authServices from '@/services/auth.services';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
 import { ArrowBackButton } from '@/components/button/ArrowBackButton';
+import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
 
 const CELL_COUNT = 6;
 const START_COUNT_DOWN = 90;
@@ -49,8 +50,9 @@ export default function VerifyCodeScreen() {
     try {
       const { user, token } = await authServices.verifyCode({ phone, otp });
       dispatch(storeActions.user.setUser({ user }));
-      dispatch(storeActions.user.setOtpCode({ otpCode: otp }));
       dispatch(storeActions.user.setToken({ token }));
+      localAppStorage.setLocalData(LOCAL_STORAGE_KEY.TOKEN, token);
+      localAppStorage.setLocalData(LOCAL_STORAGE_KEY.PHONE_NUMBER, phone);
       router.navigate('/(main)/(dashboard)');
     } catch (e) {
       console.error(e);
@@ -93,7 +95,6 @@ export default function VerifyCodeScreen() {
           rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          testID="my-code-input"
           renderCell={({ index, symbol, isFocused }) => (
             <Text
               className="m-2 rounded-lg"
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
   cell: {
     width: 50,
     height: 50,
-    lineHeight: 38,
+    lineHeight: 44,
     fontSize: 24,
     borderWidth: 1,
     borderColor: baseColors.colors.dark['400'],

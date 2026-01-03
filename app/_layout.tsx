@@ -20,9 +20,6 @@ import { ToastMessage } from '@/components/ToastMessage';
 
 /**
  * TODO LIST
- * - Add services
- * - Create firebase project with functions
- * - Write js doc
  * - Separate duplicated component
  */
 
@@ -60,7 +57,7 @@ export default function RootLayout() {
         const lang = localAppStorage.getLocalData<string>(LOCAL_STORAGE_KEY.LANGUAGE);
         void i18n.changeLanguage(lang || 'en');
         const btdt = localAppStorage.getLocalData<boolean>(LOCAL_STORAGE_KEY.ONBOARDING);
-        if (btdt) router.navigate('/(login)');
+        if (btdt) router.navigate('/(login)/sign-in');
         else router.navigate('/(onboarding)');
       });
     }

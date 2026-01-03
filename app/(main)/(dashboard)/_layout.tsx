@@ -1,6 +1,5 @@
-import { router, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import React from 'react';
-import { ArrowBackButton } from '@/components/button/ArrowBackButton';
 import { Colors } from '@/constants/colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -17,15 +16,7 @@ export default function DashboardLayout() {
       }}
     >
       <Stack.Screen name="index" />
-      <Stack.Screen
-        name="details"
-        options={{
-          headerShown: true,
-          title: '',
-          headerShadowVisible: false,
-          headerLeft: () => <ArrowBackButton onPress={() => router.back()} />,
-        }}
-      />
+      <Stack.Screen name="details" />
     </Stack>
   );
 }

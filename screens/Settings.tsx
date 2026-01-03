@@ -1,6 +1,6 @@
 import { ThemedText } from '@/components/ui/ThemedText';
-import { ThemedView } from '@/components/ui/ThemedView';
-import React, { useEffect, useMemo, useState } from 'react';
+import { ScreenContainer } from '@/components/ui/ScreenContainer';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Button } from '@/components/button/Button';
@@ -22,6 +22,7 @@ import { Options } from '@dicebear/core';
 import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
 import { useTranslation } from 'react-i18next';
 import { router } from 'expo-router';
+import { ActionButton } from '@/components/button/ActionButton';
 
 export default function SettingScreen() {
   const { t } = useTranslation();
@@ -66,8 +67,15 @@ export default function SettingScreen() {
 
   const settingContentSize = useMemo((): TSettingsContentSize => SETTINGS_CONTENT_SIZE, []);
 
+  const logOut = useCallback(() => {
+    router.navigate('/(login)/sign-in');
+    dispatch(storeActions.user.logout());
+    localAppStorage.deleteLocalData(LOCAL_STORAGE_KEY.TOKEN);
+    setLogoutModalVisible(false);
+  }, [router, dispatch, localAppStorage]);
+
   return (
-    <ThemedView withIOSPaddingBottom withIOSPaddingTop className="flex-1 gap-8 px-6">
+    <ScreenContainer withBottomTabs>
       <View className="flex h-[30%] w-full items-center justify-start gap-4">
         <ThemedText type={'title'} className={'pb-6 text-lg'}>
           {t('settings')}
@@ -91,7 +99,7 @@ export default function SettingScreen() {
           <ThemedText>{user?.email}</ThemedText>
         </View>
       </View>
-      <View className={'flex-1 justify-start'}>
+      <View className={'flex-1 justify-start mt-10'}>
         <View className="flex w-full">
           {settingsButtons.map((option, index) => (
             <TouchableOpacity
@@ -108,9 +116,10 @@ export default function SettingScreen() {
           ))}
         </View>
         <View className={'mt-auto w-full'}>
-          <Button
-            type={'tertiary'}
+          <ActionButton
             title={t('logout')}
+            buttonClassName={'px-2 py-3'}
+            containerClassName={'mb-0'}
             onPress={() => {
               setLogoutModalVisible(true);
             }}
@@ -148,19 +157,10 @@ export default function SettingScreen() {
                 setLogoutModalVisible(false);
               }}
             />
-            <Button
-              buttonClassName={'flex-1 py-2'}
-              type={'primary'}
-              title={t('logout')}
-              onPress={() => {
-                router.navigate('/(login)/login');
-                dispatch(storeActions.user.logout());
-                setLogoutModalVisible(false);
-              }}
-            />
+            <Button buttonClassName={'flex-1 py-2'} type={'primary'} title={t('logout')} onPress={logOut} />
           </View>
         </View>
       </ModalBackDrop>
-    </ThemedView>
+    </ScreenContainer>
   );
 }

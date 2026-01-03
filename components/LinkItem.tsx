@@ -1,7 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { Pressable, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
-import { Link } from '@/store/link';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { baseColors } from '@assets/theme/base-theme';
 import { router } from 'expo-router';
@@ -14,12 +13,13 @@ import { Feather, FontAwesome } from '@expo/vector-icons';
 import { ActionButtonBottomSheet } from '@/components/bottom-sheet/ActionButtonBottomSheet';
 import { ModalBackDrop } from '@/components/modal/ModalBackDrop';
 import { DeleteItemModal } from '@/components/modal/DeleteItemModal';
+import { TLink } from '@/types/links.type';
 
 interface LinkItemProps {
-  link: Link;
+  link: TLink;
 }
 
-const LinkItem = ({ link }: Readonly<LinkItemProps>) => {
+const LinkItem = memo(({ link }: Readonly<LinkItemProps>) => {
   const dispatch = useAppDispatch();
   const [showActions, setShowActions] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -43,7 +43,7 @@ const LinkItem = ({ link }: Readonly<LinkItemProps>) => {
 
   return (
     <>
-      <FadeInView>
+      <FadeInView isActive={true} className="h-fit">
         <View className={'flex-row gap-2 border-b border-b-dark-200 px-2 py-4'}>
           <Pressable className={'flex w-5/6'} onPress={handleActionBottomSheet}>
             <ThemedText type={'title'} className={'text-base text-primary-700'}>
@@ -63,7 +63,7 @@ const LinkItem = ({ link }: Readonly<LinkItemProps>) => {
           <View className={'flex h-full w-full items-stretch justify-center gap-2 px-4'}>
             <ExternalLink href={link?.url ?? ''}>
               <View
-                className={'w-full flex-row items-center justify-center gap-3 rounded-t-xl bg-primary-400 px-4 py-6'}
+                className={'w-full flex-row items-center justify-center gap-3 rounded-t-md bg-primary-400 px-4 py-6'}
               >
                 <ThemedText type={'subtitle'} className={'pt-1 text-sm uppercase text-white'}>
                   Redirect to page
@@ -84,6 +84,8 @@ const LinkItem = ({ link }: Readonly<LinkItemProps>) => {
       </ModalBackDrop>
     </>
   );
-};
+});
+
+LinkItem.displayName = 'LinkItem';
 
 export default LinkItem;

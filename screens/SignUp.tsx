@@ -26,6 +26,10 @@ import countryTelData, { Country as PhoneCountryCode } from 'country-telephone-d
 import authServices from '@/services/auth.services';
 import { storeActions, useAppDispatch } from '@/store';
 import { useToast } from 'react-native-toast-notifications';
+import { TAddUser, TUserSettings } from '@/types/uset.type';
+import { checkPushNotificationsStatus } from '@/providers/push-notification';
+import { getSystemLanguage } from '@/providers/localization';
+import { getSystemAppearance } from '@/providers/apparence';
 
 interface SelectCountryBottomSheetProps {
   countries: Country[];
@@ -82,7 +86,7 @@ const SelectCountryBottomSheet = ({
               isoCode={code}
               icon={false}
               countryName={name}
-              className={`border-0 border-b border-dark-100 px-4 py-6 rounded-none ${code === selectedCountry.code ? 'bg-primary-200' : 'bg-transparent'}`}
+              className={`rounded-none border-0 border-b border-dark-100 px-4 py-6 ${code === selectedCountry.code ? 'bg-primary-200' : 'bg-transparent'}`}
               onPress={() => handleSelection({ name, code })}
             />
           )}
@@ -165,7 +169,7 @@ export default function SignUpScreen(): React.JSX.Element {
   };
 
   /**
-   * useEffect hook to load countries on component mount.
+   * useEffect hook to load countries on the component mount.
    * @effect
    */
   useEffect(loadCountries, []);
@@ -179,21 +183,32 @@ export default function SignUpScreen(): React.JSX.Element {
     return countryTelData.allCountries;
   }, []);
 
+  const generateUserInitialSettings = async (): Promise<TUserSettings> => {
+    const notification = await checkPushNotificationsStatus();
+    const language = getSystemLanguage().languageCode || 'en';
+    const appearance = getSystemAppearance();
+    return {
+      notification,
+      language,
+      appearance,
+      avatar: 'Ryker',
+    };
+  };
+
   const onSubmit = async (data: TRegistrationForm) => {
     const selectedPhoneCodes = countriesPhoneCodes.find((c) => c.iso2 === data.country.code);
     const phone = `+${selectedPhoneCodes?.dialCode}${data.phone}`;
     try {
-      await authServices.singUp({ ...data, phone });
+      const settings = await generateUserInitialSettings();
+      const user: TAddUser = { ...data, phone, settings };
+      await authServices.singUp({ user });
       toast.show('[Success] : You will get verification code', { type: 'success' });
       dispatch(storeActions.user.setPhone({ phone }));
-
       router.navigate('/(login)/verify-code');
       reset(INITIAL_REGISTRATION_FORM);
-
-    } catch (e) {
+    } catch (error) {
+      console.error('[onSubmit]:', error);
       toast.show('[Error] : Wrong phone number', { type: 'error' });
-      console.log(e);
-
     }
   };
 

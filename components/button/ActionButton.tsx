@@ -19,7 +19,7 @@ export const ActionButton = ({
                              }: Readonly<ActionButtonProps>) => (
   <View
     className={twMerge(
-      'mb-8 flex h-12 w-full items-center justify-center rounded-3xl bg-primary-100 px-4',
+      'mb-8 flex h-12 w-full items-center justify-center rounded-xl bg-primary-100 px-4',
       containerClassName,
     )}
   >

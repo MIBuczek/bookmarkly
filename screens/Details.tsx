@@ -1,10 +1,9 @@
 import { Switch, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import React, { useCallback, useState } from 'react';
-import { ThemedView } from '@/components/ui/ThemedView';
 import { baseColors } from '@assets/theme/base-theme';
 import { useLocalSearchParams } from 'expo-router/build/hooks';
-import { storeActions, useAppDispatch, useAppSelector } from '@/store';
+import { RootState, storeActions, useAppDispatch, useAppSelector } from '@/store';
 import { ExternalLink } from '@/components/ui/ExternalLink';
 import { ActionButton } from '@/components/button/ActionButton';
 import { Entypo, Feather, FontAwesome } from '@expo/vector-icons';
@@ -19,6 +18,9 @@ import { LinkCommentForm } from '@/components/bottom-sheet/LinkCommentForm';
 import { LinkForm } from '@/components/bottom-sheet/LinkForm';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useTranslation } from 'react-i18next';
+import { ScreenContainer } from '@/components/ui/ScreenContainer';
+import { ArrowBackButton } from '@/components/button/ArrowBackButton';
+import { router } from 'expo-router';
 
 export default function DetailsScreen() {
   const theme = useColorScheme() ?? 'light';
@@ -32,7 +34,7 @@ export default function DetailsScreen() {
 
   const dispatch = useAppDispatch();
 
-  const selectedLink = useAppSelector(({ links }) => {
+  const selectedLink = useAppSelector(({ links }: RootState) => {
     return links.links.find((link) => link.id === id);
   });
 
@@ -69,67 +71,74 @@ export default function DetailsScreen() {
   }, [selectedLink?.id]);
 
   return (
-    <ThemedView withIOSPaddingBottom className="flex-1 gap-6 px-6">
-      <View className={'mt-6 flex gap-4'}>
-        <ThemedText type={'title'} className={'text-primary-700'}>
-          {`${selectedLink?.title}`}
-        </ThemedText>
-        <ThemedText>{`${selectedLink?.description}`}</ThemedText>
-      </View>
-      <View className={'flex gap-2'}>
-        <ThemedText type={'title'} className={'text-sm'}>
-          Info
-        </ThemedText>
-        <ThemedText className={'text-sm'}>{`Author : ${selectedLink?.author}`}</ThemedText>
-        <ThemedText className={'text-sm'}>{`Source : ${selectedLink?.source}`}</ThemedText>
-        <ThemedText className={'text-sm'}>{`Added at : ${formatDate(selectedLink?.created_ad)}`}</ThemedText>
-      </View>
-      <View className={'flex gap-2'}>
-        <ThemedText type={'title'} className={'text-sm'}>
-          {t('tags')}
-        </ThemedText>
-        <Tags tags={selectedLink?.tags ?? []} />
-      </View>
-      <View className="flex w-full gap-2">
-        <ThemedText type="title" className={'text-sm text-dark-800'}>
-          {t('my_comments')}
-        </ThemedText>
-        <ThemedText>{`${selectedLink?.comments ? selectedLink?.comments : t('not_added_yet')}`}</ThemedText>
-      </View>
-      <View className={'flex w-full gap-2'}>
-        <ThemedText type="title" className={'text-sm text-dark-800'}>
-          {t('mark_as_read')}
-        </ThemedText>
-        <View className={'mr-auto scale-75'}>
-          <Switch
-            trackColor={{ false: '#767577', true: baseColors.colors.primary['500'] }}
-            thumbColor={selectedLink?.read ? 'white' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={handleReadChange}
-            value={selectedLink?.read}
-          />
+    <ScreenContainer withBottomTabs>
+      <ArrowBackButton
+        onPress={() => {
+          router.back();
+        }}
+      />
+      <View className="flex-1 gap-6">
+        <View className={'mt-4 flex gap-4'}>
+          <ThemedText type={'title'} className={'text-primary-700'}>
+            {`${selectedLink?.title}`}
+          </ThemedText>
+          <ThemedText>{`${selectedLink?.description}`}</ThemedText>
         </View>
-      </View>
-      <View className={'m-auto flex'}>
-        <ExternalLink href={selectedLink?.url ?? ''}>
-          <View className={'w-full flex-row items-center justify-center gap-3 px-4 py-6'}>
-            <ThemedText type={'subtitle'} className={'pt-1 text-sm uppercase text-blue-600'}>
-              {t('redirect_to_page')}
-            </ThemedText>
-            <View className={'flex items-center justify-center'}>
-              <Feather name="external-link" size={16} color={'#2563eb'} />
-            </View>
+        <View className={'flex gap-2'}>
+          <ThemedText type={'title'} className={'text-sm'}>
+            Info
+          </ThemedText>
+          <ThemedText className={'text-sm'}>{`Author : ${selectedLink?.author}`}</ThemedText>
+          <ThemedText className={'text-sm'}>{`Source : ${selectedLink?.source}`}</ThemedText>
+          <ThemedText className={'text-sm'}>{`Added at : ${formatDate(selectedLink?.createdAt)}`}</ThemedText>
+        </View>
+        <View className={'flex gap-2'}>
+          <ThemedText type={'title'} className={'text-sm'}>
+            {t('tags')}
+          </ThemedText>
+          <Tags tags={selectedLink?.tags ?? []} />
+        </View>
+        <View className="flex w-full gap-2">
+          <ThemedText type="title" className={'text-sm text-dark-800'}>
+            {t('my_comments')}
+          </ThemedText>
+          <ThemedText>{`${selectedLink?.comments ? selectedLink?.comments : t('not_added_yet')}`}</ThemedText>
+        </View>
+        <View className={'flex w-full gap-2'}>
+          <ThemedText type="title" className={'text-sm text-dark-800'}>
+            {t('mark_as_read')}
+          </ThemedText>
+          <View className={'mr-auto'}>
+            <Switch
+              trackColor={{ false: '#767577', true: baseColors.colors.primary['500'] }}
+              thumbColor={selectedLink?.read ? 'white' : '#f4f3f4'}
+              ios_backgroundColor={selectedLink?.read ? baseColors.colors.primary['500'] : '#767577'}
+              onValueChange={handleReadChange}
+              value={selectedLink?.read}
+            />
           </View>
-        </ExternalLink>
+        </View>
+        <View className={'mt-auto flex'}>
+          <ExternalLink href={selectedLink?.url ?? ''}>
+            <View className={'w-full flex-row items-center justify-center gap-3 px-4 py-6'}>
+              <ThemedText type={'subtitle'} className={'pt-1 text-sm uppercase text-blue-600'}>
+                {t('redirect_to_page')}
+              </ThemedText>
+              <View className={'flex items-center justify-center'}>
+                <Feather name="external-link" size={16} color={'#2563eb'} />
+              </View>
+            </View>
+          </ExternalLink>
+        </View>
+        <ActionButton buttonClassName={'px-2 py-2'} containerClassName={'mb-0'} onPress={handleActionBottomSheet}>
+          <Entypo name="dots-three-horizontal" size={24} color="white" />
+        </ActionButton>
       </View>
-      <ActionButton buttonClassName={'px-2 py-2'} onPress={handleActionBottomSheet}>
-        <Entypo name="dots-three-horizontal" size={24} color="white" />
-      </ActionButton>
       <BottomSheet onRequestClose={handleActionBottomSheet} visible={showActions} height={25}>
         <View className={'flex h-full w-full items-stretch justify-center gap-2 px-4'}>
           <ActionButtonBottomSheet
             title={selectedLink?.comments ? t('edit') : t('add')}
-            buttonClassName={'bg-primary-400 rounded-t-xl'}
+            buttonClassName={'bg-primary-400 rounded-t-md'}
             titleClassName={'text-white'}
             onPress={handleCommentFormBottomSheet}
           >
@@ -160,6 +169,6 @@ export default function DetailsScreen() {
       <ModalBackDrop visible={showDeleteModal} onRequestClose={handleDeleteModalConfirmation}>
         <DeleteItemModal handleConfirmAction={handleDeletePress} handleCancelAction={handleDeleteModalConfirmation} />
       </ModalBackDrop>
-    </ThemedView>
+    </ScreenContainer>
   );
 }

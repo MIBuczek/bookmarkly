@@ -21,21 +21,23 @@ export const CountryItem = memo(function({
                                            className,
                                            icon = false,
                                          }: Readonly<CountryItemProps>) {
-    return (
-      <Pressable
-        onPress={onPress}
-        className={twMerge(`flex-row h-[50px] items-center justify-between gap-1 rounded-lg border border-dark-400 p-4`, className)}
-      >
-        <View className={'flex-row gap-2'}>
-          <CountryFlag isoCode={isoCode} size={16} />
-          <ThemedText className={'px-1 text-sm capitalize'}>{countryName}</ThemedText>
+  return (
+    <Pressable
+      onPress={onPress}
+      className={twMerge(
+        `h-[50px] flex-row items-center justify-between gap-1 rounded-lg border border-dark-400 p-4`,
+        className,
+      )}
+    >
+      <View className={'flex-row gap-2'}>
+        <CountryFlag isoCode={isoCode} size={16} />
+        <ThemedText className={'px-1 text-sm capitalize'}>{countryName}</ThemedText>
+      </View>
+      {icon && (
+        <View>
+          <IconSymbol size={20} name={'chevron.down'} color={Colors.light.icon} />
         </View>
-        {icon && (
-          <View>
-            <IconSymbol size={20} name={'chevron.down'} color={Colors.light.icon} />
-          </View>
-        )}
-      </Pressable>
-    );
-  },
-);
+      )}
+    </Pressable>
+  );
+});
