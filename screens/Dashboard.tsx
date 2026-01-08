@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { FlatList, LayoutAnimation, Platform, TouchableOpacity, UIManager, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
@@ -6,15 +6,14 @@ import { Button } from '@/components/button/Button';
 import { Input } from '@/components/ui/Input';
 import { baseColors } from '@assets/theme/base-theme';
 import { twMerge } from 'tailwind-merge';
-import { storeActions, useAppDispatch, useAppSelector } from '@/store';
+import { useAppSelector } from '@/store';
 import LinkItem from '@/components/LinkItem';
 import { ActionButton } from '@/components/button/ActionButton';
-import { NewLinkForm } from '@/components/bottom-sheet/NewLinkForm';
+import { NewLinkForm } from '@/components/forms/NewLinkForm';
 import { useTranslation } from 'react-i18next';
 import { TLink } from '@/types/links.type';
-import linkServices from '@/services/link.services';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
-import { useToast } from 'react-native-toast-notifications';
+import { useLoadLinks } from '@/hooks/useLoadLinks';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -26,9 +25,8 @@ type DashboardBaseFilters = 'unread' | 'read' | 'all';
 
 export default function DashboardScreen() {
   const { t } = useTranslation();
-  const toast = useToast();
+  const { loadLinks } = useLoadLinks();
 
-  const dispatch = useAppDispatch();
   const { links } = useAppSelector(({ links }) => links);
 
   const [selectedFilterLinks, setSelectedFilterLinks] = useState<DashboardBaseFilters>('all');
@@ -71,18 +69,8 @@ export default function DashboardScreen() {
     return _filteredLinks;
   }, [links, selectedFilterLinks, searchPhase]);
 
-  const fetchLinks = useCallback(async () => {
-    try {
-      let { links, count } = await linkServices.getAllLink();
-      dispatch(storeActions.links.setLinks({ links, count }));
-    } catch (error) {
-      console.error('[fetchLinks]:', error);
-      toast.show('[Error] : Could not load your links', { type: 'error' });
-    }
-  }, [dispatch, toast]);
-
   useEffect(() => {
-    // void fetchLinks();
+    void loadLinks();
   }, []);
 
   useEffect(() => {
@@ -92,7 +80,7 @@ export default function DashboardScreen() {
   return (
     <ScreenContainer withBottomTabs>
       <View className="relative flex w-full items-center justify-center gap-4 py-6">
-        <ThemedText type={'title'} className={'text-lg'}>
+        <ThemedText type={'title'} size={'lg'}>
           {t('dashboard')}
         </ThemedText>
         <TouchableOpacity className={'absolute right-2 top-6 size-10'} onPress={() => setShowSearch(!showSearch)}>
@@ -113,8 +101,9 @@ export default function DashboardScreen() {
         >
           <ThemedText
             type={'subtitle'}
+            size={'sm'}
             className={twMerge(
-              `m-auto text-sm ${selectedFilterLinks === 'unread' ? 'dark:text-dark:100 text-gray-100' : 'text-dark-700'}`,
+              `m-auto ${selectedFilterLinks === 'unread' ? 'dark:text-dark:100 text-gray-100' : 'text-dark-700'}`,
             )}
           >
             {t('unread')}
@@ -129,8 +118,9 @@ export default function DashboardScreen() {
         >
           <ThemedText
             type={'subtitle'}
+            size={'sm'}
             className={twMerge(
-              `m-auto text-sm ${selectedFilterLinks === 'read' ? 'dark:text-dark:100 text-gray-100' : 'text-dark-700'}`,
+              `m-auto ${selectedFilterLinks === 'read' ? 'dark:text-dark:100 text-gray-100' : 'text-dark-700'}`,
             )}
           >
             {t('read')}
@@ -142,24 +132,24 @@ export default function DashboardScreen() {
           <>
             <FlatList
               data={filteredLinks}
+              keyExtractor={(item) => item.id}
               renderItem={({ item }) => {
                 return <LinkItem link={item} />;
               }}
-              keyExtractor={(item) => item.id}
               ListEmptyComponent={
                 <View className={'flex py-40'}>
                   <View className={'mb-4 flex w-full items-center px-4'}>
-                    <ThemedText type={'title'} className={'text-lg'}>
+                    <ThemedText type={'title'} size={'lg'}>
                       {t('nothing_here')}
                     </ThemedText>
-                    <ThemedText>{t('saved_links')}</ThemedText>
+                    <ThemedText size={'md'}>{t('saved_links')}</ThemedText>
                   </View>
                 </View>
               }
             />
             <ActionButton
               title={t('add_link')}
-              buttonClassName={'px-2 py-3'}
+              buttonClassName={'py-2'}
               containerClassName={'mb-0'}
               onPress={toggleAddLink}
             />
@@ -167,10 +157,10 @@ export default function DashboardScreen() {
         ) : (
           <View className={'item-center mb-4 flex-1 justify-center gap-4 px-4'}>
             <View className={'mb-4 flex w-full items-center px-4'}>
-              <ThemedText type={'title'} className={'text-lg'}>
+              <ThemedText type={'title'} size={'lg'}>
                 {t('nothing_here')}
               </ThemedText>
-              <ThemedText>{t('saved_links')}</ThemedText>
+              <ThemedText size={'sm'}>{t('saved_links')}</ThemedText>
             </View>
             <Button
               buttonClassName={'w-28 px-2 rounded-2xl mx-auto'}

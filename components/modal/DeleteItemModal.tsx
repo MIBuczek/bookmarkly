@@ -14,10 +14,10 @@ export const DeleteItemModal = ({ handleConfirmAction, handleCancelAction }: Rea
 
   return (
     <View className={'flex items-center justify-center gap-2 px-4'}>
-      <ThemedText type="title" className={'text-lg'}>
+      <ThemedText size={'lg'} type="title">
         {t('delete_item')}
       </ThemedText>
-      <ThemedText>{t('are_you_sure_you_want_to_delete_this_item')}</ThemedText>
+      <ThemedText size={'sm'}>{t('are_you_sure_you_want_to_delete_this_item')}</ThemedText>
       <View className={'mt-4 flex-row items-center justify-center gap-2'}>
         <Button buttonClassName={'flex-1 py-2'} type={'secondary'} title={t('cancel')} onPress={handleCancelAction} />
         <Button buttonClassName={'flex-1 py-2'} type={'primary'} title={t('delete')} onPress={handleConfirmAction} />

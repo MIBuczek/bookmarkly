@@ -3,6 +3,7 @@
   "dashboard": "Dashboard",
   "settings": "Settings",
   "login": "Login",
+  "logout": "Log out",
   "register": "Register now",
   "phone_number": "Phone number",
   "not_a_member": "Not a member ?",
@@ -19,6 +20,7 @@
   "read": "Read",
   "search": "Search",
   "add_new_link": "Add new link",
+  "add_link_description": "Paste a link below to automatically fetch its title, description, and preview image.",
   "past_url_address": "Past url address",
   "cancel": "Cancel",
   "generate_metadata": "Generate metadata",
@@ -32,6 +34,7 @@
   "clear": "Clear",
   "add_your_comment": "Add your comment",
   "write_your_comment": "Write your comment",
+  "write_your_tag": "Add tag",
   "delete": "Delete",
   "redirect_to_page": "Redirect to page",
   "author": "Author",
@@ -73,6 +76,7 @@
   "a_4_digit_code_was_sent_to": "A 4-digit code was sent to",
   "mark": "Mark as read",
   "add_your_personal_comment": "Add your personal comment",
+  "edit_your_personal_comment": "Edit your comment",
   "choice_your_avatar": "Choice your avatar",
   "allow_push_notification": "Allow to push notification",
   "color_theme": "Color theme",
@@ -93,6 +97,5 @@
   "slide_three_title": "Stay organized",
   "slide_three_description": "Remember, you can always edit your saved articles or mark them as read, making it easy to track what you've reviewed and revisit them in the future.",
   "next": "Next",
-  "logout": "Log out",
   "are_you_sure_you_want_to_log_out": "Are you sure you want to log out"
 }

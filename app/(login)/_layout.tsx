@@ -1,16 +1,9 @@
 import { Stack } from 'expo-router';
-import React, { useEffect } from 'react';
-import { useAuthGuard } from '@/hooks/useAuthGuard';
+import React from 'react';
 
 export default function LoginLayout() {
-  const { checkToken } = useAuthGuard();
-
-  useEffect(() => {
-    void checkToken();
-  }, []);
-
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack screenOptions={{ headerShown: false }} initialRouteName="sign-in">
       <Stack.Screen name="sign-in" />
       <Stack.Screen name="sign-up" />
       <Stack.Screen name="verify-code" />

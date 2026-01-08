@@ -1,6 +1,6 @@
 import { API_URLS, axiosInstance } from '@/services/utils';
-import { User } from '@/store/user';
 import { TSignItPayload, TSignUpPayload, TVerifyCodePayload } from '@/types/payload.type';
+import { TUser } from '@/types/uset.type';
 
 type TSingInResponse = {
   message: string;
@@ -28,7 +28,7 @@ const singUp = async (payload: TSignUpPayload): Promise<TSingUpResponse> => {
 
 type TVerifyCodeResponse = {
   message: string;
-  user: User;
+  user: TUser;
   token: string;
 };
 
@@ -43,7 +43,7 @@ const verifyCode = async (payload: TVerifyCodePayload): Promise<TVerifyCodeRespo
 
 type TVerifySessionResponse = {
   valid: boolean;
-  user: User | null;
+  user: TUser | null;
 };
 
 const verifySession = async (): Promise<TVerifySessionResponse> => {

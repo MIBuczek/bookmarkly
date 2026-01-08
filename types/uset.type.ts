@@ -2,6 +2,7 @@ import * as Notifications from 'expo-notifications';
 
 type TUserSettings = {
   avatar: string;
+  fontSize: number;
   notification: Notifications.PermissionStatus;
   appearance: 'light' | 'dark' | 'system';
   language: string;

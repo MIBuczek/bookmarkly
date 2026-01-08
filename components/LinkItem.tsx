@@ -46,10 +46,10 @@ const LinkItem = memo(({ link }: Readonly<LinkItemProps>) => {
       <FadeInView isActive={true} className="h-fit">
         <View className={'flex-row gap-2 border-b border-b-dark-200 px-2 py-4'}>
           <Pressable className={'flex w-5/6'} onPress={handleActionBottomSheet}>
-            <ThemedText type={'title'} className={'text-base text-primary-700'}>
+            <ThemedText size={'md'} type={'title'} className={'text-primary-700'}>
               {link.title}
             </ThemedText>
-            <ThemedText className={'text-sm'}>{link.description}</ThemedText>
+            <ThemedText size={'sm'}>{link.description}</ThemedText>
             <Tags containerClassName={'py-0 pt-3'} tags={link.tags.slice(0, 3)} />
           </Pressable>
           <TouchableOpacity
@@ -65,7 +65,7 @@ const LinkItem = memo(({ link }: Readonly<LinkItemProps>) => {
               <View
                 className={'w-full flex-row items-center justify-center gap-3 rounded-t-md bg-primary-400 px-4 py-6'}
               >
-                <ThemedText type={'subtitle'} className={'pt-1 text-sm uppercase text-white'}>
+                <ThemedText type={'subtitle'} size={'sm'} className={'pt-1 uppercase text-white'}>
                   Redirect to page
                 </ThemedText>
                 <View className={'flex items-center justify-center'}>

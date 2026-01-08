@@ -4,7 +4,6 @@ import { ThemedText } from '@/components/ui/ThemedText';
 import { Colors } from '@/constants/colors';
 import { Button } from '@/components/button/Button';
 import { useColorScheme as useNativeWindColorScheme } from 'nativewind/dist/stylesheet';
-import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { baseColors } from '@assets/theme/base-theme';
 import { LAND_OPTIONS } from '@/utils/setting.const';
@@ -17,6 +16,7 @@ import { twMerge } from 'tailwind-merge';
 import { useTranslation } from 'react-i18next';
 import * as Localization from 'expo-localization';
 import { useUpdateSettings } from '@/hooks/useUpdateSettings';
+import { reduxStorage } from '@/store/storage';
 
 type SettingsProps = Readonly<{ handleClose: () => void }>;
 
@@ -31,11 +31,9 @@ export const Notification = ({ handleClose }: SettingsProps) => {
 
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
-      <ThemedText className={'w-full'}>
-        {t('notification_preview_text')}
-      </ThemedText>
+      <ThemedText size={'sm'} className={'w-full'}>{t('notification_preview_text')}</ThemedText>
       <View className={'w-full flex-row items-center justify-between py-2'}>
-        <ThemedText type={'subtitle'} className={'text-base'}>
+        <ThemedText size={'md'} type={'subtitle'}>
           {t('allow_push_notification')}
         </ThemedText>
         <Switch
@@ -58,24 +56,25 @@ export type ThemeType = 'dark' | 'light';
 export const Appearance = ({ handleClose }: SettingsProps) => {
   const { t } = useTranslation();
 
+  const { getSelectedSettings, updateSettings } = useUpdateSettings();
   const colorNativeWindScheme = useNativeWindColorScheme();
 
-  const [fontSize, setFontSize] = useState(1);
+  const [fontSize, setFontSize] = useState(14);
   const [theme, setTheme] = useState<ThemeType>('light');
   const [hasChanged, setHasChanged] = useState(false);
 
   const setInitialState = () => {
-    const _theme = localAppStorage.getLocalData<ThemeType>(LOCAL_STORAGE_KEY.THEME);
+    const _theme = getSelectedSettings<ThemeType>('appearance');
     setTheme(_theme ?? 'light');
-    const _fontSize = localAppStorage.getLocalData<number>(LOCAL_STORAGE_KEY.FONT_SIZE);
-    setFontSize(_fontSize ?? 1);
+    const _fontSize = getSelectedSettings<number>('fontSize');
+    setFontSize(_fontSize ?? 14);
   };
 
   useEffect(setInitialState, []);
 
   const handleChange = () => {
-    const _theme = localAppStorage.getLocalData<ThemeType>(LOCAL_STORAGE_KEY.THEME);
-    const _fontSize = localAppStorage.getLocalData<number>(LOCAL_STORAGE_KEY.FONT_SIZE);
+    const _theme = getSelectedSettings<ThemeType>('appearance');
+    const _fontSize = getSelectedSettings<number>('fontSize');
     setHasChanged(_theme !== theme || _fontSize !== fontSize);
   };
 
@@ -83,22 +82,28 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
 
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
-      <ThemedText className={'w-full'}>{t('appearance_preview_text')}</ThemedText>
+      <ThemedText size={'sm'} className={'w-full'}>{t('appearance_preview_text')}</ThemedText>
       <View className={'w-full flex-row items-center justify-between py-2'}>
-        <ThemedText type={'subtitle'} className={'text-base text-gray-800'}>
+        <ThemedText size={fontSize} type={'subtitle'} className={'text-gray-800'}>
           {t('font_size')}
         </ThemedText>
         <View className="flex-row items-center gap-2">
-          <TouchableOpacity className={'rounded-md border border-primary-500 p-2'}>
+          <TouchableOpacity
+            className={'rounded-md border border-primary-500 p-2 disabled:bg-gray-600'}
+            disabled={fontSize <= 12}
+            onPress={() => setFontSize((prev) => --prev)}>
             <IconSymbol name={'minus'} color={baseColors.colors.dark['600']} size={14} />
           </TouchableOpacity>
-          <TouchableOpacity className={'rounded-md border border-primary-500 p-2'}>
+          <TouchableOpacity
+            className={'rounded-md border border-primary-500 p-2'}
+            disabled={fontSize >= 18}
+            onPress={() => setFontSize((prev) => ++prev)}>
             <IconSymbol name={'plus'} color={baseColors.colors.dark['600']} size={14} />
           </TouchableOpacity>
         </View>
       </View>
       <View className={'w-full flex-row items-center justify-between py-2'}>
-        <ThemedText type={'subtitle'} className={'text-base text-gray-800'}>
+        <ThemedText size={'md'} type={'subtitle'} className={'text-gray-800'}>
           {t('color_theme')}
         </ThemedText>
         <View className="flex-row items-center gap-2">
@@ -122,8 +127,7 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
             type={'primary'}
             title={t('apply')}
             onPress={() => {
-              localAppStorage.setLocalData<number>(LOCAL_STORAGE_KEY.FONT_SIZE, fontSize);
-              localAppStorage.setLocalData<string>(LOCAL_STORAGE_KEY.THEME, theme);
+              void updateSettings({ appearance: theme, fontSize });
               colorNativeWindScheme.setColorScheme(theme);
               handleClose();
             }}
@@ -138,7 +142,7 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
 
 export const Language = ({ handleClose }: SettingsProps) => {
   const { t, i18n } = useTranslation();
-  const { updateSettings } = useUpdateSettings();
+  const { getSelectedSettings, updateSettings } = useUpdateSettings();
 
   const [hasChanged, setHasChanged] = useState(false);
   const [lang, setLang] = useState<string | null>(Localization.getLocales()[0].languageCode);
@@ -146,7 +150,7 @@ export const Language = ({ handleClose }: SettingsProps) => {
   const langList = useMemo(() => LAND_OPTIONS, []);
 
   const setInitialState = () => {
-    const _lang = localAppStorage.getLocalData<string>(LOCAL_STORAGE_KEY.LANGUAGE);
+    const _lang = getSelectedSettings<string>('language');
     if (_lang) setLang(_lang);
     else setLang(Localization.getLocales()[0].languageCode);
   };
@@ -154,7 +158,7 @@ export const Language = ({ handleClose }: SettingsProps) => {
   useEffect(setInitialState, []);
 
   const handleChange = () => {
-    const _lang = localAppStorage.getLocalData<string>(LOCAL_STORAGE_KEY.LANGUAGE);
+    const _lang = getSelectedSettings<string>('language');
     setHasChanged(_lang !== lang);
   };
 
@@ -165,7 +169,6 @@ export const Language = ({ handleClose }: SettingsProps) => {
     try {
       await updateSettings({ language: lang });
       await i18n.changeLanguage(lang);
-      localAppStorage.setLocalData(LOCAL_STORAGE_KEY.LANGUAGE, lang);
     } catch (error) {
       console.log('[applyChanges]:', error);
     } finally {
@@ -175,11 +178,9 @@ export const Language = ({ handleClose }: SettingsProps) => {
 
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
-      <ThemedText className={'w-full'}>
-        {t('language_preview_text')}
-      </ThemedText>
+      <ThemedText size={'sm'} className={'w-full'}>{t('language_preview_text')}</ThemedText>
       <View className={'flex w-full items-start gap-2 py-2'}>
-        <ThemedText type={'subtitle'} className={'text-base'}>
+        <ThemedText size={'md'} type={'subtitle'}>
           {t('application_language')}
         </ThemedText>
         <View className="w-full gap-1">
@@ -217,14 +218,17 @@ export const Storage = ({ handleClose }: SettingsProps) => {
   const { t } = useTranslation();
   const [showClearConfirmationModal, setShowClearConfirmationModal] = useState(false);
 
+  const totalSize = useMemo(async () => {
+    const _size = await reduxStorage?.getTotalSize();
+    return (_size / (1024 * 1024)).toFixed(2);
+  }, []);
+
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
-      <ThemedText className={'w-full'}>
-        {t('storage_preview_text')}
-      </ThemedText>
+      <ThemedText size={'sm'} className={'w-full'}>{t('storage_preview_text')}</ThemedText>
       <View className={'w-full flex-row items-center justify-between py-2'}>
-        <ThemedText type={'subtitle'} className={'text-base'}>
-          {t('storage_space')} {(localAppStorage?.getSize() / (1024 * 1024)).toFixed(2)} (MB)
+        <ThemedText size={'md'} type={'subtitle'}>
+          {t('storage_space')} {totalSize} (MB)
         </ThemedText>
         <TouchableOpacity
           className={'rounded-md border border-red-500 p-2'}
@@ -245,10 +249,10 @@ export const Storage = ({ handleClose }: SettingsProps) => {
         }}
       >
         <View className={'flex items-center justify-center gap-2 px-4'}>
-          <ThemedText type="title" className={'text-lg text-red-500'}>
+          <ThemedText size={'lg'} type="title" className={'text-red-500'}>
             {t('clear_local_storage')}
           </ThemedText>
-          <ThemedText>{t('clear_local_storage_confirmation_msg')}</ThemedText>
+          <ThemedText size={'sm'}>{t('clear_local_storage_confirmation_msg')}</ThemedText>
           <View className={'mt-4 flex-row items-center justify-center gap-2'}>
             <Button
               buttonClassName={'flex-1 py-2'}
@@ -262,7 +266,7 @@ export const Storage = ({ handleClose }: SettingsProps) => {
               buttonClassName={'flex-1 py-2 bg-red-500 border-red-500'}
               type={'primary'}
               title={t('clear')}
-              onPress={() => localAppStorage.clearAllData()}
+              onPress={() => void reduxStorage.clearStorage()}
             />
           </View>
         </View>
@@ -294,7 +298,6 @@ export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsP
     if (!selectedAvatar) return;
     try {
       await updateSettings({ avatar: selectedAvatar.seed });
-      localAppStorage.setLocalData(LOCAL_STORAGE_KEY.AVATAR, selectedAvatar);
       updateAvatar(selectedAvatar);
     } catch (error) {
       console.log('[applyChanges]:', error);
@@ -304,11 +307,9 @@ export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsP
   };
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
-      <ThemedText className={'w-full'}>
-        {t('avatars_preview_text')}
-      </ThemedText>
+      <ThemedText size={'sm'} className={'w-full'}>{t('avatars_preview_text')}</ThemedText>
       <View className={'flex w-full items-start py-2'}>
-        <ThemedText type={'subtitle'} className={'text-base'}>
+        <ThemedText size={'md'} type={'subtitle'}>
           {t('choice_your_avatar')}
         </ThemedText>
       </View>

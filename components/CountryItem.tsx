@@ -31,7 +31,7 @@ export const CountryItem = memo(function({
     >
       <View className={'flex-row gap-2'}>
         <CountryFlag isoCode={isoCode} size={16} />
-        <ThemedText className={'px-1 text-sm capitalize'}>{countryName}</ThemedText>
+        <ThemedText className={'px-1 capitalize'} size={'sm'}>{countryName}</ThemedText>
       </View>
       {icon && (
         <View>

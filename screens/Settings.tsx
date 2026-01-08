@@ -19,7 +19,6 @@ import { AvatarSvg } from '@/components/svg/AvatarIcon';
 import { Appearance, Avatars, Language, Notification, Storage } from '@/components/bottom-sheet/SettingsBottomSheet';
 import { AVATARS_OPTIONS } from '@/constants/avatars';
 import { Options } from '@dicebear/core';
-import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
 import { useTranslation } from 'react-i18next';
 import { router } from 'expo-router';
 import { ActionButton } from '@/components/button/ActionButton';
@@ -38,7 +37,10 @@ export default function SettingScreen() {
   const settingsButtons: TSettingsOptions[] = useMemo(() => SETTING_CONTENT_OPTIONS, []);
 
   const initialAvatarState = () => {
-    const _avatar = localAppStorage.getLocalData<Options>(LOCAL_STORAGE_KEY.AVATAR);
+    const _avatar =
+      AVATARS_OPTIONS.find((av) => {
+        return av.seed === user?.settings.avatar;
+      }) || AVATARS_OPTIONS[0];
     if (_avatar) setAvatar(_avatar);
   };
 
@@ -70,14 +72,13 @@ export default function SettingScreen() {
   const logOut = useCallback(() => {
     router.navigate('/(login)/sign-in');
     dispatch(storeActions.user.logout());
-    localAppStorage.deleteLocalData(LOCAL_STORAGE_KEY.TOKEN);
     setLogoutModalVisible(false);
-  }, [router, dispatch, localAppStorage]);
+  }, [router, dispatch]);
 
   return (
     <ScreenContainer withBottomTabs>
       <View className="flex h-[30%] w-full items-center justify-start gap-4">
-        <ThemedText type={'title'} className={'pb-6 text-lg'}>
+        <ThemedText type={'title'} className={'pb-6'} size={'lg'}>
           {t('settings')}
         </ThemedText>
         <View className="relative size-28 rounded-3xl border border-primary-500">
@@ -93,13 +94,13 @@ export default function SettingScreen() {
           </TouchableOpacity>
         </View>
         <View className="flex items-center">
-          <ThemedText type="title" className="text-base">
+          <ThemedText type="title" size="md">
             {user?.name}
           </ThemedText>
-          <ThemedText>{user?.email}</ThemedText>
+          <ThemedText size={'sm'}>{user?.email}</ThemedText>
         </View>
       </View>
-      <View className={'flex-1 justify-start mt-10'}>
+      <View className={'mt-10 flex-1 justify-start'}>
         <View className="flex w-full">
           {settingsButtons.map((option, index) => (
             <TouchableOpacity
@@ -110,7 +111,7 @@ export default function SettingScreen() {
                 setShowBottomSheet(true);
               }}
             >
-              <ThemedText className={'px-1 text-sm capitalize'}>{option}</ThemedText>
+              <ThemedText className={'px-1 capitalize'} size={'sm'}>{option}</ThemedText>
               <IconSymbol name={'chevron.right'} color={'gray'} size={16} />
             </TouchableOpacity>
           ))}
@@ -118,7 +119,7 @@ export default function SettingScreen() {
         <View className={'mt-auto w-full'}>
           <ActionButton
             title={t('logout')}
-            buttonClassName={'px-2 py-3'}
+            buttonClassName={'p-2'}
             containerClassName={'mb-0'}
             onPress={() => {
               setLogoutModalVisible(true);
@@ -144,10 +145,10 @@ export default function SettingScreen() {
         }}
       >
         <View className={'flex items-center justify-center gap-2 px-4'}>
-          <ThemedText type="title" className={'text-lg'}>
+          <ThemedText type="title" size={'lg'}>
             {t('logout')}
           </ThemedText>
-          <ThemedText>{t('are_you_sure_you_want_to_log_out')}</ThemedText>
+          <ThemedText size={'sm'}>{t('are_you_sure_you_want_to_log_out')}</ThemedText>
           <View className={'mt-4 flex-row items-center justify-center gap-2'}>
             <Button
               buttonClassName={'flex-1 py-2'}

@@ -36,9 +36,9 @@ export const Input = ({
   const { t } = useTranslation();
 
   return (
-    <View className="flex gap-2">
+    <View className="flex">
       {label && (
-        <ThemedText type="title" className={twMerge('text-sm text-dark-800', labelClassName)}>
+        <ThemedText type="title" className={twMerge('text-dark-800', labelClassName)} size={'sm'}>
           {label}
         </ThemedText>
       )}
@@ -53,7 +53,6 @@ export const Input = ({
           className={twMerge(
             'h-[50px] rounded-xl border border-dark-400 p-4 text-dark-600 dark:border-gray-400 dark:text-dark-400',
             inputClassName,
-
             multiline && 'h-32',
           )}
           {...rest}

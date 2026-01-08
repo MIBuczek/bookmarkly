@@ -1,25 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Country } from 'country-list';
-
-export interface User {
-  name: string;
-  email: string;
-  country: Country;
-  phone: string;
-}
-
-export const userMock: User = {
-  name: 'Jon Doe',
-  email: 'jon_doe@gmail.com',
-  country: { code: 'US', name: 'United States' },
-  phone: '555-555-5555',
-};
+import { Country } from 'country-telephone-data';
+import { TUser, TUserSettings } from '@/types/uset.type';
+import { reduxStorage } from '@/store/storage';
 
 type UserState = {
-  user: User | null;
+  user: TUser | null;
   phone: string | null;
-  otpCode: string | null;
+  phoneCode: Country | null;
   token: string | null;
+  onboarded: boolean;
+  termsAndConditions: boolean;
   isLoggedIn: boolean;
   lastLoggedIn: string | null;
   error: Error | null;
@@ -28,8 +18,10 @@ type UserState = {
 const initialState: UserState = {
   user: null,
   phone: null,
-  otpCode: null,
   token: null,
+  phoneCode: null,
+  onboarded: false,
+  termsAndConditions: false,
   isLoggedIn: false,
   lastLoggedIn: null,
   error: null,
@@ -40,21 +32,31 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setPhone: (state, action: PayloadAction<{ phone: string }>) => {
-      return { ...state, ...action.payload };
+      state.phone = action.payload.phone;
     },
-    setOtpCode: (state, action: PayloadAction<{ otpCode: string }>) => {
-      return { ...state, ...action.payload };
+    setPhoneCode: (state, action: PayloadAction<{ phoneCode: Country }>) => {
+      state.phoneCode = action.payload.phoneCode;
     },
-    setUser: (state, action: PayloadAction<{ user: User }>) => {
-      return { ...state, ...action.payload, isLoggedIn: true, lastLoggedIn: new Date().toISOString() };
+    setUser: (state, action: PayloadAction<{ user: TUser }>) => {
+      state.user = action.payload.user;
+      state.phone = action.payload.user.phone;
+      state.isLoggedIn = true;
+      state.lastLoggedIn = new Date().toISOString();
     },
     setToken: (state, action: PayloadAction<{ token: string }>) => {
-      return { ...state, ...action.payload };
+      state.token = action.payload.token;
     },
-    updateUser: (state, action: PayloadAction<Partial<User>>) => {
-      return { ...state, ...action.payload };
+    setOnboarded: (state, action: PayloadAction<{ onboarded: boolean }>) => {
+      state.onboarded = action.payload.onboarded;
     },
-    logout: (state) => {
+    setTermsAndConditions: (state, action: PayloadAction<{ termsAndConditions: boolean }>) => {
+      state.termsAndConditions = action.payload.termsAndConditions;
+    },
+    updateUserSettings: (state, action: PayloadAction<TUserSettings>) => {
+      state.user!.settings = Object.assign(state.user!.settings, action.payload);
+    },
+    logout: () => {
+      void reduxStorage.clearStorage();
       return { ...initialState };
     },
   },

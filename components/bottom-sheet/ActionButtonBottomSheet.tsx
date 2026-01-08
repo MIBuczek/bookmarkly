@@ -21,7 +21,7 @@ export const ActionButtonBottomSheet = ({
     className={twMerge('w-full flex-row justify-center gap-3 px-2 py-4 text-center', buttonClassName)}
     onPress={onPress}
   >
-    <ThemedText type={'subtitle'} className={twMerge('pt-1 text-sm uppercase', titleClassName)}>
+    <ThemedText type={'subtitle'} size={'sm'} className={twMerge('pt-1 uppercase', titleClassName)}>
       {title}
     </ThemedText>
     <View className={'flex items-center justify-center'}>{children}</View>

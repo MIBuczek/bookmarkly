@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { Pressable, View } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -8,7 +8,7 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LogoIcon } from '@/components/svg/LogoIcon';
-import { storeActions, useAppDispatch } from '@/store';
+import { RootState, storeActions, useAppDispatch, useAppSelector } from '@/store';
 import { useTranslation } from 'react-i18next';
 import authServices from '@/services/auth.services';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
@@ -22,8 +22,8 @@ import CountryFlag from 'react-native-country-flag';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from '@/constants/colors';
 import { debounce } from 'lodash-es';
-import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
 import { ErrorText } from '@/components/ui/ErrorText';
+import { getSystemLanguage } from '@/providers/localization';
 
 export type PhoneCodeItemProps = Country & {
   className?: string;
@@ -47,7 +47,7 @@ export const PhoneCodeItem = memo(function({
     >
       <View className={'flex-row gap-2'}>
         <CountryFlag isoCode={iso2} size={16} />
-        <ThemedText className={'px-1 text-sm capitalize'}>{`(${dialCode}) ${name}`}</ThemedText>
+        <ThemedText className={'px-1 capitalize'} size={'sm'}>{`(${dialCode}) ${name}`}</ThemedText>
       </View>
       <View>
         <IconSymbol size={20} name={'chevron.right'} color={Colors.light.icon} />
@@ -135,6 +135,8 @@ export default function SignInScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const toast = useToast();
+  const dispatch = useAppDispatch();
+  const { phoneCode } = useAppSelector(({ user }: RootState) => user);
 
   const [showDirectNumberList, setShowDirectNumberList] = React.useState(false);
   const [selectedPhoneCodes, setSelectedPhoneCodes] = React.useState<Country | null>(null);
@@ -147,8 +149,6 @@ export default function SignInScreen() {
   } = useForm<TLoginForm>({
     resolver: yupResolver(signInSchema),
   });
-
-  const dispatch = useAppDispatch();
 
   const onSubmit = async (data: TLoginForm) => {
     if (!selectedPhoneCodes) return toast.show('[Error] : Please select country', { type: 'error' });
@@ -165,20 +165,32 @@ export default function SignInScreen() {
     }
   };
 
-  useEffect(() => {
-    setSelectedPhoneCodes(localAppStorage.getLocalData(LOCAL_STORAGE_KEY.PHONE_CODE) || null);
-  }, []);
+  const preselectPhoneCode = useCallback(() => {
+    let preselectPhoneCode = phoneCode;
+    if (!preselectPhoneCode) {
+      const language = getSystemLanguage();
+      const systemRegionCode = (language.regionCode || language.languageCode?.split('-')[1] || 'US').toLowerCase();
+
+      preselectPhoneCode =
+        countryTelData.allCountries.find((c) => c.iso2 === systemRegionCode) ||
+        countryTelData.allCountries.find((c) => c.iso2 === 'us') ||
+        countryTelData.allCountries[0];
+    }
+    setSelectedPhoneCodes(preselectPhoneCode);
+  }, [phoneCode, getSystemLanguage, countryTelData]);
+
+  useEffect(preselectPhoneCode, []);
 
   return (
     <ScreenContainer>
       <View className="flex-1 flex-row items-center justify-center rounded-t-xl bg-primary-100 dark:bg-primary-200">
         <LogoIcon width={50} height={50} />
-        <ThemedText type="title" className={'pb-2 text-3xl text-dark-600'}>
+        <ThemedText type="title" className={'pb-2 text-dark-600'} size={'3xl'}>
           Bookmarkly
         </ThemedText>
       </View>
       <View className="flex flex-1 items-start gap-6 border-t-2 border-t-primary-200 pt-10 dark:border-t-primary-300">
-        <ThemedText type="title" className="text-3xl font-extrabold">
+        <ThemedText type="title" className="font-extrabold" size={'3xl'}>
           {t('welcome')}
         </ThemedText>
         <View className="w-full flex-1 gap-2">
@@ -192,7 +204,7 @@ export default function SignInScreen() {
                     onPress={() => setShowDirectNumberList((prev) => !prev)}
                     className="h-full flex-row items-center rounded-l-xl bg-primary-100 px-4 dark:bg-primary-200"
                   >
-                    <ThemedText type="subtitle" className="text-sm font-semibold text-primary-600">
+                    <ThemedText type="subtitle" className="font-semibold text-primary-600" size={'sm'}>
                       {selectedPhoneCodes ? `+${selectedPhoneCodes?.dialCode}` : '00'}
                     </ThemedText>
                   </Pressable>
@@ -212,13 +224,13 @@ export default function SignInScreen() {
           <Button type={'primary'} title={t('login')} buttonClassName={'mt-auto'} onPress={handleSubmit(onSubmit)} />
         </View>
         <View className="w-full flex-row items-center justify-center gap-2">
-          <ThemedText type="default">{t('not_a_member')}</ThemedText>
+          <ThemedText type="default" size={'sm'}>{t('not_a_member')}</ThemedText>
           <Pressable
             onPress={() => {
               router.navigate('/(login)/sign-up');
             }}
           >
-            <ThemedText type="subtitle" className="text-sm font-semibold text-primary-600">
+            <ThemedText type="subtitle" className="font-semibold text-primary-600" size={'sm'}>
               {t('register')}
             </ThemedText>
           </Pressable>
@@ -237,9 +249,9 @@ export default function SignInScreen() {
           onDismiss={() => {
             setShowDirectNumberList(false);
           }}
-          onPress={(item: Country) => {
-            setSelectedPhoneCodes(item);
-            localAppStorage.setLocalData(LOCAL_STORAGE_KEY.PHONE_CODE, item);
+          onPress={(phoneCode: Country) => {
+            setSelectedPhoneCodes(phoneCode);
+            dispatch(storeActions.user.setPhoneCode({ phoneCode }));
             setShowDirectNumberList(false);
           }}
         />

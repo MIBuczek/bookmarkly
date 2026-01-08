@@ -12,7 +12,6 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import { router } from 'expo-router';
-import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
 import { ErrorText } from '@/components/ui/ErrorText';
 import { twMerge } from 'tailwind-merge';
 import { CountryItem } from '@/components/CountryItem';
@@ -166,12 +165,16 @@ export default function SignUpScreen(): React.JSX.Element {
   const loadCountries = () => {
     const _countries = countryList.getData();
     setCountries(_countries);
+    /* Preselect user country */
+    const language = getSystemLanguage();
+    const systemRegionCode = (language.regionCode || language.languageCode?.split('-')[1] || 'PL').toUpperCase();
+
+    const systemCountry = _countries.find(c => c.code === systemRegionCode);
+    if (systemCountry) {
+      setValue('country', systemCountry);
+    }
   };
 
-  /**
-   * useEffect hook to load countries on the component mount.
-   * @effect
-   */
   useEffect(loadCountries, []);
 
   const handleCountrySelection = (_country: Country) => {
@@ -191,6 +194,7 @@ export default function SignUpScreen(): React.JSX.Element {
       notification,
       language,
       appearance,
+      fontSize: 16,
       avatar: 'Ryker',
     };
   };
@@ -220,10 +224,10 @@ export default function SignUpScreen(): React.JSX.Element {
         }}
       />
       <View className={'mb-10 mt-4 flex w-full gap-2'}>
-        <ThemedText type="title" className="text-xl">
+        <ThemedText type="title" size={'xl'}>
           {t('register')}
         </ThemedText>
-        <ThemedText>{t('create_an_account_to_get_started')}</ThemedText>
+        <ThemedText size={'sm'}>{t('create_an_account_to_get_started')}</ThemedText>
       </View>
       <View className="flex-1 justify-start gap-6">
         <Controller
@@ -257,7 +261,7 @@ export default function SignUpScreen(): React.JSX.Element {
           )}
         />
         <View className="flex w-full gap-2">
-          <ThemedText type="title" className={'text-sm text-dark-800'}>
+          <ThemedText type="title" size={'sm'} className={'text-dark-800'}>
             {t('country')}
           </ThemedText>
           <CountryItem
@@ -295,7 +299,7 @@ export default function SignUpScreen(): React.JSX.Element {
               <CheckBox
                 title={
                   <Pressable onPress={() => setShowTermsAndConditions(true)}>
-                    <ThemedText className={twMerge('text-dark-700', errors.terms ? 'text-red-500' : '')}>
+                    <ThemedText size={'sm'} className={twMerge('text-dark-700', errors.terms ? 'text-red-500' : '')}>
                       {t('terms_and_conditions')}
                     </ThemedText>
                   </Pressable>
@@ -334,7 +338,7 @@ export default function SignUpScreen(): React.JSX.Element {
       >
         <TermsAndConditions
           onPress={() => {
-            localAppStorage.setLocalData(LOCAL_STORAGE_KEY.TERMS_AND_CONDITIONS, true);
+            dispatch(storeActions.user.setTermsAndConditions({ termsAndConditions: true }));
             setShowTermsAndConditions(false);
           }}
         />

@@ -14,18 +14,21 @@ import { ActionButtonBottomSheet } from '@/components/bottom-sheet/ActionButtonB
 import { ModalBackDrop } from '@/components/modal/ModalBackDrop';
 import { DeleteItemModal } from '@/components/modal/DeleteItemModal';
 import { Colors } from '@/constants/colors';
-import { LinkCommentForm } from '@/components/bottom-sheet/LinkCommentForm';
-import { LinkForm } from '@/components/bottom-sheet/LinkForm';
+import { LinkCommentForm } from '@/components/forms/LinkCommentForm';
+import { LinkForm } from '@/components/forms/LinkForm';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useTranslation } from 'react-i18next';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
 import { ArrowBackButton } from '@/components/button/ArrowBackButton';
 import { router } from 'expo-router';
+import linkServices from '@/services/link.services';
+import { useToast } from 'react-native-toast-notifications';
 
 export default function DetailsScreen() {
   const theme = useColorScheme() ?? 'light';
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useTranslation();
+  const toast = useToast();
 
   const [showActions, setShowActions] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -66,8 +69,18 @@ export default function DetailsScreen() {
     setShowDeleteModal(!showDeleteModal);
   }, [showDeleteModal]);
 
-  const handleDeletePress = useCallback(() => {
-    dispatch(storeActions.links.deleteLink({ id: selectedLink?.id || '' }));
+  const handleDeletePress = useCallback(async () => {
+    if (!selectedLink?.id) return;
+    const { id } = selectedLink;
+    try {
+      await linkServices.deleteLink(id);
+      dispatch(storeActions.links.deleteLink({ id }));
+      router.back();
+      toast.show('[Success] : Link was deleted', { type: 'success' });
+    } catch (e) {
+      console.error('[handleDeletePress]', e);
+      toast.show('[Error] : Could not delete selected link', { type: 'error' });
+    }
   }, [selectedLink?.id]);
 
   return (
@@ -79,33 +92,34 @@ export default function DetailsScreen() {
       />
       <View className="flex-1 gap-6">
         <View className={'mt-4 flex gap-4'}>
-          <ThemedText type={'title'} className={'text-primary-700'}>
+          <ThemedText type={'title'} className={'text-primary-700'} size={'2xl'}>
             {`${selectedLink?.title}`}
           </ThemedText>
-          <ThemedText>{`${selectedLink?.description}`}</ThemedText>
+          <ThemedText size={'md'}>{`${selectedLink?.description}`}</ThemedText>
         </View>
         <View className={'flex gap-2'}>
-          <ThemedText type={'title'} className={'text-sm'}>
+          <ThemedText type={'title'} size={'sm'}>
             Info
           </ThemedText>
-          <ThemedText className={'text-sm'}>{`Author : ${selectedLink?.author}`}</ThemedText>
-          <ThemedText className={'text-sm'}>{`Source : ${selectedLink?.source}`}</ThemedText>
-          <ThemedText className={'text-sm'}>{`Added at : ${formatDate(selectedLink?.createdAt)}`}</ThemedText>
+          <ThemedText size={'sm'}>{`Author : ${selectedLink?.author}`}</ThemedText>
+          <ThemedText size={'sm'}>{`Source : ${selectedLink?.source ?? 'N/A'}`}</ThemedText>
+          <ThemedText size={'sm'}>{`Added at : ${formatDate(selectedLink?.createdAt)}`}</ThemedText>
         </View>
         <View className={'flex gap-2'}>
-          <ThemedText type={'title'} className={'text-sm'}>
+          <ThemedText type={'title'} size={'sm'}>
             {t('tags')}
           </ThemedText>
           <Tags tags={selectedLink?.tags ?? []} />
         </View>
         <View className="flex w-full gap-2">
-          <ThemedText type="title" className={'text-sm text-dark-800'}>
+          <ThemedText type="title" className={'text-dark-800'} size={'sm'}>
             {t('my_comments')}
           </ThemedText>
-          <ThemedText>{`${selectedLink?.comments ? selectedLink?.comments : t('not_added_yet')}`}</ThemedText>
+          <ThemedText
+            size={'sm'}>{`${selectedLink?.comments ? selectedLink?.comments : t('not_added_yet')}`}</ThemedText>
         </View>
         <View className={'flex w-full gap-2'}>
-          <ThemedText type="title" className={'text-sm text-dark-800'}>
+          <ThemedText type="title" className={'text-dark-800'} size={'sm'}>
             {t('mark_as_read')}
           </ThemedText>
           <View className={'mr-auto'}>
@@ -121,7 +135,7 @@ export default function DetailsScreen() {
         <View className={'mt-auto flex'}>
           <ExternalLink href={selectedLink?.url ?? ''}>
             <View className={'w-full flex-row items-center justify-center gap-3 px-4 py-6'}>
-              <ThemedText type={'subtitle'} className={'pt-1 text-sm uppercase text-blue-600'}>
+              <ThemedText type={'subtitle'} className={'pt-1 uppercase text-blue-600'} size={'sm'}>
                 {t('redirect_to_page')}
               </ThemedText>
               <View className={'flex items-center justify-center'}>

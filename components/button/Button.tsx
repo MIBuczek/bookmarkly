@@ -31,7 +31,8 @@ export const Button = ({ type, title, titleClassName, buttonClassName, children,
       {...rest}
     >
       {title && (
-        <ThemedText type="subtitle" className={twMerge(['text-sm font-semibold', textStyles[type], titleClassName])}>
+        <ThemedText type="subtitle" size={'sm'}
+                    className={twMerge(['font-semibold', textStyles[type], titleClassName])}>
           {title}
         </ThemedText>
       )}

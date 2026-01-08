@@ -6,20 +6,22 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { storeActions, useAppDispatch } from '@/store';
 import { Button } from '@/components/button/Button';
-import { Link } from '@/store/link';
 import { useTranslation } from 'react-i18next';
+import { TLink } from '@/types/links.type';
+import linkServices from '@/services/link.services';
+import { useToast } from 'react-native-toast-notifications';
 
 interface LinkCommentFormProps {
   handleClose: () => void;
-  link?: Link;
+  link?: TLink;
 }
 
 const commentFormSchema = yup.object().shape({
   comment: yup
     .string()
-    .min(2, 'Komentarz musi mieć co najmniej 2 znaki')
-    .max(50, 'Komentarz nie może przekraczać 50 znaków')
-    .required('Komentarz jest wymagany'),
+    .min(2, 'comment_min_length')
+    .max(50, 'comment_max_length')
+    .required('comment_required'),
 });
 
 type TCommentForm = {
@@ -32,6 +34,7 @@ const INITIAL_COMMENT_FORM: TCommentForm = {
 
 export const LinkCommentForm = ({ handleClose, link }: Readonly<LinkCommentFormProps>) => {
   const { t } = useTranslation();
+  const toast = useToast();
 
   const dispatch = useAppDispatch();
 
@@ -51,21 +54,31 @@ export const LinkCommentForm = ({ handleClose, link }: Readonly<LinkCommentFormP
   }, []);
 
   const onSubmit = useCallback(
-    (data: TCommentForm) => {
+    async (data: TCommentForm) => {
       if (!link) return;
-      dispatch(
-        storeActions.links.updateLink({
-          link: { id: link.id, comments: data.comment },
-        }),
-      );
-      reset(INITIAL_COMMENT_FORM);
-      handleClose();
+      const { comment } = data;
+      try {
+        const updatedLink = Object.assign({ ...link }, { comments: comment });
+        const { data } = await linkServices.updateLink(link.id, updatedLink);
+        dispatch(
+          storeActions.links.updateLink({
+            link: data,
+          }),
+        );
+        toast.show('[Success] : Link was updated', { type: 'success' });
+      } catch (e) {
+        toast.show('[Error] : Comment could not be added', { type: 'error' });
+        console.error('[onSubmit - ADD COMMENT ]:', e);
+      } finally {
+        reset(INITIAL_COMMENT_FORM);
+        handleClose();
+      }
     },
     [link?.id, dispatch, reset, handleClose],
   );
 
   return (
-    <View className={'flex-1 items-center justify-start gap-6 px-8 pt-2'}>
+    <View className={'flex-1 items-stretch justify-start gap-6 px-8 pt-2'}>
       <Controller
         name="comment"
         control={control}
@@ -74,7 +87,7 @@ export const LinkCommentForm = ({ handleClose, link }: Readonly<LinkCommentFormP
             label={`${link?.comments ? t('edit_your_personal_comment') : t('add_your_personal_comment')}`}
             labelClassName={'pb-2'}
             placeholder={t('write_your_comment')}
-            inputClassName={'h-32'}
+            inputClassName={'h-32 w-full'}
             multiline={true}
             numberOfLines={5}
             value={value}

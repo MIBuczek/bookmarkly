@@ -10,15 +10,9 @@ import { useTranslation } from 'react-i18next';
 import authServices from '@/services/auth.services';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
 import { ArrowBackButton } from '@/components/button/ArrowBackButton';
-import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
 
 const CELL_COUNT = 6;
 const START_COUNT_DOWN = 90;
-
-export type TVerifyCodeForm = {
-  phone: string;
-  otp: string;
-};
 
 export default function VerifyCodeScreen() {
   const router = useRouter();
@@ -51,8 +45,6 @@ export default function VerifyCodeScreen() {
       const { user, token } = await authServices.verifyCode({ phone, otp });
       dispatch(storeActions.user.setUser({ user }));
       dispatch(storeActions.user.setToken({ token }));
-      localAppStorage.setLocalData(LOCAL_STORAGE_KEY.TOKEN, token);
-      localAppStorage.setLocalData(LOCAL_STORAGE_KEY.PHONE_NUMBER, phone);
       router.navigate('/(main)/(dashboard)');
     } catch (e) {
       console.error(e);
@@ -79,10 +71,10 @@ export default function VerifyCodeScreen() {
         }}
       />
       <View className="flex-1 items-center justify-center gap-4">
-        <ThemedText type="title" className="text-xl">
+        <ThemedText type="title" size={'xl'}>
           {t('enter_confirmation_code')}
         </ThemedText>
-        <ThemedText type="default" className={'text-center'}>
+        <ThemedText type="default" className={'text-center'} size={'sm'}>
           {`${t('a_4_digit_code_was_sent_to')} \n ${phone || '(unknown)'}`}
         </ThemedText>
         <CodeField
@@ -97,7 +89,7 @@ export default function VerifyCodeScreen() {
           textContentType="oneTimeCode"
           renderCell={({ index, symbol, isFocused }) => (
             <Text
-              className="m-2 rounded-lg"
+              className="m-2 rounded-lg text-primary-500"
               key={index}
               style={[styles.cell, isFocused && styles.focusCell]}
               onLayout={getCellOnLayoutHandler(index)}

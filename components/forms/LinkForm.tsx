@@ -15,13 +15,15 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useTranslation } from 'react-i18next';
 import { TLink } from '@/types/links.type';
+import linkServices from '@/services/link.services';
+import { useToast } from 'react-native-toast-notifications';
 
 const linkFormSchema = yup.object().shape({
-  title: yup.string().min(2, 'title_min_length').max(50, 'title_max_length').required('title_required'),
+  title: yup.string().min(2, 'title_min_length').max(100, 'title_max_length').required('title_required'),
   description: yup
     .string()
     .min(2, 'description_min_length')
-    .max(100, 'description_max_length')
+    .max(300, 'description_max_length')
     .required('description_required'),
   tag: yup.string().defined().default('').max(20, 'Tag cannot exceed 20 characters'),
 });
@@ -47,6 +49,7 @@ interface LinkFormProps {
 export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProps>) => {
   const theme = useColorScheme() ?? 'light';
   const { t } = useTranslation();
+  const toast = useToast();
 
   const dispatch = useAppDispatch();
 
@@ -101,29 +104,69 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
     [formTags],
   );
 
-  const clearTag = useCallback(() => {
+  const removeTag = useCallback(() => {
+    if (editTagIndex === null) return;
+    setFormTags((prev) => {
+      return prev.filter((_, index) => index !== editTagIndex);
+    });
     setEditTagIndex(null);
     setValue('tag', '');
   }, [formTags, editTagIndex]);
 
-  const onSubmit = useCallback(
-    (data: TLinkForm) => {
-      if (!link) return;
-      const { title, description } = data;
+  const saveNewLinkCallback = async (_link: TLink) => {
+    try {
+      const { data } = await linkServices.addLink(_link);
       dispatch(
-        storeActions.links.updateLink({
-          link: { ...link, title, description, tags: formTags },
+        storeActions.links.addLink({
+          link: data,
         }),
       );
+      toast.show('[Success] : Link was saved', { type: 'success' });
+    } catch (e) {
+      toast.show('[Error] : Link could not be saved', { type: 'error' });
+      console.error('[saveNewLinkCallback]:', e);
+    } finally {
       setFormTags([]);
       reset(INITIAL_LINK_FORM);
       handleClose();
+    }
+  };
+
+  const updateLinkCallback = async (_link: TLink) => {
+    try {
+      const { data } = await linkServices.updateLink(_link.id, _link);
+      dispatch(
+        storeActions.links.updateLink({
+          link: data,
+        }),
+      );
+      toast.show('[Success] : Link was updated', { type: 'success' });
+    } catch (e) {
+      toast.show('[Error] : Link could not be updated', { type: 'error' });
+      console.error('[updateLinkCallback]:', e);
+    } finally {
+      setFormTags([]);
+      reset(INITIAL_LINK_FORM);
+      handleClose();
+    }
+  };
+
+  const onSubmit = useCallback(
+    async (data: TLinkForm) => {
+      if (!link) return;
+      const { title, description } = data;
+      const _link = Object.assign({ ...link }, { title, description, tags: formTags });
+      if (formState === 'new') {
+        await saveNewLinkCallback(_link);
+        return;
+      }
+      await updateLinkCallback(_link);
     },
     [link, dispatch, reset, handleClose, formTags],
   );
 
   return (
-    <View className={'flex-1 justify-start gap-6 px-8 pt-2'}>
+    <View className={'flex-1 justify-start gap-4 px-8 pt-2'}>
       <Controller
         name="title"
         control={control}
@@ -175,12 +218,14 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
                 'absolute bottom-0 right-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 border-primary-500 bg-primary-500 p-1'
               }
             >
-              <TouchableOpacity
-                className={'flex items-center justify-center rounded-2xl bg-white px-4 py-2'}
-                onPress={clearTag}
-              >
-                <FontAwesome name="trash" size={18} color={'#ef4444'} />
-              </TouchableOpacity>
+              {editTagIndex !== null && (
+                <TouchableOpacity
+                  className={'flex items-center justify-center rounded-2xl bg-white px-4 py-2'}
+                  onPress={removeTag}
+                >
+                  <FontAwesome name="trash" size={18} color={'#ef4444'} />
+                </TouchableOpacity>
+              )}
               <TouchableOpacity
                 className={'flex items-center justify-center rounded-2xl bg-white px-3 py-1'}
                 onPress={addTag}

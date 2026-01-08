@@ -15,8 +15,9 @@ export const Tags = ({ tags, onPressAction, containerClassName }: Readonly<TagsP
       <Pressable key={`${tag}_${index}`} onPress={() => onPressAction && onPressAction(tag)}>
         <ThemedText
           type={'subtitle'}
+          size={'xs'}
           className={
-            'rounded-full bg-primary-200 px-3 py-1 text-xs uppercase text-primary-600 dark:bg-primary-600 dark:text-primary-200'
+            'rounded-full bg-primary-200 px-3 py-1 uppercase text-primary-600 dark:bg-primary-600 dark:text-primary-200'
           }
         >
           {tag}

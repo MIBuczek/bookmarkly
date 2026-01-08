@@ -3,13 +3,13 @@ import { ThemedText } from '@/components/ui/ThemedText';
 import { Animated, Pressable, View } from 'react-native';
 import { Button } from '@/components/button/Button';
 import { useRouter } from 'expo-router';
-import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
 import { useTranslation } from 'react-i18next';
 import { PastLink } from '@/components/svg/PastLink';
 import { LinkContent } from '@/components/svg/LinkContent';
 import { CompleteLink } from '@/components/svg/CompleteLink';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
 import { ScreenHeight } from 'react-native-elements/dist/helpers';
+import { RootState, storeActions, useAppDispatch, useAppSelector } from '@/store';
 
 interface SingleSlideDotProps {
   isActive: boolean;
@@ -64,8 +64,8 @@ const SlideText = ({ title, description, isActive }: Readonly<SlideTextProps>) =
       }}
       className="flex items-start justify-start gap-6 py-6"
     >
-      <ThemedText type={'title'}>{title}</ThemedText>
-      <ThemedText type={'default'}>{description}</ThemedText>
+      <ThemedText type={'title'} size={'2xl'}>{title}</ThemedText>
+      <ThemedText type={'default'} size={'sm'}>{description}</ThemedText>
     </Animated.View>
   );
 };
@@ -79,6 +79,8 @@ interface ISwipeContent {
 export default function OnboardingScreen() {
   const router = useRouter();
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const { onboarded } = useAppSelector(({ user }: RootState) => user);
 
   const [slideIndex, setSlideIndex] = useState<string>('1');
 
@@ -113,16 +115,15 @@ export default function OnboardingScreen() {
   };
 
   const checkHasOnboardingBeenDone = () => {
-    const btdt = localAppStorage.getLocalData<boolean>(LOCAL_STORAGE_KEY.ONBOARDING);
-    if (btdt) router.navigate('/(login)');
+    if (onboarded) router.navigate('/(login)/sign-in');
   };
 
   useEffect(checkHasOnboardingBeenDone, []);
 
   const handleSwipeContent = () => {
     if (slideIndex === '3') {
-      localAppStorage.setLocalData<boolean>(LOCAL_STORAGE_KEY.ONBOARDING, true);
-      router.navigate('/(login)');
+      dispatch(storeActions.user.setOnboarded({ onboarded: true }));
+      router.navigate('/(login)/sign-in');
     }
     const nextSwipe = slideIndex === '3' ? '3' : `${Number(slideIndex) + 1}`;
     setSlideIndex(nextSwipe);

@@ -14,10 +14,13 @@ type TLink = {
   createdAt: string;
 };
 
+
 type TCreateLink = Omit<TLink, 'id' | 'createdAt'>;
 
 type TUpdateLink = Partial<TLink>;
 
 type TMetadata = Record<'url', string | null>;
 
-export type { TLink, TCreateLink, TUpdateLink, TMetadata };
+type TGeneratedMetadataLink = Omit<TLink, 'tags'> & { keywords: string[] }
+
+export type { TLink, TCreateLink, TUpdateLink, TMetadata, TGeneratedMetadataLink };

@@ -1,7 +1,7 @@
 import { API_URLS, axiosInstance } from './utils';
-import { TCreateLink, TLink, TUpdateLink } from '@/types/links.type';
+import { TCreateLink, TGeneratedMetadataLink, TLink, TUpdateLink } from '@/types/links.type';
 
-const generateMetadata = async (url: string): Promise<TLink> => {
+const generateMetadata = async (url: string): Promise<{ data: TGeneratedMetadataLink }> => {
   try {
     const response = await axiosInstance.post(API_URLS.GENERATE_METADATA_URL, { url });
     return response.data;
@@ -19,18 +19,24 @@ const getAllLink = async (): Promise<{ links: TLink[]; count: number }> => {
   }
 };
 
-const addLink = async (linkData: TCreateLink): Promise<TLink> => {
+const addLink = async (linkData: TCreateLink): Promise<{
+  message: string,
+  data: TLink,
+}> => {
   try {
-    const response = await axiosInstance.post(API_URLS.LINKS_URL, linkData);
+    const response = await axiosInstance.post(API_URLS.LINKS_URL, { link: linkData });
     return response.data;
   } catch (e) {
     throw new Error('[addLink] ' + JSON.stringify(e));
   }
 };
 
-const updateLink = async (id: string, linkData: TUpdateLink): Promise<TLink> => {
+const updateLink = async (id: string, linkData: TUpdateLink): Promise<{
+  message: string,
+  data: TLink,
+}> => {
   try {
-    const response = await axiosInstance.patch(`${API_URLS.LINKS_URL}/${id}`, linkData);
+    const response = await axiosInstance.patch(`${API_URLS.LINKS_URL}/${id}`, { link: linkData });
     return response.data;
   } catch (e) {
     throw new Error('[updateLink] ' + JSON.stringify(e));

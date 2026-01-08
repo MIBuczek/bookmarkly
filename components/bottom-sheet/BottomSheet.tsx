@@ -33,7 +33,7 @@ export const BottomSheet = ({
         </View>
         <View className="flex flex-row items-center pt-4">
           {title && (
-            <ThemedText type="subtitle" className="mx-auto text-center text-lg capitalize">
+            <ThemedText type="subtitle" className="mx-auto text-center capitalize" size={'lg'}>
               {title}
             </ThemedText>
           )}

@@ -1,38 +1,44 @@
-import { useCallback } from 'react';
-import { router } from 'expo-router';
-import { storeActions, useAppDispatch } from '@/store';
-import { LOCAL_STORAGE_KEY, localAppStorage } from '@/providers/local-app-storage';
+import { useCallback, useMemo } from 'react';
+import { useRouter } from 'expo-router';
+import { storeActions, useAppDispatch, useAppSelector } from '@/store';
 import authServices from '@/services/auth.services';
 
 export const useAuthGuard = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
+  const { token, isLoggedIn } = useAppSelector((state) => state.user);
+
+  const checkUser = useMemo(() => {
+    return isLoggedIn;
+  }, [isLoggedIn]);
+  
+  
 
   const checkToken = useCallback(async () => {
+    if (!token) {
+      dispatch(storeActions.user.logout());
+      router.navigate('/(login)/sign-in');
+      return;
+    }
+
     try {
-      const _token = localAppStorage.getLocalData<string>(LOCAL_STORAGE_KEY.TOKEN);
 
-      if (!_token) {
-        router.replace('/(login)/sign-in');
-        return;
-      }
-
-      dispatch(storeActions.user.setToken({ token: _token }));
       const { valid, user } = await authServices.verifySession();
 
       if (valid && user) {
         dispatch(storeActions.user.setUser({ user }));
-        router.replace('/(main)/(dashboard)');
+        router.navigate('/(main)/(dashboard)');
         return;
       }
 
-      localAppStorage.deleteLocalData(LOCAL_STORAGE_KEY.TOKEN);
-      router.replace('/(login)/sign-in');
+      dispatch(storeActions.user.logout());
+      router.navigate('/(login)/sign-in');
     } catch (error) {
       console.error('[checkToken]:', error);
-      localAppStorage.deleteLocalData(LOCAL_STORAGE_KEY.TOKEN);
-      router.replace('/(login)/sign-in');
+      dispatch(storeActions.user.logout());
+      router.navigate('/(login)/sign-in');
     }
-  }, [dispatch, localAppStorage, router]);
+  }, [dispatch, router, token]);
 
-  return { checkToken };
+  return { checkUser, checkToken };
 };

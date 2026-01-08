@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { store } from '@/store'; // Import your redux store to access the token
 
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost/api';
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 /* Authentication urls */
 const AUTH_SING_IN_URL: Readonly<string> = `${BASE_URL}/sign-in`;

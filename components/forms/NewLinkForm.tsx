@@ -9,12 +9,14 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/button/Button';
 import React, { useState } from 'react';
 import { BottomSheet } from '@/components/bottom-sheet/BottomSheet';
-import { LinkForm } from '@/components/bottom-sheet/LinkForm';
+import { LinkForm } from '@/components/forms/LinkForm';
 import { Colors } from '@/constants/colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { twMerge } from 'tailwind-merge';
-import { Link, MOCK_LINKS } from '@/store/link';
 import { useTranslation } from 'react-i18next';
+import { TLink } from '@/types/links.type';
+import linkServices from '@/services/link.services';
+import { useToast } from 'react-native-toast-notifications';
 
 const newLinkFormSchema = yup.object().shape({
   url: yup.string().url('url_pattern').required('url_required'),
@@ -36,9 +38,10 @@ interface NewLinkFormProps {
 export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormProps>) => {
   const theme = useColorScheme() ?? 'light';
   const { t } = useTranslation();
+  const toast = useToast();
 
   const [metadataGenerated, setMetadataGenerated] = useState(false);
-  const [metadata, setMetadata] = useState<Link | undefined>();
+  const [metadata, setMetadata] = useState<TLink | undefined>();
 
   const {
     control,
@@ -60,10 +63,16 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
     onRequestClose();
   };
 
-  const onSubmit = (data: TNewLinkForm) => {
-    console.log('Wysłane dane:', data);
-    setMetadataGenerated(true);
-    setMetadata(MOCK_LINKS[0]);
+  const onSubmit = async ({ url }: TNewLinkForm) => {
+    try {
+      const { data } = await linkServices.generateMetadata(url);
+      const newLink: TLink = { ...data, tags: [...data.keywords] };
+      setMetadata(newLink);
+      setMetadataGenerated(true);
+    } catch (error) {
+      console.error('Error generating metadata: ', error);
+      toast.show('[Error] : Metadata could not be generated', { type: 'error' });
+    }
   };
 
   return (
@@ -73,10 +82,8 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
       visible={visible}
       onRequestClose={onRequestClose}
     >
-      <View className={'flex items-center justify-start gap-6 px-8 py-2'}>
-        <ThemedText className={'w-full'}>
-          Phasellus vitae pharetra erat. Aliquam in tristique est, eu lobortis ex. Sed et turpis odio.
-        </ThemedText>
+      <View className={'flex items-stretch justify-start gap-6 px-8 py-2'}>
+        <ThemedText size={'sm'} className={'w-full'}>{t('add_link_description')}</ThemedText>
         <Controller
           name="url"
           control={control}
@@ -92,13 +99,13 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
             >
               <View
                 className={twMerge(
-                  'absolute bottom-0 right-0 h-[47px] flex-row gap-1 rounded-r-xl border-2 border-primary-500 bg-primary-500 p-1',
+                  'absolute bottom-0 right-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 border-primary-500 bg-primary-500 p-1',
                   metadataGenerated ? 'border-gray-800 bg-gray-600' : '',
                 )}
               >
                 {url ? (
                   <TouchableOpacity
-                    className={'flex items-center justify-center rounded-full bg-white px-3 py-2'}
+                    className={'flex items-center justify-center rounded-full bg-white px-4 py-2'}
                     disabled={metadataGenerated}
                     onPress={() => {
                       setValue('url', '');
@@ -108,7 +115,7 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
-                    className={'flex items-center justify-center rounded-full bg-white px-3 py-2'}
+                    className={'flex items-center justify-center rounded-full bg-white px-3.5 py-2'}
                     disabled={metadataGenerated}
                     onPress={() => {
                       Clipboard.getStringAsync().then((text) => {
@@ -118,7 +125,7 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
                   >
                     <Octicons
                       name="paste"
-                      size={24}
+                      size={18}
                       color={metadataGenerated ? Colors[theme].icon : Colors[theme].primary}
                     />
                   </TouchableOpacity>
