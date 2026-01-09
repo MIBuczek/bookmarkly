@@ -95,5 +95,56 @@
   "slide_two_description": "Die App ruft automatisch Titel, Beschreibung ab und schlägt Tags vor, damit Sie Ihre gespeicherten Inhalte leicht finden können.",
   "slide_three_title": "Bleiben sie organisiert",
   "slide_three_description": "Denken Sie daran, Sie können Ihre gespeicherten Artikel jederzeit bearbeiten oder als gelesen markieren, um den Überblick zu behalten und sie später erneut aufzurufen.",
-  "next": "Weiter"
+  "next": "Weiter",
+  "understand": "Verstanden",
+  "terms_sections": {
+    "1": {
+      "title": "1. Einleitung",
+      "content": "Durch den Zugriff auf Bookmarkly (die „App“) und deren Nutzung erklären Sie sich mit den folgenden Allgemeinen Geschäftsbedingungen einverstanden. Wenn Sie diesen Bedingungen nicht zustimmen, nutzen Sie die App bitte nicht. Diese Allgemeinen Geschäftsbedingungen regeln Ihre Nutzung der App, die darauf ausgelegt ist, persönliche Informationen (wie E-Mail-Adressen, Telefonnummern und Benutzernamen) sowie von den Benutzern bereitgestellte Links zu speichern."
+    },
+    "2": {
+      "title": "2. Erhobene Benutzerinformationen",
+      "content": "Um die App nutzen zu können, müssen Sie bestimmte personenbezogene Daten angeben, dazu gehören unter anderem:\n\n\u2022 E-Mail-Adresse\n\u2022 Telefonnummer\n\u2022 Name oder Spitzname\n\nZusätzlich speichert die App von Ihnen bereitgestellte Links. Wir nehmen den Schutz Ihrer Privatsphäre ernst und setzen uns für den Schutz Ihrer personenbezogenen Daten ein."
+    },
+    "3": {
+      "title": "3. Nutzung Ihrer Daten",
+      "content": "Die von Ihnen bereitgestellten persönlichen Informationen und Links werden ausschließlich für die folgenden Zwecke verwendet: Speicherung und Organisation Ihrer Kontoinformationen (wie E-Mail, Telefonnummer und Benutzername). Speicherung und Zugriff auf die Links, die Sie über die App bereitstellen. Senden von Benachrichtigungen oder Updates bezüglich der App, falls erforderlich. Ihre Daten werden nicht an Dritte verkauft. Wir können Ihre Daten jedoch mit Drittanbietern teilen, die uns beim Betrieb der App unterstützen und Dienstleistungen in unserem Namen erbringen. Diese Dritten sind verpflichtet, die Vertraulichkeit Ihrer Daten zu wahren."
+    },
+    "4": {
+      "title": "4. Datenspeicherung und -sicherheit",
+      "content": "Ihre persönlichen Informationen und Links werden in unserer sicheren Datenbank gespeichert, solange Sie die App weiterhin nutzen. Sie können Ihr Konto und Ihre Daten jederzeit löschen, indem Sie uns über die in der App angegebenen Kontaktinformationen kontaktieren. Wir setzen angemessene Sicherheitsmaßnahmen ein, um Ihre Daten vor unbefugtem Zugriff, Änderung oder Zerstörung zu schützen. Bitte beachten Sie jedoch, dass kein Datenübertragungs- oder Speichersystem vollständig sicher ist und wir die absolute Sicherheit Ihrer Informationen nicht garantieren können."
+    },
+    "5": {
+      "title": "5. Verantwortlichkeiten des Benutzers",
+      "content": "Als Benutzer sind Sie für die Richtigkeit der Informationen verantwortlich, die Sie der App bereitstellen. Sie erklären sich damit einverstanden, keine schädlichen, rechtswidrigen oder unangemessenen Links oder Inhalte hochzuladen oder zu teilen. Sie sind auch für die Wahrung der Vertraulichkeit Ihres Kontos und Ihrer Anmeldeinformationen verantwortlich. Sie sollten uns unverzüglich benachrichtigen, wenn Sie einen unbefugten Zugriff auf Ihr Konto vermuten."
+    },
+    "6": {
+      "title": "6. Verbotene Nutzung",
+      "content": "Sie erklären sich damit einverstanden, die App nicht für ungesetzliche Zwecke zu nutzen, einschließlich, aber nicht beschränkt auf:\nVerstoß gegen lokale, staatliche oder internationale Gesetze. Hochladen oder Teilen von Malware, Viren oder anderen schädlichen Inhalten. Aktivitäten, die die Funktionalität der App stören oder beeinträchtigen."
+    },
+    "7": {
+      "title": "7. Änderungen dieser Bedingungen",
+      "content": "Wir können diese Allgemeinen Geschäftsbedingungen jederzeit aktualisieren oder ändern. Wenn wir Änderungen vornehmen, werden wir Sie über die App oder per E-Mail benachrichtigen. Die fortgesetzte Nutzung der App nach Änderungen dieser Bedingungen stellt Ihre Annahme der neuen Bedingungen dar."
+    },
+    "8": {
+      "title": "8. Haftungsbeschränkung",
+      "content": "Soweit gesetzlich zulässig, haften Bookmarkly und seine verbundenen Unternehmen nicht für indirekte, zufällige, besondere oder Folgeschäden, die aus der Nutzung oder der Unfähigkeit zur Nutzung der App entstehen."
+    },
+    "9": {
+      "title": "9. Datenschutzrichtlinie",
+      "content": "Ihre Nutzung der App unterliegt auch unserer Datenschutzrichtlinie, auf die separat zugegriffen werden kann. Die Datenschutzrichtlinie erläutert, wie wir Ihre personenbezogenen Daten erheben, nutzen und schützen."
+    },
+    "10": {
+      "title": "10. Kündigung des Dienstes",
+      "content": "Wir behalten uns das Recht vor, Ihren Zugriff auf die App jederzeit und ohne Vorankündigung aus beliebigem Grund zu sperren oder zu kündigen, einschließlich, aber nicht beschränkt auf Verstöße gegen diese Allgemeinen Geschäftsbedingungen."
+    },
+    "11": {
+      "title": "11. Anwendbares Recht",
+      "content": "Diese Allgemeinen Geschäftsbedingungen unterliegen den Gesetzen von [Land] und werden in Übereinstimmung mit diesen ausgelegt, ohne Rücksicht auf die Grundsätze des Kollisionsrechts."
+    },
+    "12": {
+      "title": "12. Kontaktieren Sie uns",
+      "content": "Wenn Sie Fragen oder Bedenken zu diesen Allgemeinen Geschäftsbedingungen haben, kontaktieren Sie uns bitte unter: E-Mail: [email@example.com] Adresse: [Firmenadresse]"
+    }
+  }
 }

@@ -95,5 +95,56 @@
   "slide_two_description": "L'application récupère automatiquement le titre, la description et suggère des tags, afin que vous puissiez facilement retrouver votre contenu enregistré.",
   "slide_three_title": "Restez organisé",
   "slide_three_description": "N'oubliez pas que vous pouvez toujours modifier vos articles enregistrés ou les marquer comme lus, ce qui facilite le suivi de ce que vous avez consulté et leur consultation ultérieure.",
-  "next": "Suivant"
+  "next": "Suivant",
+  "understand": "Compris",
+  "terms_sections": {
+    "1": {
+      "title": "1. Introduction",
+      "content": "En accédant et en utilisant Bookmarkly (l'\"Application\"), vous acceptez d'être lié par les Termes et Conditions suivants. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser l'Application. Ces Termes et Conditions régissent votre utilisation de l'Application, qui est conçue pour stocker des informations personnelles (telles que les adresses e-mail, les numéros de téléphone et les noms d'utilisateur) ainsi que les liens fournis par les utilisateurs."
+    },
+    "2": {
+      "title": "2. Informations utilisateur collectées",
+      "content": "Pour utiliser l'Application, vous devrez fournir certaines informations personnelles, qui peuvent inclure :\n\n\u2022 Adresse e-mail\n\u2022 Numéro de téléphone\n\u2022 Nom ou pseudo\n\nDe plus, l'Application stockera les liens que vous fournissez. Nous prenons votre vie privée au sérieux et nous nous engageons à protéger vos données personnelles."
+    },
+    "3": {
+      "title": "3. Utilisation de vos données",
+      "content": "Les informations personnelles et les liens que vous fournissez seront utilisés exclusivement aux fins suivantes : Stockage et organisation des informations de votre compte (telles que l'e-mail, le numéro de téléphone et le nom d'utilisateur). Stockage et accès aux liens que vous fournissez via l'Application. Envoi de notifications ou de mises à jour concernant l'Application, si nécessaire. Vos données ne seront pas vendues à des tiers. Cependant, nous pouvons partager vos données avec des prestataires de services tiers qui nous aident à exploiter l'Application et à fournir des services en notre nom. Ces tiers sont tenus de maintenir la confidentialité de vos données."
+    },
+    "4": {
+      "title": "4. Conservation et sécurité des données",
+      "content": "Vos informations personnelles et vos liens seront stockés dans notre base de données sécurisée tant que vous continuerez à utiliser l'Application. Vous pouvez supprimer votre compte et vos données à tout moment en nous contactant via les coordonnées fournies dans l'Application. Nous mettons en œuvre des mesures de sécurité raisonnables pour protéger vos données contre tout accès non autorisé, altération ou destruction. Cependant, veuillez noter qu'aucun système de transmission ou de stockage de données n'est totalement sécurisé, et nous ne pouvons garantir la sécurité absolue de vos informations."
+    },
+    "5": {
+      "title": "5. Responsabilités de l'utilisateur",
+      "content": "En tant qu'utilisateur, vous êtes responsable de l'exactitude des informations que vous fournissez à l'Application. Vous acceptez de ne pas télécharger ou partager de liens ou de contenus nuisibles, illégaux ou inappropriés. Vous êtes également responsable du maintien de la confidentialité de votre compte et de vos informations de connexion. Vous devez nous informer immédiatement si vous soupçonnez un accès non autorisé à votre compte."
+    },
+    "6": {
+      "title": "6. Utilisation interdite",
+      "content": "Vous acceptez de ne pas utiliser l'Application à des fins illégales, y compris, mais sans s'y limiter :\nVioler toute loi locale, nationale ou internationale. Télécharger ou partager des logiciels malveillants, des virus ou tout autre contenu nuisible. S'engager dans des activités qui perturbent ou nuisent à la fonctionnalité de l'Application."
+    },
+    "7": {
+      "title": "7. Modifications de ces termes",
+      "content": "Nous pouvons mettre à jour ou modifier ces Termes et Conditions à tout moment. Si nous apportons des modifications, nous vous en informerons via l'Application ou par e-mail. L'utilisation continue de l'Application après modification de ces conditions constitue votre acceptation des nouvelles conditions."
+    },
+    "8": {
+      "title": "8. Limitation de responsabilité",
+      "content": "Dans la mesure permise par la loi, Bookmarkly et ses sociétés affiliées ne seront pas responsables des dommages indirects, accessoires, spéciaux ou consécutifs découlant de l'utilisation ou de l'incapacité d'utiliser l'Application."
+    },
+    "9": {
+      "title": "9. Politique de confidentialité",
+      "content": "Votre utilisation de l'Application est également régie par notre Politique de Confidentialité, accessible séparément. La Politique de Confidentialité explique comment nous collectons, utilisons et protégeons vos données personnelles."
+    },
+    "10": {
+      "title": "10. Résiliation du service",
+      "content": "Nous nous réservons le droit de suspendre ou de résilier votre accès à l'Application à tout moment, sans préavis, pour quelque raison que ce soit, y compris, mais sans s'y limiter, les violations de ces Termes et Conditions."
+    },
+    "11": {
+      "title": "11. Loi applicable",
+      "content": "Ces Termes et Conditions seront régis et interprétés conformément aux lois de [Pays], sans égard à ses principes de conflit de lois."
+    },
+    "12": {
+      "title": "12. Contactez-nous",
+      "content": "Si vous avez des questions ou des préoccupations concernant ces Termes et Conditions, veuillez nous contacter à : E-mail : [email@example.com] Adresse : [Adresse de la société]"
+    }
+  }
 }

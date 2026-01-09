@@ -340,6 +340,7 @@ export default function SignUpScreen(): React.JSX.Element {
           onPress={() => {
             dispatch(storeActions.user.setTermsAndConditions({ termsAndConditions: true }));
             setShowTermsAndConditions(false);
+            setValue('terms', true);
           }}
         />
       </BottomSheet>

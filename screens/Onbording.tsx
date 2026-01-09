@@ -10,6 +10,7 @@ import { CompleteLink } from '@/components/svg/CompleteLink';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
 import { ScreenHeight } from 'react-native-elements/dist/helpers';
 import { RootState, storeActions, useAppDispatch, useAppSelector } from '@/store';
+import Logo from '@/components/Logo';
 
 interface SingleSlideDotProps {
   isActive: boolean;
@@ -132,6 +133,7 @@ export default function OnboardingScreen() {
   return (
     <ScreenContainer>
       <View className="flex items-center justify-center bg-primary-100 dark:bg-primary-200">
+        <Logo className={'bg-primary-300 dark:bg-primary-300'} />
         {swipeContent[slideIndex].img}
       </View>
       <View className="flex-1">
@@ -148,7 +150,7 @@ export default function OnboardingScreen() {
             description={swipeContent[k].description}
           />
         ))}
-        <View className="mt-auto w-full px-6">
+        <View className="mt-auto w-full">
           <Button type={'primary'} title={slideIndex === '3' ? t('close') : t('next')} onPress={handleSwipeContent} />
         </View>
       </View>

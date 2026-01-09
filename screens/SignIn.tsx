@@ -7,7 +7,6 @@ import { Button } from '@/components/button/Button';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LogoIcon } from '@/components/svg/LogoIcon';
 import { RootState, storeActions, useAppDispatch, useAppSelector } from '@/store';
 import { useTranslation } from 'react-i18next';
 import authServices from '@/services/auth.services';
@@ -24,6 +23,7 @@ import { Colors } from '@/constants/colors';
 import { debounce } from 'lodash-es';
 import { ErrorText } from '@/components/ui/ErrorText';
 import { getSystemLanguage } from '@/providers/localization';
+import Logo from '@/components/Logo';
 
 export type PhoneCodeItemProps = Country & {
   className?: string;
@@ -183,12 +183,7 @@ export default function SignInScreen() {
 
   return (
     <ScreenContainer>
-      <View className="flex-1 flex-row items-center justify-center rounded-t-xl bg-primary-100 dark:bg-primary-200">
-        <LogoIcon width={50} height={50} />
-        <ThemedText type="title" className={'pb-2 text-dark-600'} size={'3xl'}>
-          Bookmarkly
-        </ThemedText>
-      </View>
+      <Logo className={'flex-1'} />
       <View className="flex flex-1 items-start gap-6 border-t-2 border-t-primary-200 pt-10 dark:border-t-primary-300">
         <ThemedText type="title" className="font-extrabold" size={'3xl'}>
           {t('welcome')}

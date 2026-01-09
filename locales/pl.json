@@ -95,5 +95,56 @@
   "slide_two_description": "Aplikacja automatycznie pobierze tytuł, opis i zaproponuje tagi, abyś mógł łatwo odnaleźć zapisane treści.",
   "slide_three_title": "Pozostań zorganizowany",
   "slide_three_description": "Pamiętaj, zawsze możesz edytować zapisane artykuły lub oznaczyć je jako przeczytane, co ułatwia śledzenie tego, co przejrzałeś i powrót do nich w przyszłości.",
-  "next": "Dalej"
+  "next": "Dalej",
+  "understand": "Rozumiem",
+  "terms_sections": {
+    "1": {
+      "title": "1. Wstęp",
+      "content": "Uzyskując dostęp do aplikacji Bookmarkly („Aplikacja”) i korzystając z niej, użytkownik wyraża zgodę na przestrzeganie poniższego Regulaminu. Jeśli nie zgadzasz się na te warunki, prosimy o niekorzystanie z Aplikacji. Niniejszy Regulamin reguluje zasady korzystania z Aplikacji, która służy do przechowywania danych osobowych (takich jak adresy e-mail, numery telefonów i nazwy użytkowników) oraz linków udostępnianych przez użytkowników."
+    },
+    "2": {
+      "title": "2. Gromadzone informacje o użytkowniku",
+      "content": "W celu korzystania z Aplikacji konieczne będzie podanie pewnych danych osobowych, które mogą obejmować:\n\n\u2022 Adres e-mail\n\u2022 Numer telefonu\n\u2022 Imię lub pseudonim\n\nDodatkowo Aplikacja będzie przechowywać udostępniane przez Ciebie linki. Poważnie traktujemy Twoją prywatność i zobowiązujemy się do ochrony Twoich danych osobowych."
+    },
+    "3": {
+      "title": "3. Wykorzystanie Twoich danych",
+      "content": "Podane przez Ciebie dane osobowe i linki będą wykorzystywane wyłącznie w następujących celach: Przechowywanie i organizowanie informacji o koncie (takich jak e-mail, numer telefonu i nazwa użytkownika). Przechowywanie i uzyskiwanie dostępu do linków udostępnianych za pośrednictwem Aplikacji. Wysyłanie powiadomień lub aktualizacji dotyczących Aplikacji, jeśli zajdzie taka potrzeba. Twoje dane nie będą sprzedawane podmiotom trzecim. Możemy jednak udostępniać Twoje dane zewnętrznym dostawcom usług, którzy pomagają nam w obsłudze Aplikacji i świadczeniu usług w naszym imieniu. Podmioty te są zobowiązane do zachowania poufności Twoich danych."
+    },
+    "4": {
+      "title": "4. Przechowywanie i bezpieczeństwo danych",
+      "content": "Twoje dane osobowe i linki będą przechowywane w naszej bezpiecznej bazie danych tak długo, jak długo będziesz korzystać z Aplikacji. Możesz usunąć swoje konto i dane w dowolnym momencie, kontaktując się z nami poprzez dane kontaktowe podane w Aplikacji. Wdrażamy odpowiednie środki bezpieczeństwa, aby chronić Twoje dane przed nieautoryzowanym dostępem, modyfikacją lub zniszczeniem. Należy jednak pamiętać, że żaden system przesyłania lub przechowywania danych nie jest w pełni bezpieczny i nie możemy zagwarantować całkowitego bezpieczeństwa Twoich informacji."
+    },
+    "5": {
+      "title": "5. Obowiązki użytkownika",
+      "content": "Jako użytkownik jesteś odpowiedzialny za dokładność informacji podawanych w Aplikacji. Zgadzasz się nie przesyłać ani nie udostępniać żadnych szkodliwych, niezgodnych z prawem lub niewłaściwych linków ani treści. Jesteś również odpowiedzialny za zachowanie poufności swojego konta i danych logowania. Powinieneś natychmiast powiadomić nas, jeśli podejrzewasz nieautoryzowany dostęp do swojego konta."
+    },
+    "6": {
+      "title": "6. Zakazane użycie",
+      "content": "Zgadzasz się nie używać Aplikacji do jakichkolwiek celów niezgodnych z prawem, w tym między innymi do:\nNaruszenia jakichkolwiek przepisów lokalnych, krajowych lub międzynarodowych. Przesyłania lub udostępniania złośliwego oprogramowania, wirusów lub innych szkodliwych treści. Angażowania się w działania, które zakłócają lub szkodzą funkcjonalności Aplikacji."
+    },
+    "7": {
+      "title": "7. Zmiany w niniejszym Regulaminie",
+      "content": "Możemy zaktualizować lub zmodyfikować niniejszy Regulamin w dowolnym momencie. Jeśli wprowadzimy jakiekolwiek zmiany, powiadomimy Cię o tym za pośrednictwem Aplikacji lub poczty e-mail. Dalsze korzystanie z Aplikacji po wprowadzeniu zmian w niniejszych warunkach oznacza akceptację nowego regulaminu."
+    },
+    "8": {
+      "title": "8. Ograniczenie odpowiedzialności",
+      "content": "W zakresie dozwolonym przez prawo, Bookmarkly i jej podmioty stowarzyszone nie ponoszą odpowiedzialności za jakiekolwiek pośrednie, przypadkowe, szczególne lub wtórne szkody wynikające z korzystania lub niemożności korzystania z Aplikacji."
+    },
+    "9": {
+      "title": "9. Polityka prywatności",
+      "content": "Korzystanie z Aplikacji podlega również naszej Polityce Prywatności, do której można uzyskać dostęp osobno. Polityka Prywatności wyjaśnia, w jaki sposób gromadzimy, wykorzystujemy i chronimy Twoje dane osobowe."
+    },
+    "10": {
+      "title": "10. Zakończenie świadczenia usług",
+      "content": "Zastrzegamy sobie prawo do zawieszenia lub zakończenia dostępu do Aplikacji w dowolnym momencie, bez uprzedzenia, z dowolnego powodu, w tym między innymi z powodu naruszenia niniejszego Regulaminu."
+    },
+    "11": {
+      "title": "11. Prawo właściwe",
+      "content": "Niniejszy Regulamin podlega prawu [Kraj] i będzie interpretowany zgodnie z nim, bez względu na konflikty przepisów prawnych."
+    },
+    "12": {
+      "title": "12. Kontakt z nami",
+      "content": "Jeśli masz jakiekolwiek pytania lub wątpliwości dotyczące niniejszego Regulaminu, skontaktuj się z nami pod adresem: E-mail: [email@example.com] Adres: [Adres firmy]"
+    }
+  }
 }

@@ -97,5 +97,56 @@
   "slide_three_title": "Stay organized",
   "slide_three_description": "Remember, you can always edit your saved articles or mark them as read, making it easy to track what you've reviewed and revisit them in the future.",
   "next": "Next",
-  "are_you_sure_you_want_to_log_out": "Are you sure you want to log out"
+  "are_you_sure_you_want_to_log_out": "Are you sure you want to log out",
+  "understand": "Understand",
+  "terms_sections": {
+    "1": {
+      "title": "1. Introduction",
+      "content": "By accessing and using Bookmarkly (the \"App\"), you agree to be bound by the following Terms and Conditions. If you do not agree to these terms, please do not use the App. These Terms and Conditions govern your use of the App, which is designed to store personal information (such as email addresses, phone numbers, and usernames) as well as links provided by the users."
+    },
+    "2": {
+      "title": "2. User Information Collected",
+      "content": "In order to use the App, you will be required to provide certain personal information, which may include:\n\n\u2022 Email Address\n\u2022 Phone Number\n\u2022 Name or Nickname\n\nAdditionally, the App will store links that you provide. We take your privacy seriously and are committed to safeguarding your personal data."
+    },
+    "3": {
+      "title": "3. Use of Your Data",
+      "content": "The personal information and links you provide will be used solely for the following purposes: Storing and organizing your account information (such as email, phone number, and username). Storing and accessing the links that you provide through the App. Sending you notifications or updates regarding the App, if necessary. Your data will not be sold to third parties. However, we may share your data with third-party service providers that help us operate the App and perform services on our behalf. These third parties are obligated to maintain the confidentiality of your data."
+    },
+    "4": {
+      "title": "4. Data Retention and Security",
+      "content": "Your personal information and links will be stored in our secure database for as long as you continue to use the App. You can delete your account and data at any time by contacting us through the contact information provided in the App. We implement reasonable security measures to protect your data from unauthorized access, alteration, or destruction. However, please note that no data transmission or storage system is completely secure, and we cannot guarantee the absolute security of your information."
+    },
+    "5": {
+      "title": "5. User Responsibilities",
+      "content": "As a user, you are responsible for the accuracy of the information you provide to the App. You agree not to upload or share any harmful, unlawful, or inappropriate links or content. You are also responsible for maintaining the confidentiality of your account and login information. You should immediately notify us if you suspect unauthorized access to your account."
+    },
+    "6": {
+      "title": "6. Prohibited Use",
+      "content": "You agree not to use the App for any unlawful purpose, including but not limited to:\nViolating any local, state, or international law. Uploading or sharing malware, viruses, or other harmful content. Engaging in activities that disrupt or harm the functionality of the App."
+    },
+    "7": {
+      "title": "7. Changes to These Terms",
+      "content": "We may update or modify these Terms and Conditions at any time. If we make any changes, we will notify you through the App or by email. Continued use of the App after changes to these terms constitutes your acceptance of the new terms."
+    },
+    "8": {
+      "title": "8. Limitation of Liability",
+      "content": "To the extent permitted by law, Bookmarkly and its affiliates will not be liable for any indirect, incidental, special, or consequential damages arising from the use or inability to use the App."
+    },
+    "9": {
+      "title": "9. Privacy Policy",
+      "content": "Your use of the App is also governed by our Privacy Policy, which can be accessed separately. The Privacy Policy explains how we collect, use, and protect your personal data."
+    },
+    "10": {
+      "title": "10. Termination of Service",
+      "content": "We reserve the right to suspend or terminate your access to the App at any time, without notice, for any reason, including but not limited to violations of these Terms and Conditions."
+    },
+    "11": {
+      "title": "11. Governing Law",
+      "content": "These Terms and Conditions will be governed by and construed in accordance with the laws of [Country], without regard to its conflict of law principles."
+    },
+    "12": {
+      "title": "12. Contact Us",
+      "content": "If you have any questions or concerns about these Terms and Conditions, please contact us at: Email: [email@example.com] Address: [Company Address]"
+    }
+  }
 }

@@ -42,7 +42,7 @@ export const Input = ({
           {label}
         </ThemedText>
       )}
-      <View className={'relative'}>
+      <View className={'relative pb-1'}>
         <TextInput
           value={value}
           onChangeText={onChangeText}

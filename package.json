@@ -81,6 +81,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",
+    "@babel/eslint-parser": "^7.28.5",
+    "@eslint/eslintrc": "^3.3.3",
     "@types/country-list": "^2.1.4",
     "@types/country-telephone-data": "^0.6.3",
     "@types/jest": "^29.5.14",
