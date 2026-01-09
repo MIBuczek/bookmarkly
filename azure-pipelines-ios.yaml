@@ -1,0 +1,46 @@
+trigger:
+  branches:
+    include:
+      - main
+      - master
+  pull_request:
+    branches:
+      include:
+        - main
+        - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  npm_config_cache: $(Pipeline.Workspace)/.npm
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Install Node.js'
+
+  # Cache dependencies to speed up subsequent runs
+  - task: Cache@2
+    inputs:
+      key: 'npm | "$(Agent.OS)" | package-lock.json'
+      restoreKeys: |
+        npm | "$(Agent.OS)"
+      path: $(npm_config_cache)
+    displayName: 'Cache npm packages'
+
+  - script: npm ci
+    displayName: 'Install dependencies'
+
+  # Check for TypeScript errors
+  - script: npx tsc --noEmit
+    displayName: 'Type Check'
+
+  # Use your Expo lint command (which triggers ESLint 9)
+  - script: npm run lint
+    displayName: 'Run Linting'
+
+  # Run Jest tests
+  - script: npm test -- --ci --maxWorkers=2
+    displayName: 'Run Tests'
