@@ -22,6 +22,7 @@ import { Options } from '@dicebear/core';
 import { useTranslation } from 'react-i18next';
 import { router } from 'expo-router';
 import { ActionButton } from '@/components/button/ActionButton';
+import { APP_ROUTES } from '@/utils/routes';
 
 export default function SettingScreen() {
   const { t } = useTranslation();
@@ -70,7 +71,7 @@ export default function SettingScreen() {
   const settingContentSize = useMemo((): TSettingsContentSize => SETTINGS_CONTENT_SIZE, []);
 
   const logOut = useCallback(() => {
-    router.navigate('/(login)/sign-in');
+    router.navigate(APP_ROUTES.SIGN_IN);
     dispatch(storeActions.user.logout());
     setLogoutModalVisible(false);
   }, [router, dispatch]);

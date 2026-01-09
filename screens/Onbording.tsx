@@ -11,6 +11,7 @@ import { ScreenContainer } from '@/components/ui/ScreenContainer';
 import { ScreenHeight } from 'react-native-elements/dist/helpers';
 import { RootState, storeActions, useAppDispatch, useAppSelector } from '@/store';
 import Logo from '@/components/Logo';
+import { APP_ROUTES } from '@/utils/routes';
 
 interface SingleSlideDotProps {
   isActive: boolean;
@@ -116,7 +117,7 @@ export default function OnboardingScreen() {
   };
 
   const checkHasOnboardingBeenDone = () => {
-    if (onboarded) router.navigate('/(login)/sign-in');
+    if (onboarded) router.navigate(APP_ROUTES.SIGN_IN);
   };
 
   useEffect(checkHasOnboardingBeenDone, []);
@@ -124,7 +125,7 @@ export default function OnboardingScreen() {
   const handleSwipeContent = () => {
     if (slideIndex === '3') {
       dispatch(storeActions.user.setOnboarded({ onboarded: true }));
-      router.navigate('/(login)/sign-in');
+      router.navigate(APP_ROUTES.SIGN_IN);
     }
     const nextSwipe = slideIndex === '3' ? '3' : `${Number(slideIndex) + 1}`;
     setSlideIndex(nextSwipe);

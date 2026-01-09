@@ -4,6 +4,7 @@ import { storeActions, useAppDispatch, useAppSelector } from '@/store';
 import { useToast } from 'react-native-toast-notifications';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { router } from 'expo-router';
+import { APP_ROUTES } from '@/utils/routes';
 
 export const useLoadLinks = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +16,7 @@ export const useLoadLinks = () => {
     if (links.length) return;
 
     if (!authGuard.checkUser) {
-      router.replace('/(login)/sign-in');
+      router.replace(APP_ROUTES.SIGN_IN);
       return;
     }
 

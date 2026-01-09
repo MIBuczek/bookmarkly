@@ -29,6 +29,7 @@ import { TAddUser, TUserSettings } from '@/types/uset.type';
 import { checkPushNotificationsStatus } from '@/providers/push-notification';
 import { getSystemLanguage } from '@/providers/localization';
 import { getSystemAppearance } from '@/providers/apparence';
+import { APP_ROUTES } from '@/utils/routes';
 
 interface SelectCountryBottomSheetProps {
   countries: Country[];
@@ -208,7 +209,7 @@ export default function SignUpScreen(): React.JSX.Element {
       await authServices.singUp({ user });
       toast.show('[Success] : You will get verification code', { type: 'success' });
       dispatch(storeActions.user.setPhone({ phone }));
-      router.navigate('/(login)/verify-code');
+      router.navigate(APP_ROUTES.VERIFY_CODE);
       reset(INITIAL_REGISTRATION_FORM);
     } catch (error) {
       console.error('[onSubmit]:', error);

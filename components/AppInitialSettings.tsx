@@ -7,6 +7,7 @@ import { RootState, useAppSelector } from '@/store';
 import * as SplashScreen from 'expo-splash-screen';
 import { router } from 'expo-router';
 import { useFonts } from 'expo-font';
+import { APP_ROUTES } from '@/utils/routes';
 
 
 export default function AppInitialSettings({ children }: PropsWithChildren) {
@@ -29,7 +30,7 @@ export default function AppInitialSettings({ children }: PropsWithChildren) {
   const initApp = useCallback(async () => {
     await SplashScreen.hideAsync();
     if (!onboarded) {
-      router.navigate('/(onboarding)');
+      router.navigate(APP_ROUTES.ONBOARDING);
       return;
     }
     await checkToken();

@@ -14,6 +14,7 @@ import { ActionButtonBottomSheet } from '@/components/bottom-sheet/ActionButtonB
 import { ModalBackDrop } from '@/components/modal/ModalBackDrop';
 import { DeleteItemModal } from '@/components/modal/DeleteItemModal';
 import { TLink } from '@/types/links.type';
+import { APP_ROUTES } from '@/utils/routes';
 
 interface LinkItemProps {
   link: TLink;
@@ -25,7 +26,7 @@ const LinkItem = memo(({ link }: Readonly<LinkItemProps>) => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   const handleDetailsPress = useCallback(() => {
-    router.push({ pathname: '/(main)/(dashboard)/details', params: { id: link.id } });
+    router.push({ pathname: APP_ROUTES.DETAILS, params: { id: link.id } });
   }, [link.id]);
 
   const handleActionBottomSheet = useCallback(() => {

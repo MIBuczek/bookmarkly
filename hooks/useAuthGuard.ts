@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useRouter } from 'expo-router';
 import { storeActions, useAppDispatch, useAppSelector } from '@/store';
 import authServices from '@/services/auth.services';
+import { APP_ROUTES } from '@/utils/routes';
 
 export const useAuthGuard = () => {
   const router = useRouter();
@@ -17,7 +18,7 @@ export const useAuthGuard = () => {
   const checkToken = useCallback(async () => {
     if (!token) {
       dispatch(storeActions.user.logout());
-      router.navigate('/(login)/sign-in');
+      router.navigate(APP_ROUTES.SIGN_IN);
       return;
     }
 
@@ -27,16 +28,16 @@ export const useAuthGuard = () => {
 
       if (valid && user) {
         dispatch(storeActions.user.setUser({ user }));
-        router.navigate('/(main)/(dashboard)');
+        router.navigate(APP_ROUTES.DASHBOARD);
         return;
       }
 
       dispatch(storeActions.user.logout());
-      router.navigate('/(login)/sign-in');
+      router.navigate(APP_ROUTES.SIGN_IN);
     } catch (error) {
       console.error('[checkToken]:', error);
       dispatch(storeActions.user.logout());
-      router.navigate('/(login)/sign-in');
+      router.navigate(APP_ROUTES.SIGN_IN);
     }
   }, [dispatch, router, token]);
 

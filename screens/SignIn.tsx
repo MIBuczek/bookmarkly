@@ -24,6 +24,7 @@ import { debounce } from 'lodash-es';
 import { ErrorText } from '@/components/ui/ErrorText';
 import { getSystemLanguage } from '@/providers/localization';
 import Logo from '@/components/Logo';
+import { APP_ROUTES } from '@/utils/routes';
 
 export type PhoneCodeItemProps = Country & {
   className?: string;
@@ -157,7 +158,7 @@ export default function SignInScreen() {
       await authServices.singIn({ phone });
       toast.show('[Success] : You will get verification code', { type: 'success' });
       dispatch(storeActions.user.setPhone({ phone }));
-      router.navigate('/(login)/verify-code');
+      router.navigate(APP_ROUTES.VERIFY_CODE);
       reset(INITIAL_LOGIN_FORM);
     } catch (e) {
       toast.show('[Error] : Wrong phone number', { type: 'error' });
@@ -222,7 +223,7 @@ export default function SignInScreen() {
           <ThemedText type="default" size={'sm'}>{t('not_a_member')}</ThemedText>
           <Pressable
             onPress={() => {
-              router.navigate('/(login)/sign-up');
+              router.navigate(APP_ROUTES.SIGN_UP);
             }}
           >
             <ThemedText type="subtitle" className="font-semibold text-primary-600" size={'sm'}>

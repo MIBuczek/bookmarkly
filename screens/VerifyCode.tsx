@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import authServices from '@/services/auth.services';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
 import { ArrowBackButton } from '@/components/button/ArrowBackButton';
+import { APP_ROUTES } from '@/utils/routes';
 
 const CELL_COUNT = 6;
 const START_COUNT_DOWN = 90;
@@ -45,7 +46,7 @@ export default function VerifyCodeScreen() {
       const { user, token } = await authServices.verifyCode({ phone, otp });
       dispatch(storeActions.user.setUser({ user }));
       dispatch(storeActions.user.setToken({ token }));
-      router.navigate('/(main)/(dashboard)');
+      router.navigate(APP_ROUTES.DASHBOARD);
     } catch (e) {
       console.error(e);
     } finally {
