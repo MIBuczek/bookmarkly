@@ -5,7 +5,6 @@ import { Colors } from '@/constants/colors';
 import { Button } from '@/components/button/Button';
 import { useColorScheme as useNativeWindColorScheme } from 'nativewind/dist/stylesheet';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { baseColors } from '@assets/theme/base-theme';
 import { LAND_OPTIONS } from '@/utils/setting.const';
 import { CountryItem } from '@/components/CountryItem';
 import { ModalBackDrop } from '@/components/modal/ModalBackDrop';
@@ -17,6 +16,9 @@ import { useTranslation } from 'react-i18next';
 import * as Localization from 'expo-localization';
 import { useUpdateSettings } from '@/hooks/useUpdateSettings';
 import { reduxStorage } from '@/store/storage';
+import FontButton from '@/components/button/FontButton';
+import ThemeButton from '@/components/button/ThemeButton';
+import SettingsFooter from '@/components/SettingFooter';
 
 type SettingsProps = Readonly<{ handleClose: () => void }>;
 
@@ -88,18 +90,14 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
           {t('font_size')}
         </ThemedText>
         <View className="flex-row items-center gap-2">
-          <TouchableOpacity
-            className={'rounded-md border border-primary-500 p-2 disabled:bg-gray-600'}
+          <FontButton
+            icon={'minus'}
             disabled={fontSize <= 12}
-            onPress={() => setFontSize((prev) => --prev)}>
-            <IconSymbol name={'minus'} color={baseColors.colors.dark['600']} size={14} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            className={'rounded-md border border-primary-500 p-2'}
+            onPress={() => setFontSize((prev) => --prev)} />
+          <FontButton
+            icon={'plus'}
             disabled={fontSize >= 18}
-            onPress={() => setFontSize((prev) => ++prev)}>
-            <IconSymbol name={'plus'} color={baseColors.colors.dark['600']} size={14} />
-          </TouchableOpacity>
+            onPress={() => setFontSize((prev) => ++prev)} />
         </View>
       </View>
       <View className={'w-full flex-row items-center justify-between py-2'}>
@@ -107,35 +105,27 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
           {t('color_theme')}
         </ThemedText>
         <View className="flex-row items-center gap-2">
-          <TouchableOpacity
-            className={`rounded-full border border-dark-400 p-2 ${theme === 'dark' ? 'bg-dark-600' : 'bg-transparent'}`}
+          <ThemeButton
+            icon={'moon'}
+            active={theme === 'dark'}
             onPress={() => setTheme('dark')}
-          >
-            <IconSymbol name={'moon'} color={theme === 'dark' ? '#FFF' : '#4b5563'} size={14} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            className={`rounded-full border border-primary-500 p-2 ${theme === 'light' ? 'bg-primary-500' : 'bg-transparent'}`}
+          />
+          <ThemeButton
+            icon={'sun.max'}
+            active={theme === 'light'}
             onPress={() => setTheme('light')}
-          >
-            <IconSymbol name={'sun.max'} color={theme === 'light' ? '#FFF' : '#4b5563'} size={14} />
-          </TouchableOpacity>
+          />
         </View>
       </View>
-      <View className="mt-auto w-full">
-        {hasChanged ? (
-          <Button
-            type={'primary'}
-            title={t('apply')}
-            onPress={() => {
-              void updateSettings({ appearance: theme, fontSize });
-              colorNativeWindScheme.setColorScheme(theme);
-              handleClose();
-            }}
-          />
-        ) : (
-          <Button type={'tertiary'} title={t('close')} onPress={handleClose} />
-        )}
-      </View>
+      <SettingsFooter
+        hasChanged={hasChanged}
+        onApply={() => {
+          void updateSettings({ appearance: theme, fontSize });
+          colorNativeWindScheme.setColorScheme(theme);
+          handleClose();
+        }}
+        onClose={handleClose}
+      />
     </View>
   );
 };
@@ -197,19 +187,13 @@ export const Language = ({ handleClose }: SettingsProps) => {
           ))}
         </View>
       </View>
-      <View className="mt-auto w-full">
-        {hasChanged ? (
-          <Button
-            type={'primary'}
-            title={t('apply')}
-            onPress={() => {
-              void applyChanges();
-            }}
-          />
-        ) : (
-          <Button type={'tertiary'} title={t('close')} onPress={handleClose} />
-        )}
-      </View>
+      <SettingsFooter
+        hasChanged={hasChanged}
+        onApply={() => {
+          void applyChanges();
+        }}
+        onClose={handleClose}
+      />
     </View>
   );
 };
@@ -329,19 +313,13 @@ export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsP
           </TouchableOpacity>
         ))}
       </View>
-      <View className="mt-auto w-full">
-        {hasChanged ? (
-          <Button
-            type={'primary'}
-            title={t('apply')}
-            onPress={() => {
-              void applyChanges();
-            }}
-          />
-        ) : (
-          <Button type={'tertiary'} title={t('close')} onPress={handleClose} />
-        )}
-      </View>
+      <SettingsFooter
+        hasChanged={hasChanged}
+        onApply={() => {
+          void applyChanges();
+        }}
+        onClose={handleClose}
+      />
     </View>
   );
 };

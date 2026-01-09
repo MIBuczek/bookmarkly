@@ -133,8 +133,8 @@ export default function OnboardingScreen() {
 
   return (
     <ScreenContainer>
-      <View className="flex items-center justify-center bg-primary-100 dark:bg-primary-200">
-        <Logo className={'bg-primary-300 dark:bg-primary-300'} />
+      <View className="flex items-center justify-center bg-primary-100 dark:bg-primary-200 rounded-t-lg">
+        <Logo className={'w-full bg-primary-300 dark:bg-primary-300'} />
         {swipeContent[slideIndex].img}
       </View>
       <View className="flex-1">

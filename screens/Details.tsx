@@ -4,7 +4,6 @@ import React, { useCallback, useState } from 'react';
 import { baseColors } from '@assets/theme/base-theme';
 import { useLocalSearchParams } from 'expo-router/build/hooks';
 import { RootState, storeActions, useAppDispatch, useAppSelector } from '@/store';
-import { ExternalLink } from '@/components/ui/ExternalLink';
 import { ActionButton } from '@/components/button/ActionButton';
 import { Entypo, Feather, FontAwesome } from '@expo/vector-icons';
 import { formatDate } from '@/utils/helper';
@@ -23,6 +22,7 @@ import { ArrowBackButton } from '@/components/button/ArrowBackButton';
 import { router } from 'expo-router';
 import linkServices from '@/services/link.services';
 import { useToast } from 'react-native-toast-notifications';
+import RedirectButton from '@/components/button/RedirectButton';
 
 export default function DetailsScreen() {
   const theme = useColorScheme() ?? 'light';
@@ -133,16 +133,10 @@ export default function DetailsScreen() {
           </View>
         </View>
         <View className={'mt-auto flex'}>
-          <ExternalLink href={selectedLink?.url ?? ''}>
-            <View className={'w-full flex-row items-center justify-center gap-3 px-4 py-6'}>
-              <ThemedText type={'subtitle'} className={'pt-1 uppercase text-blue-600'} size={'sm'}>
-                {t('redirect_to_page')}
-              </ThemedText>
-              <View className={'flex items-center justify-center'}>
-                <Feather name="external-link" size={16} color={'#2563eb'} />
-              </View>
-            </View>
-          </ExternalLink>
+          <RedirectButton
+            title={t('redirect_to_page')}
+            url={selectedLink?.url ?? ''}
+          />
         </View>
         <ActionButton buttonClassName={'px-2 py-2'} containerClassName={'mb-0'} onPress={handleActionBottomSheet}>
           <Entypo name="dots-three-horizontal" size={24} color="white" />

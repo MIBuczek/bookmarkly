@@ -5,16 +5,13 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { baseColors } from '@assets/theme/base-theme';
 import { router } from 'expo-router';
 import { storeActions, useAppDispatch } from '@/store';
-import { BottomSheet } from '@/components/bottom-sheet/BottomSheet';
 import { Tags } from '@/components/Tags';
 import { FadeInView } from '@/components/ui/FadeInView';
-import { ExternalLink } from '@/components/ui/ExternalLink';
-import { Feather, FontAwesome } from '@expo/vector-icons';
-import { ActionButtonBottomSheet } from '@/components/bottom-sheet/ActionButtonBottomSheet';
 import { ModalBackDrop } from '@/components/modal/ModalBackDrop';
 import { DeleteItemModal } from '@/components/modal/DeleteItemModal';
 import { TLink } from '@/types/links.type';
 import { APP_ROUTES } from '@/utils/routes';
+import ActionLinkItemBottomSheet from '@/components/bottom-sheet/ActionLinkItemBottomSheet';
 
 interface LinkItemProps {
   link: TLink;
@@ -60,25 +57,12 @@ const LinkItem = memo(({ link }: Readonly<LinkItemProps>) => {
             <IconSymbol name={'chevron.right'} color={baseColors.colors.primary['500']} size={16} />
           </TouchableOpacity>
         </View>
-        <BottomSheet onRequestClose={handleActionBottomSheet} visible={showActions} height={20}>
-          <View className={'flex h-full w-full items-stretch justify-center gap-2 px-4'}>
-            <ExternalLink href={link?.url ?? ''}>
-              <View
-                className={'w-full flex-row items-center justify-center gap-3 rounded-t-md bg-primary-400 px-4 py-6'}
-              >
-                <ThemedText type={'subtitle'} size={'sm'} className={'pt-1 uppercase text-white'}>
-                  Redirect to page
-                </ThemedText>
-                <View className={'flex items-center justify-center'}>
-                  <Feather name="external-link" size={16} color={'white'} />
-                </View>
-              </View>
-            </ExternalLink>
-            <ActionButtonBottomSheet title={'Delete'} onPress={handleDeleteModalConfirmation}>
-              <FontAwesome name="trash" size={16} color={'#ef4444'} />
-            </ActionButtonBottomSheet>
-          </View>
-        </BottomSheet>
+        <ActionLinkItemBottomSheet
+          link={link}
+          showActions={showActions}
+          handleActionBottomSheet={handleActionBottomSheet}
+          handleDeleteModalConfirmation={handleDeleteModalConfirmation}
+        />
       </FadeInView>
       <ModalBackDrop visible={showDeleteModal} onRequestClose={handleDeleteModalConfirmation}>
         <DeleteItemModal handleConfirmAction={handleDeletePress} handleCancelAction={handleDeleteModalConfirmation} />

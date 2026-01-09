@@ -99,7 +99,7 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
             >
               <View
                 className={twMerge(
-                  'absolute bottom-0 right-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 border-primary-500 bg-primary-500 p-1',
+                  'absolute top-0 right-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 border-primary-500 bg-primary-500 p-1',
                   metadataGenerated ? 'border-gray-800 bg-gray-600' : '',
                 )}
               >
