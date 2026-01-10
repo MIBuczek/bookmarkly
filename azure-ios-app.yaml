@@ -1,0 +1,49 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'macos-latest' # Required for iOS builds
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Install Node.js'
+
+  - script: npm ci
+    displayName: 'Install dependencies'
+
+  # Generate native folders on the fly
+  - script: npx expo prebuild --platform ios --non-interactive
+    displayName: 'Expo Prebuild (iOS)'
+
+  # Install CocoaPods (Native iOS dependencies)
+  - script: |
+      cd ios
+      pod install
+    displayName: 'Install CocoaPods'
+
+  # Build for Simulator (No Apple Team needed)
+  - script: |
+      npx react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
+      xcodebuild -workspace ios/bookmarkly.xcworkspace \
+                 -scheme bookmarkly \
+                 -configuration Release \
+                 -sdk iphonesimulator \
+                 -derivedDataPath build \
+                 CODE_SIGNING_ALLOWED=NO \
+                 CODE_SIGNING_REQUIRED=NO
+    displayName: 'Build iOS Simulator App'
+
+  # Zip the .app bundle for Artifactory
+  - script: |
+      cd build/Build/Products/Release-iphonesimulator
+      zip -r bookmarkly-simulator.zip bookmarkly.app
+    displayName: 'Zip Artifact'
+
+  # Upload to Azure Pipeline Artifacts (Artifactory)
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: 'build/Build/Products/Release-iphonesimulator/bookmarkly-simulator.zip'
+      ArtifactName: 'ios-simulator-build'
+    displayName: 'Upload to Artifactory'
