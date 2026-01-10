@@ -4,7 +4,7 @@ import { FlatList, LayoutAnimation, Platform, TouchableOpacity, UIManager, View 
 import { AntDesign } from '@expo/vector-icons';
 import { Button } from '@/components/button/Button';
 import { Input } from '@/components/ui/Input';
-import { baseColors } from '@assets/theme/base-theme';
+import { baseColors } from '@/assets/theme/base-theme';
 import { twMerge } from 'tailwind-merge';
 import { useAppSelector } from '@/store';
 import LinkItem from '@/components/LinkItem';

@@ -2,7 +2,7 @@ import React, { memo, useCallback, useState } from 'react';
 import { Pressable, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { baseColors } from '@assets/theme/base-theme';
+import { baseColors } from '@/assets/theme/base-theme';
 import { router } from 'expo-router';
 import { storeActions, useAppDispatch } from '@/store';
 import { Tags } from '@/components/Tags';

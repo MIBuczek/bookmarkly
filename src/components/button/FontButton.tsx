@@ -1,5 +1,5 @@
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { baseColors } from '@assets/theme/base-theme';
+import { baseColors } from '@/assets/theme/base-theme';
 import { TouchableOpacity } from 'react-native';
 import React from 'react';
 import { SFSymbols6_0 } from 'sf-symbols-typescript';

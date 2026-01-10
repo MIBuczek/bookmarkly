@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { Pressable, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
@@ -7,7 +7,7 @@ import { Button } from '@/components/button/Button';
 import { CheckBox } from 'react-native-elements';
 import { BottomSheet } from '@/components/bottom-sheet/BottomSheet';
 import { TermsAndConditions } from '@/components/modal/TermsAndConditions';
-import { baseColors } from '@assets/theme/base-theme';
+import { baseColors } from '@/assets/theme/base-theme';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
@@ -163,7 +163,7 @@ export default function SignUpScreen(): React.JSX.Element {
   /**
    * Loads the list of countries from the country-list library.
    */
-  const loadCountries = () => {
+  const loadCountries = useCallback(() => {
     const _countries = countryList.getData();
     setCountries(_countries);
     /* Preselect user country */
@@ -174,7 +174,7 @@ export default function SignUpScreen(): React.JSX.Element {
     if (systemCountry) {
       setValue('country', systemCountry);
     }
-  };
+  }, [setValue, countryList, setCountries]);
 
   useEffect(loadCountries, []);
 

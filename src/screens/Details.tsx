@@ -1,7 +1,7 @@
 import { Switch, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import React, { useCallback, useState } from 'react';
-import { baseColors } from '@assets/theme/base-theme';
+import { baseColors } from '@/assets/theme/base-theme';
 import { useLocalSearchParams } from 'expo-router/build/hooks';
 import { RootState, storeActions, useAppDispatch, useAppSelector } from '@/store';
 import { ActionButton } from '@/components/button/ActionButton';

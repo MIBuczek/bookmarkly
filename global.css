@@ -4,5 +4,5 @@
 
 @font-face {
     font-family: 'sans-serif';
-    src: url('./assets/fonts/Inter-Regular.ttf') format('truetype');
+    src: url('src/assets/fonts/Inter-Regular.ttf') format('truetype');
 }
