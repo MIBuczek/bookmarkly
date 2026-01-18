@@ -17,7 +17,7 @@ export const Tags = ({ tags, onPressAction, containerClassName }: Readonly<TagsP
           type={'subtitle'}
           size={'xs'}
           className={
-            'rounded-full bg-primary-200 px-3 py-1 uppercase text-primary-600 dark:bg-primary-600 dark:text-primary-200'
+            'bg-primary-200 text-primary-600 dark:bg-primary-600 dark:text-primary-200 rounded-full px-3 py-1 uppercase'
           }
         >
           {tag}

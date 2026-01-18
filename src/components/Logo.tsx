@@ -7,9 +7,13 @@ import { twMerge } from 'tailwind-merge';
 export default function Logo({ className }: Readonly<{ className: string }>) {
   return (
     <View
-      className={twMerge('flex-row items-center justify-center rounded-t-lg bg-primary-100 dark:bg-primary-200', className)}>
+      className={twMerge(
+        'bg-primary-100 dark:bg-primary-200 flex-row items-center justify-center rounded-t-lg',
+        className,
+      )}
+    >
       <LogoIcon width={50} height={50} />
-      <ThemedText type="title" className={'pb-2 text-dark-600'} size={'3xl'}>
+      <ThemedText type="title" className={'text-dark-600 pb-2'} size={'3xl'}>
         Bookmarkly
       </ThemedText>
     </View>

@@ -215,7 +215,7 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
           >
             <View
               className={
-                'absolute bottom-0 right-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 border-primary-500 bg-primary-500 p-1'
+                'border-primary-500 bg-primary-500 absolute right-0 bottom-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 p-1'
               }
             >
               {editTagIndex !== null && (

@@ -1,9 +1,8 @@
 import { Switch, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
-import React, { useCallback, useState } from 'react';
-import { baseColors } from '@/assets/theme/base-theme';
+import React from 'react';
+import { baseColors } from '@assets/theme/base-theme';
 import { useLocalSearchParams } from 'expo-router/build/hooks';
-import { RootState, storeActions, useAppDispatch, useAppSelector } from '@/store';
 import { ActionButton } from '@/components/button/ActionButton';
 import { Entypo, Feather, FontAwesome } from '@expo/vector-icons';
 import { formatDate } from '@/utils/helper';
@@ -20,68 +19,27 @@ import { useTranslation } from 'react-i18next';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
 import { ArrowBackButton } from '@/components/button/ArrowBackButton';
 import { router } from 'expo-router';
-import linkServices from '@/services/link.services';
-import { useToast } from 'react-native-toast-notifications';
 import RedirectButton from '@/components/button/RedirectButton';
+import useScreen from '@/screens/Details/useScreen';
 
 export default function DetailsScreen() {
   const theme = useColorScheme() ?? 'light';
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useTranslation();
-  const toast = useToast();
 
-  const [showActions, setShowActions] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [showCommentForm, setShowCommentForm] = useState<boolean>(false);
-  const [showLinkForm, setShowLinkForm] = useState<boolean>(false);
-
-  const dispatch = useAppDispatch();
-
-  const selectedLink = useAppSelector(({ links }: RootState) => {
-    return links.links.find((link) => link.id === id);
-  });
-
-  const handleReadChange = useCallback(
-    (value: boolean) => {
-      if (selectedLink) {
-        dispatch(storeActions.links.updateLink({ link: { ...selectedLink, read: value } }));
-      }
-    },
-    [selectedLink],
-  );
-
-  const handleActionBottomSheet = useCallback(() => {
-    setShowActions(!showActions);
-  }, [showActions]);
-
-  const handleCommentFormBottomSheet = useCallback(() => {
-    setShowActions(false);
-    setShowCommentForm(!showCommentForm);
-  }, [showCommentForm]);
-
-  const handleLinkFormBottomSheet = useCallback(() => {
-    setShowActions(false);
-    setShowLinkForm(!showLinkForm);
-  }, [showLinkForm]);
-
-  const handleDeleteModalConfirmation = useCallback(() => {
-    setShowActions(false);
-    setShowDeleteModal(!showDeleteModal);
-  }, [showDeleteModal]);
-
-  const handleDeletePress = useCallback(async () => {
-    if (!selectedLink?.id) return;
-    const { id } = selectedLink;
-    try {
-      await linkServices.deleteLink(id);
-      dispatch(storeActions.links.deleteLink({ id }));
-      router.back();
-      toast.show('[Success] : Link was deleted', { type: 'success' });
-    } catch (e) {
-      console.error('[handleDeletePress]', e);
-      toast.show('[Error] : Could not delete selected link', { type: 'error' });
-    }
-  }, [selectedLink?.id]);
+  const {
+    showActions,
+    showCommentForm,
+    showLinkForm,
+    showDeleteModal,
+    selectedLink,
+    handleReadChange,
+    handleActionBottomSheet,
+    handleCommentFormBottomSheet,
+    handleLinkFormBottomSheet,
+    handleDeleteModalConfirmation,
+    handleDeletePress,
+  } = useScreen(id);
 
   return (
     <ScreenContainer withBottomTabs>
@@ -116,7 +74,8 @@ export default function DetailsScreen() {
             {t('my_comments')}
           </ThemedText>
           <ThemedText
-            size={'sm'}>{`${selectedLink?.comments ? selectedLink?.comments : t('not_added_yet')}`}</ThemedText>
+            size={'sm'}
+          >{`${selectedLink?.comments ? selectedLink?.comments : t('not_added_yet')}`}</ThemedText>
         </View>
         <View className={'flex w-full gap-2'}>
           <ThemedText type="title" className={'text-dark-800'} size={'sm'}>
@@ -133,10 +92,7 @@ export default function DetailsScreen() {
           </View>
         </View>
         <View className={'mt-auto flex'}>
-          <RedirectButton
-            title={t('redirect_to_page')}
-            url={selectedLink?.url ?? ''}
-          />
+          <RedirectButton title={t('redirect_to_page')} url={selectedLink?.url ?? ''} />
         </View>
         <ActionButton buttonClassName={'px-2 py-2'} containerClassName={'mb-0'} onPress={handleActionBottomSheet}>
           <Entypo name="dots-three-horizontal" size={24} color="white" />

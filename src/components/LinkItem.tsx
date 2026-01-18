@@ -42,7 +42,7 @@ const LinkItem = memo(({ link }: Readonly<LinkItemProps>) => {
   return (
     <>
       <FadeInView isActive={true} className="h-fit">
-        <View className={'flex-row gap-2 border-b border-b-dark-200 px-2 py-4'}>
+        <View className={'border-b-dark-200 flex-row gap-2 border-b px-2 py-4'}>
           <Pressable className={'flex w-5/6'} onPress={handleActionBottomSheet}>
             <ThemedText size={'md'} type={'title'} className={'text-primary-700'}>
               {link.title}

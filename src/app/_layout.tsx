@@ -25,7 +25,6 @@ import AppInitialSettings from '@/components/AppInitialSettings';
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-
   const colorScheme = useColorScheme();
 
   return (

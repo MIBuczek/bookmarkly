@@ -46,7 +46,6 @@ steps:
       ./gradlew assembleRelease
     displayName: 'Build Android Release APK'
 
-
   # Find the generated APK and move it to the artifacts directory
   - task: CopyFiles@2
     inputs:

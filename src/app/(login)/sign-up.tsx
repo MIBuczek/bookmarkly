@@ -1,3 +1,3 @@
-import SignUpScreen from '@/screens/SignUp';
+import SignUpScreen from '@/screens/SingUp/SignUp';
 
 export default SignUpScreen;

@@ -9,7 +9,6 @@ import { router } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { APP_ROUTES } from '@/utils/routes';
 
-
 export default function AppInitialSettings({ children }: PropsWithChildren) {
   const { checkToken } = useAuthGuard();
 
@@ -61,7 +60,6 @@ export default function AppInitialSettings({ children }: PropsWithChildren) {
       void initColorSchema();
     });
   }, [loaded]);
-
 
   return children;
 }

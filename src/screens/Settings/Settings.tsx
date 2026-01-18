@@ -1,80 +1,40 @@
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Button } from '@/components/button/Button';
 import { BottomSheet } from '@/components/bottom-sheet/BottomSheet';
 import { ModalBackDrop } from '@/components/modal/ModalBackDrop';
-import {
-  SETTING_CONTENT_OPTIONS,
-  SETTINGS_CONTENT_SIZE,
-  TSettingsContent,
-  TSettingsContentSize,
-  TSettingsOptions,
-} from '@/utils/setting.const';
-import { storeActions, useAppDispatch, useAppSelector } from '@/store';
+import { useAppSelector } from '@/store';
 import { FontAwesome } from '@expo/vector-icons';
 import { AvatarSvg } from '@/components/svg/AvatarIcon';
-import { Appearance, Avatars, Language, Notification, Storage } from '@/components/bottom-sheet/SettingsBottomSheet';
 import { AVATARS_OPTIONS } from '@/constants/avatars';
-import { Options } from '@dicebear/core';
 import { useTranslation } from 'react-i18next';
-import { router } from 'expo-router';
 import { ActionButton } from '@/components/button/ActionButton';
-import { APP_ROUTES } from '@/utils/routes';
+import useScreen from '@/screens/Settings/useScreen';
 
 export default function SettingScreen() {
   const { t } = useTranslation();
 
-  const [logOutModalVisible, setLogoutModalVisible] = useState<boolean>(false);
-  const [settingOption, setSettingOption] = useState<TSettingsOptions>('none');
-  const [showBottomSheet, setShowBottomSheet] = useState<boolean>(false);
-  const [avatar, setAvatar] = useState<Options | null>(null);
-
-  const dispatch = useAppDispatch();
   const { user } = useAppSelector(({ user }) => user);
 
-  const settingsButtons: TSettingsOptions[] = useMemo(() => SETTING_CONTENT_OPTIONS, []);
-
-  const initialAvatarState = () => {
-    const _avatar =
-      AVATARS_OPTIONS.find((av) => {
-        return av.seed === user?.settings.avatar;
-      }) || AVATARS_OPTIONS[0];
-    if (_avatar) setAvatar(_avatar);
-  };
+  const {
+    avatar,
+    setSettingOption,
+    setShowBottomSheet,
+    setLogoutModalVisible,
+    logOutModalVisible,
+    logOut,
+    settingOption,
+    showBottomSheet,
+    settingsButtons,
+    settingsContent,
+    settingContentSize,
+    initialAvatarState,
+  } = useScreen();
 
   useEffect(initialAvatarState, []);
-
-  const updateAvatar = (_avatar: Options) => {
-    setAvatar(_avatar);
-  };
-
-  const handleCloseSettingOption = () => {
-    setSettingOption('none');
-    setShowBottomSheet(false);
-  };
-
-  const settingsContent = useMemo(
-    (): TSettingsContent => ({
-      avatar: <Avatars avatar={avatar} updateAvatar={updateAvatar} handleClose={handleCloseSettingOption} />,
-      notification: <Notification handleClose={handleCloseSettingOption} />,
-      appearance: <Appearance handleClose={handleCloseSettingOption} />,
-      language: <Language handleClose={handleCloseSettingOption} />,
-      storage: <Storage handleClose={handleCloseSettingOption} />,
-      none: null,
-    }),
-    [avatar],
-  );
-
-  const settingContentSize = useMemo((): TSettingsContentSize => SETTINGS_CONTENT_SIZE, []);
-
-  const logOut = useCallback(() => {
-    router.navigate(APP_ROUTES.SIGN_IN);
-    dispatch(storeActions.user.logout());
-    setLogoutModalVisible(false);
-  }, [router, dispatch]);
 
   return (
     <ScreenContainer withBottomTabs>
@@ -82,10 +42,10 @@ export default function SettingScreen() {
         <ThemedText type={'title'} className={'pb-6'} size={'lg'}>
           {t('settings')}
         </ThemedText>
-        <View className="relative size-28 rounded-3xl border border-primary-500">
+        <View className="border-primary-500 relative size-28 rounded-3xl border">
           <AvatarSvg options={avatar || AVATARS_OPTIONS[0]} size={100} />
           <TouchableOpacity
-            className="absolute -bottom-4 right-[50%] z-10 flex size-8 translate-x-1/2 items-center justify-center rounded-full bg-primary-500"
+            className="bg-primary-500 absolute right-[50%] -bottom-4 z-10 flex size-8 translate-x-1/2 items-center justify-center rounded-full"
             onPress={() => {
               setSettingOption('avatar');
               setShowBottomSheet(true);
@@ -106,13 +66,15 @@ export default function SettingScreen() {
           {settingsButtons.map((option, index) => (
             <TouchableOpacity
               key={`${option}_${index}`}
-              className={'flex-row items-center justify-between gap-1 border-t border-t-dark-200 px-4 py-6'}
+              className={'border-t-dark-200 flex-row items-center justify-between gap-1 border-t px-4 py-6'}
               onPress={() => {
                 setSettingOption(option);
                 setShowBottomSheet(true);
               }}
             >
-              <ThemedText className={'px-1 capitalize'} size={'sm'}>{option}</ThemedText>
+              <ThemedText className={'px-1 capitalize'} size={'sm'}>
+                {option}
+              </ThemedText>
               <IconSymbol name={'chevron.right'} color={'gray'} size={16} />
             </TouchableOpacity>
           ))}

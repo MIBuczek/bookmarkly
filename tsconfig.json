@@ -18,7 +18,8 @@
     "node_modules",
     ".expo",
     "ios",
-    "android"
+    "android",
+    "dist"
   ],
   "include": [
     "src/**/*.ts",

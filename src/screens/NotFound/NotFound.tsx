@@ -11,9 +11,13 @@ export default function NotFoundScreen() {
     <>
       <Stack.Screen options={{ title: 'Oops!' }} />
       <ThemedView className={'flex-1 items-center justify-center p-5'}>
-        <ThemedText type="title" size={'2xl'}>{t('not_found')}</ThemedText>
+        <ThemedText type="title" size={'2xl'}>
+          {t('not_found')}
+        </ThemedText>
         <Link href="/" className={'mt-4 px-4'}>
-          <ThemedText type="link" size={'sm'}>{t('go_to_home')}</ThemedText>
+          <ThemedText type="link" size={'sm'}>
+            {t('go_to_home')}
+          </ThemedText>
         </Link>
       </ThemedView>
     </>

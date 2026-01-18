@@ -1,19 +1,18 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { FlatList, LayoutAnimation, Platform, TouchableOpacity, UIManager, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Button } from '@/components/button/Button';
 import { Input } from '@/components/ui/Input';
-import { baseColors } from '@/assets/theme/base-theme';
+import { baseColors } from '@assets/theme/base-theme';
 import { twMerge } from 'tailwind-merge';
-import { useAppSelector } from '@/store';
 import LinkItem from '@/components/LinkItem';
 import { ActionButton } from '@/components/button/ActionButton';
 import { NewLinkForm } from '@/components/forms/NewLinkForm';
 import { useTranslation } from 'react-i18next';
-import { TLink } from '@/types/links.type';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
 import { useLoadLinks } from '@/hooks/useLoadLinks';
+import useScreen from '@/screens/Dashboard/useScreen';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -21,53 +20,23 @@ if (Platform.OS === 'android') {
   }
 }
 
-type DashboardBaseFilters = 'unread' | 'read' | 'all';
-
 export default function DashboardScreen() {
   const { t } = useTranslation();
+
   const { loadLinks } = useLoadLinks();
 
-  const { links } = useAppSelector(({ links }) => links);
-
-  const [selectedFilterLinks, setSelectedFilterLinks] = useState<DashboardBaseFilters>('all');
-  const [showAddLink, setShowAddLink] = useState<boolean>(false);
-  const [showSearch, setShowSearch] = useState<boolean>(false);
-  const [searchPhase, setSearchPhase] = useState<string>('');
-
-  const handleFilterLinks = (filterOption: DashboardBaseFilters) => {
-    const _setFilterOption: DashboardBaseFilters = selectedFilterLinks === filterOption ? 'all' : filterOption;
-    setSelectedFilterLinks(_setFilterOption);
-  };
-
-  const toggleAddLink = () => setShowAddLink(!showAddLink);
-
-  const filteredLinks = useMemo(() => {
-    let _filteredLinks = links;
-
-    if (selectedFilterLinks !== 'all') {
-      _filteredLinks = links.filter((link: TLink) => {
-        if (selectedFilterLinks === 'read') {
-          return link.read;
-        }
-
-        if (selectedFilterLinks === 'unread') {
-          return !link.read;
-        }
-
-        return true;
-      });
-    }
-
-    if (searchPhase) {
-      _filteredLinks = _filteredLinks.filter((link: TLink) => {
-        const titleMatch = link.title.toLowerCase().includes(searchPhase.toLowerCase());
-        const tagsMatch = link.tags.some((tag) => tag.toLowerCase().includes(searchPhase.toLowerCase()));
-        return titleMatch || tagsMatch;
-      });
-    }
-
-    return _filteredLinks;
-  }, [links, selectedFilterLinks, searchPhase]);
+  const {
+    links,
+    filteredLinks,
+    selectedFilterLinks,
+    handleFilterLinks,
+    toggleAddLink,
+    showAddLink,
+    showSearch,
+    setShowSearch,
+    searchPhase,
+    setSearchPhase,
+  } = useScreen();
 
   useEffect(() => {
     void loadLinks();
@@ -83,7 +52,7 @@ export default function DashboardScreen() {
         <ThemedText type={'title'} size={'lg'}>
           {t('dashboard')}
         </ThemedText>
-        <TouchableOpacity className={'absolute right-2 top-6 size-10'} onPress={() => setShowSearch(!showSearch)}>
+        <TouchableOpacity className={'absolute top-6 right-2 size-10'} onPress={() => setShowSearch(!showSearch)}>
           <AntDesign name="search" size={20} color={baseColors.colors.primary['500']} />
         </TouchableOpacity>
         {showSearch && (

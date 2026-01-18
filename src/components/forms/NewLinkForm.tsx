@@ -83,7 +83,9 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
       onRequestClose={onRequestClose}
     >
       <View className={'flex items-stretch justify-start gap-6 px-8 py-2'}>
-        <ThemedText size={'sm'} className={'w-full'}>{t('add_link_description')}</ThemedText>
+        <ThemedText size={'sm'} className={'w-full'}>
+          {t('add_link_description')}
+        </ThemedText>
         <Controller
           name="url"
           control={control}
@@ -99,7 +101,7 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
             >
               <View
                 className={twMerge(
-                  'absolute top-0 right-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 border-primary-500 bg-primary-500 p-1',
+                  'border-primary-500 bg-primary-500 absolute top-0 right-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 p-1',
                   metadataGenerated ? 'border-gray-800 bg-gray-600' : '',
                 )}
               >

@@ -17,11 +17,7 @@ interface LinkCommentFormProps {
 }
 
 const commentFormSchema = yup.object().shape({
-  comment: yup
-    .string()
-    .min(2, 'comment_min_length')
-    .max(50, 'comment_max_length')
-    .required('comment_required'),
+  comment: yup.string().min(2, 'comment_min_length').max(50, 'comment_max_length').required('comment_required'),
 });
 
 type TCommentForm = {

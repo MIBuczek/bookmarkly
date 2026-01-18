@@ -5,7 +5,7 @@ import { RootState, useAppSelector } from '@/store';
 
 export type ThemedTextProps = TextProps & {
   type?: 'default' | 'title' | 'subtitle' | 'link';
-  size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | number
+  size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | number;
   className?: string;
 };
 
@@ -59,6 +59,11 @@ export function ThemedText({ style, className, type = 'default', size, ...rest }
     }
   }, [user?.settings.fontSize, size]);
 
-  return <Text className={twMerge(textStyle(), className)} {...rest}
-               style={{ fontFamily: fontFamily(), fontSize: fontSize() }} />;
+  return (
+    <Text
+      className={twMerge(textStyle(), className)}
+      {...rest}
+      style={{ fontFamily: fontFamily(), fontSize: fontSize() }}
+    />
+  );
 }

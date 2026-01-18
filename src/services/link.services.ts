@@ -19,9 +19,11 @@ const getAllLink = async (): Promise<{ links: TLink[]; count: number }> => {
   }
 };
 
-const addLink = async (linkData: TCreateLink): Promise<{
-  message: string,
-  data: TLink,
+const addLink = async (
+  linkData: TCreateLink,
+): Promise<{
+  message: string;
+  data: TLink;
 }> => {
   try {
     const response = await axiosInstance.post(API_URLS.LINKS_URL, { link: linkData });
@@ -31,9 +33,12 @@ const addLink = async (linkData: TCreateLink): Promise<{
   }
 };
 
-const updateLink = async (id: string, linkData: TUpdateLink): Promise<{
-  message: string,
-  data: TLink,
+const updateLink = async (
+  id: string,
+  linkData: TUpdateLink,
+): Promise<{
+  message: string;
+  data: TLink;
 }> => {
   try {
     const response = await axiosInstance.patch(`${API_URLS.LINKS_URL}/${id}`, { link: linkData });

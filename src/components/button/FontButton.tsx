@@ -5,13 +5,16 @@ import React from 'react';
 import { SFSymbols6_0 } from 'sf-symbols-typescript';
 
 export default function FontButton({
-                                     icon, onPress, disabled,
-                                   }: Readonly<{ icon: SFSymbols6_0, disabled: boolean, onPress: () => void }>) {
+                                     icon,
+                                     onPress,
+                                     disabled,
+                                   }: Readonly<{ icon: SFSymbols6_0; disabled: boolean; onPress: () => void }>) {
   return (
     <TouchableOpacity
-      className={'rounded-md border border-primary-500 p-2 disabled:bg-gray-600'}
+      className={'border-primary-500 rounded-md border p-2 disabled:bg-gray-600'}
       disabled={disabled}
-      onPress={onPress}>
+      onPress={onPress}
+    >
       <IconSymbol name={icon} color={baseColors.colors.dark['600']} size={14} />
     </TouchableOpacity>
   );

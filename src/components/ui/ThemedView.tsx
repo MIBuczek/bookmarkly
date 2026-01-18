@@ -20,7 +20,7 @@ export function ThemedView({
   const colorScheme = useColorScheme();
 
   return (
-    <View className={twMerge('flex-1 bg-gray-300 dark:bg-dark-800', className)} style={style} {...otherProps}>
+    <View className={twMerge('dark:bg-dark-800 flex-1 bg-gray-300', className)} style={style} {...otherProps}>
       {children}
     </View>
   );

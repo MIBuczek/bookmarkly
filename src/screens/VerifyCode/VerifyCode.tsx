@@ -1,58 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
-import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
+import { CodeField, Cursor } from 'react-native-confirmation-code-field';
 import { Button } from '@/components/button/Button';
-import { baseColors } from '@/assets/theme/base-theme';
+import { baseColors } from '@assets/theme/base-theme';
 import { useRouter } from 'expo-router';
-import { RootState, storeActions, useAppDispatch, useAppSelector } from '@/store';
+import { RootState, useAppSelector } from '@/store';
 import { useTranslation } from 'react-i18next';
-import authServices from '@/services/auth.services';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
 import { ArrowBackButton } from '@/components/button/ArrowBackButton';
-import { APP_ROUTES } from '@/utils/routes';
-
-const CELL_COUNT = 6;
-const START_COUNT_DOWN = 90;
+import useScreen, { CELL_COUNT } from '@/screens/VerifyCode/useScreen';
 
 export default function VerifyCodeScreen() {
-  const router = useRouter();
   const { t } = useTranslation();
+  const router = useRouter();
 
-  const [countDown, setCountDown] = useState(START_COUNT_DOWN);
-  const [otp, setOtp] = useState('');
-  const ref = useBlurOnFulfill({ value: otp, cellCount: CELL_COUNT });
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value: otp,
-    setValue: setOtp,
-  });
+  const { ref, props, getCellOnLayoutHandler, countDown, setCountDown, otp, setOtp, verifyCode, resendCode } =
+    useScreen();
 
-  const dispatch = useAppDispatch();
   const { phone } = useAppSelector(({ user }: RootState) => user);
-
-  const resendCode = async () => {
-    if (!phone) return;
-    try {
-      await authServices.singIn({ phone });
-      setCountDown(START_COUNT_DOWN);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const verifyCode = async () => {
-    if (!otp || otp.length !== CELL_COUNT || !phone) return;
-    try {
-      const { user, token } = await authServices.verifyCode({ phone, otp });
-      dispatch(storeActions.user.setUser({ user }));
-      dispatch(storeActions.user.setToken({ token }));
-      router.navigate(APP_ROUTES.DASHBOARD);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setOtp('');
-    }
-  };
 
   useEffect(() => {
     if (countDown > 0) {
@@ -90,7 +56,7 @@ export default function VerifyCodeScreen() {
           textContentType="oneTimeCode"
           renderCell={({ index, symbol, isFocused }) => (
             <Text
-              className="m-2 rounded-lg text-primary-500"
+              className="text-primary-500 m-2 rounded-lg"
               key={index}
               style={[styles.cell, isFocused && styles.focusCell]}
               onLayout={getCellOnLayoutHandler(index)}

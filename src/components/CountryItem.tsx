@@ -25,13 +25,15 @@ export const CountryItem = memo(function({
     <Pressable
       onPress={onPress}
       className={twMerge(
-        `h-[50px] flex-row items-center justify-between gap-1 rounded-lg border border-dark-400 p-4`,
+        `border-dark-400 h-[50px] flex-row items-center justify-between gap-1 rounded-lg border p-4`,
         className,
       )}
     >
       <View className={'flex-row gap-2'}>
         <CountryFlag isoCode={isoCode} size={16} />
-        <ThemedText className={'px-1 capitalize'} size={'sm'}>{countryName}</ThemedText>
+        <ThemedText className={'px-1 capitalize'} size={'sm'}>
+          {countryName}
+        </ThemedText>
       </View>
       {icon && (
         <View>

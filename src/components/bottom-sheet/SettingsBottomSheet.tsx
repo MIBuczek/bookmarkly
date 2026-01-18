@@ -33,7 +33,9 @@ export const Notification = ({ handleClose }: SettingsProps) => {
 
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
-      <ThemedText size={'sm'} className={'w-full'}>{t('notification_preview_text')}</ThemedText>
+      <ThemedText size={'sm'} className={'w-full'}>
+        {t('notification_preview_text')}
+      </ThemedText>
       <View className={'w-full flex-row items-center justify-between py-2'}>
         <ThemedText size={'md'} type={'subtitle'}>
           {t('allow_push_notification')}
@@ -84,20 +86,16 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
 
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
-      <ThemedText size={'sm'} className={'w-full'}>{t('appearance_preview_text')}</ThemedText>
+      <ThemedText size={'sm'} className={'w-full'}>
+        {t('appearance_preview_text')}
+      </ThemedText>
       <View className={'w-full flex-row items-center justify-between py-2'}>
         <ThemedText size={fontSize} type={'subtitle'} className={'text-gray-800'}>
           {t('font_size')}
         </ThemedText>
         <View className="flex-row items-center gap-2">
-          <FontButton
-            icon={'minus'}
-            disabled={fontSize <= 12}
-            onPress={() => setFontSize((prev) => --prev)} />
-          <FontButton
-            icon={'plus'}
-            disabled={fontSize >= 18}
-            onPress={() => setFontSize((prev) => ++prev)} />
+          <FontButton icon={'minus'} disabled={fontSize <= 12} onPress={() => setFontSize((prev) => --prev)} />
+          <FontButton icon={'plus'} disabled={fontSize >= 18} onPress={() => setFontSize((prev) => ++prev)} />
         </View>
       </View>
       <View className={'w-full flex-row items-center justify-between py-2'}>
@@ -105,16 +103,8 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
           {t('color_theme')}
         </ThemedText>
         <View className="flex-row items-center gap-2">
-          <ThemeButton
-            icon={'moon'}
-            active={theme === 'dark'}
-            onPress={() => setTheme('dark')}
-          />
-          <ThemeButton
-            icon={'sun.max'}
-            active={theme === 'light'}
-            onPress={() => setTheme('light')}
-          />
+          <ThemeButton icon={'moon'} active={theme === 'dark'} onPress={() => setTheme('dark')} />
+          <ThemeButton icon={'sun.max'} active={theme === 'light'} onPress={() => setTheme('light')} />
         </View>
       </View>
       <SettingsFooter
@@ -168,7 +158,9 @@ export const Language = ({ handleClose }: SettingsProps) => {
 
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
-      <ThemedText size={'sm'} className={'w-full'}>{t('language_preview_text')}</ThemedText>
+      <ThemedText size={'sm'} className={'w-full'}>
+        {t('language_preview_text')}
+      </ThemedText>
       <View className={'flex w-full items-start gap-2 py-2'}>
         <ThemedText size={'md'} type={'subtitle'}>
           {t('application_language')}
@@ -209,7 +201,9 @@ export const Storage = ({ handleClose }: SettingsProps) => {
 
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
-      <ThemedText size={'sm'} className={'w-full'}>{t('storage_preview_text')}</ThemedText>
+      <ThemedText size={'sm'} className={'w-full'}>
+        {t('storage_preview_text')}
+      </ThemedText>
       <View className={'w-full flex-row items-center justify-between py-2'}>
         <ThemedText size={'md'} type={'subtitle'}>
           {t('storage_space')} {totalSize} (MB)
@@ -291,7 +285,9 @@ export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsP
   };
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
-      <ThemedText size={'sm'} className={'w-full'}>{t('avatars_preview_text')}</ThemedText>
+      <ThemedText size={'sm'} className={'w-full'}>
+        {t('avatars_preview_text')}
+      </ThemedText>
       <View className={'flex w-full items-start py-2'}>
         <ThemedText size={'md'} type={'subtitle'}>
           {t('choice_your_avatar')}
@@ -305,7 +301,7 @@ export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsP
               setSelectedAvatar(option);
             }}
             className={twMerge(
-              'relative size-28 rounded-3xl border border-dark-400',
+              'border-dark-400 relative size-28 rounded-3xl border',
               `${option.seed === selectedAvatar?.seed ? 'border-primary-500' : 'border-dark-400'}`,
             )}
           >

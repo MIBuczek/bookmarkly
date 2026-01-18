@@ -3,7 +3,7 @@ import { MMKV } from 'react-native-mmkv';
 
 const storage = new MMKV();
 
-export const reduxStorage: Storage & { clearStorage: () => Promise<void>, getTotalSize: () => Promise<number> } = {
+export const reduxStorage: Storage & { clearStorage: () => Promise<void>; getTotalSize: () => Promise<number> } = {
   setItem: (key, value) => {
     storage.set(key, value);
     return Promise.resolve(true);

@@ -12,8 +12,6 @@ export const useAuthGuard = () => {
   const checkUser = useMemo(() => {
     return isLoggedIn;
   }, [isLoggedIn]);
-  
-  
 
   const checkToken = useCallback(async () => {
     if (!token) {
@@ -23,7 +21,6 @@ export const useAuthGuard = () => {
     }
 
     try {
-
       const { valid, user } = await authServices.verifySession();
 
       if (valid && user) {

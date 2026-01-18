@@ -13,20 +13,17 @@ export default function ActionLinkItemBottomSheet({
                                                     handleActionBottomSheet,
                                                     handleDeleteModalConfirmation,
                                                   }: Readonly<{
-  link: TLink,
-  showActions: boolean,
-  handleActionBottomSheet: () => void,
-  handleDeleteModalConfirmation: () => void
+  link: TLink;
+  showActions: boolean;
+  handleActionBottomSheet: () => void;
+  handleDeleteModalConfirmation: () => void;
 }>) {
   const { t } = useTranslation();
 
   return (
     <BottomSheet onRequestClose={handleActionBottomSheet} visible={showActions} height={20}>
       <View className={'flex h-full w-full items-stretch justify-center gap-2 px-4'}>
-        <RedirectButton
-          title={t('redirect_to_page')}
-          url={link?.url ?? ''}
-        />
+        <RedirectButton title={t('redirect_to_page')} url={link?.url ?? ''} />
         <ActionButtonBottomSheet title={t('delete')} onPress={handleDeleteModalConfirmation}>
           <FontAwesome name="trash" size={16} color={'#ef4444'} />
         </ActionButtonBottomSheet>

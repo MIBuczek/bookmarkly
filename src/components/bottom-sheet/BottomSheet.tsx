@@ -26,10 +26,10 @@ export const BottomSheet = ({
         onPress={onRequestClose}
       />
       <ThemedView
-        className={twMerge('flex-1 rounded-xl border-b-0 border-t border-t-primary-500 pb-10 shadow', className)}
+        className={twMerge('border-t-primary-500 flex-1 rounded-xl border-t border-b-0 pb-10 shadow', className)}
       >
         <View className="flex items-center justify-center">
-          <TouchableOpacity className="h-1 w-32 rounded-b-md bg-primary-500" />
+          <TouchableOpacity className="bg-primary-500 h-1 w-32 rounded-b-md" />
         </View>
         <View className="flex flex-row items-center pt-4">
           {title && (

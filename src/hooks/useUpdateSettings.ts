@@ -9,7 +9,9 @@ export function useUpdateSettings() {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
 
-  const getSelectedSettings = <T extends string | boolean | number | ThemeType>(key: keyof TUserSettings): T | undefined => {
+  const getSelectedSettings = <T extends string | boolean | number | ThemeType>(
+    key: keyof TUserSettings,
+  ): T | undefined => {
     return user?.settings?.[key] as T;
   };
 
