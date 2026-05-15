@@ -14,13 +14,12 @@ import { twMerge } from 'tailwind-merge';
 import { CountryItem } from '@/components/CountryItem';
 import { useTranslation } from 'react-i18next';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
-import { ArrowBackButton } from '@/components/button/ArrowBackButton';
 import { storeActions } from '@/store';
 import useScreen from '@/screens/SingUp/useScreen';
 import { SelectCountryBottomSheet } from '@/screens/SingUp/components/SelectCountryBottomSheet';
 
 /**
- * SignUp component for user registration.
+ * SignUp screen for the web.
  * @returns {JSX.Element} The rendered component.
  */
 export default function SignUpScreen(): React.JSX.Element {
@@ -49,18 +48,14 @@ export default function SignUpScreen(): React.JSX.Element {
 
   return (
     <ScreenContainer>
-      <ArrowBackButton
-        onPress={() => {
-          router.back();
-        }}
-      />
-      <View className={'mt-4 mb-10 flex w-full gap-2'}>
-        <ThemedText type="title" size={'xl'}>
+      <View className={'mt-10 mb-4 flex w-full gap-2'}>
+        <ThemedText type="title" size={'3xl'}
+                    className="font-extrabold border-b border-b-primary-200 dark:border-b-primary-300 pb-2">
           {t('register')}
         </ThemedText>
         <ThemedText size={'sm'}>{t('create_an_account_to_get_started')}</ThemedText>
       </View>
-      <View className="flex-1 justify-start gap-6">
+      <View className="flex-1 justify-start gap-2">
         <Controller
           name="name"
           control={control}
@@ -76,6 +71,7 @@ export default function SignUpScreen(): React.JSX.Element {
             />
           )}
         />
+
         <Controller
           name="email"
           control={control}
@@ -91,6 +87,7 @@ export default function SignUpScreen(): React.JSX.Element {
             />
           )}
         />
+
         <View className="flex w-full gap-2">
           <ThemedText type="title" size={'sm'} className={'text-dark-800'}>
             {t('country')}
@@ -120,8 +117,7 @@ export default function SignUpScreen(): React.JSX.Element {
             />
           )}
         />
-      </View>
-      <View className={'mt-auto flex w-full gap-2'}>
+
         <View className="flex items-start justify-start">
           <Controller
             name="terms"
@@ -157,7 +153,21 @@ export default function SignUpScreen(): React.JSX.Element {
             )}
           />
         </View>
-        <Button type={'primary'} title={t('register')} buttonClassName={'mt-2'} onPress={handleSubmit(onSubmit)} />
+        <View className={'flex flex-row justify-end w-full gap-2 mt-auto'}>
+          <Button
+            type={'secondary'}
+            title={t('back')}
+            buttonClassName={'min-w-[140px]'}
+            onPress={() => {
+              router.back();
+            }}
+          />
+          <Button
+            type={'primary'}
+            title={t('register')}
+            buttonClassName={'min-w-[140px]'}
+            onPress={handleSubmit(onSubmit)} />
+        </View>
       </View>
       <BottomSheet
         height={90}

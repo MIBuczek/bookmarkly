@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/Input';
 import { FlatList } from 'react-native-gesture-handler';
 import { ScreenWidth } from 'react-native-elements/dist/helpers';
 import { Button } from '@/components/button/Button';
-import { PhoneCodeItem } from '@/screens/SingIn/components/PhoneCodeItem';
+import { PhoneCodeItem } from '@/screens/SignIn/components/PhoneCodeItem';
 
 type PhoneCodeBottomSheetProps = {
   selectedItem: Country | null;

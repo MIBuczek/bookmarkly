@@ -1,26 +1,54 @@
-import { Storage } from 'redux-persist';
-import { MMKV } from 'react-native-mmkv';
+import { createMMKV } from 'react-native-mmkv';
+import { LocalStorageType } from '@/types/store.type';
+import { IS_WEB } from '@/utils/device-info';
 
-const storage = new MMKV();
+const storageNative = createMMKV();
+let webStorage: Record<string, any> = {};
 
-export const reduxStorage: Storage & { clearStorage: () => Promise<void>; getTotalSize: () => Promise<number> } = {
+export const reduxStorage: LocalStorageType = {
+
   setItem: (key, value) => {
-    storage.set(key, value);
+    if (IS_WEB) {
+      webStorage[key] = value;
+    } else {
+      storageNative.set(key, value);
+    }
     return Promise.resolve(true);
   },
+
   getItem: (key) => {
-    const value = storage.getString(key);
+    let value;
+    if (IS_WEB) {
+      value = webStorage[key];
+    } else {
+      value = storageNative.getString(key);
+    }
     return Promise.resolve(value);
   },
+
   removeItem: (key) => {
-    storage.delete(key);
-    return Promise.resolve();
+    if (IS_WEB) {
+      delete webStorage[key];
+    } else {
+      storageNative.remove(key);
+    }
+    return Promise.resolve(true);
   },
+
   getTotalSize: () => {
-    return Promise.resolve(storage.size);
+    let size = 0;
+    if (!IS_WEB) {
+      size = storageNative.size;
+    }
+    return Promise.resolve(size);
   },
+
   clearStorage: () => {
-    storage.clearAll();
-    return Promise.resolve();
+    if (IS_WEB) {
+      webStorage = {};
+    } else {
+      storageNative.clearAll();
+    }
+    return Promise.resolve(true);
   },
 };

@@ -16,6 +16,7 @@ export function ScreenContainer({ withBottomTabs = false, children }: ScreenCont
     }
     return 0 + (withBottomTabs ? 50 : 0);
   }, [withBottomTabs, isAndroid]);
+
   return (
     <SafeAreaView
       style={{

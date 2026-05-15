@@ -1,7 +1,7 @@
 import { Switch, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import React from 'react';
-import { baseColors } from '@assets/theme/base-theme';
+import { baseColors } from '@/assets/theme/base-theme';
 import { useLocalSearchParams } from 'expo-router/build/hooks';
 import { ActionButton } from '@/components/button/ActionButton';
 import { Entypo, Feather, FontAwesome } from '@expo/vector-icons';

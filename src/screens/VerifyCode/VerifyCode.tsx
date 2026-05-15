@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { CodeField, Cursor } from 'react-native-confirmation-code-field';
 import { Button } from '@/components/button/Button';
-import { baseColors } from '@assets/theme/base-theme';
+import { baseColors } from '@/assets/theme/base-theme';
 import { useRouter } from 'expo-router';
 import { RootState, useAppSelector } from '@/store';
 import { useTranslation } from 'react-i18next';

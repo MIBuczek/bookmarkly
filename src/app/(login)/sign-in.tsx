@@ -1,3 +1,3 @@
-import SignInScreen from '@/screens/SingIn/SignIn';
+import SignInScreen from '@/screens/SignIn/SignIn';
 
 export default SignInScreen;

@@ -1,6 +1,6 @@
-import { MMKV } from 'react-native-mmkv';
 import { IS_WEB } from '@/utils/device-info';
 import { safeJsonParse } from '@/utils/helper';
+import { createMMKV } from 'react-native-mmkv';
 
 export const LOCAL_STORAGE_KEY = {
   ONBOARDING: 'ONBOARDING',
@@ -18,7 +18,7 @@ type KeyOfLocalStorage = keyof typeof LOCAL_STORAGE_KEY;
 type LocalStorageValueType = string | number | boolean | object;
 
 class LocalAppStorage {
-  private storage = new MMKV();
+  private storage = createMMKV();
 
   getSize() {
     return this.storage.size;
@@ -74,7 +74,7 @@ class LocalAppStorage {
 
   private deleteLocalStorageData(key: KeyOfLocalStorage): void {
     try {
-      this.storage.delete(key);
+      this.storage.remove(key);
     } catch (e) {
       throw new Error('[deleteLocalStorageData] : ' + JSON.stringify(e));
     }

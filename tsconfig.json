@@ -6,9 +6,6 @@
     "skipLibCheck": true,
     "noEmit": true,
     "paths": {
-      "@assets/*": [
-        "./src/assets/*"
-      ],
       "@/*": [
         "./src/*"
       ]

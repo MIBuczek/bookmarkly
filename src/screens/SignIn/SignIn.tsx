@@ -13,8 +13,8 @@ import { Country } from 'country-telephone-data';
 import { ErrorText } from '@/components/ui/ErrorText';
 import Logo from '@/components/Logo';
 import { APP_ROUTES } from '@/utils/routes';
-import useScreen from '@/screens/SingIn/useScreen';
-import { PhoneCodeBottomSheet } from '@/screens/SingIn/components/PhoneCodeBottomSheet';
+import useScreen from '@/screens/SignIn/useScreen';
+import { PhoneCodeBottomSheet } from '@/screens/SignIn/components/PhoneCodeBottomSheet';
 
 export default function SignInScreen() {
   const { t } = useTranslation();
