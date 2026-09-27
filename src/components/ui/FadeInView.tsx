@@ -20,7 +20,7 @@ export const FadeInView = ({ isActive, className, children }: Readonly<FadeInVie
 
   const opacityStyle = {
     opacity: fadeAnimOpacity.current,
-    display: isActive ? 'flex' : ('none' as const),
+    display: (isActive ? 'flex' : 'none') as 'flex' | 'none',
   };
 
   return (

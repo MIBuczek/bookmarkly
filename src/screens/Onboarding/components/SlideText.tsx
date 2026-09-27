@@ -21,7 +21,7 @@ const SlideText = ({ title, description, isActive }: Readonly<SlideTextProps>) =
 
   const slideTextStyle = {
     opacity: fadeAnimOpacity.current,
-    display: isActive ? 'flex' : ('none' as const),
+    display: (isActive ? 'flex' : 'none') as 'flex' | 'none',
   };
 
   return (
