@@ -7,24 +7,28 @@ interface SingleSlideDotProps {
 }
 
 const SingleSlideDot = ({ isActive, onPress }: Readonly<SingleSlideDotProps>) => {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useRef(new Animated.Value(0));
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
+    Animated.timing(fadeAnim.current, {
       toValue: isActive ? 1 : 0,
       duration: 500,
       useNativeDriver: false,
     }).start();
-  }, [isActive, fadeAnim]);
+  }, [isActive]);
 
-  const backgroundColor = fadeAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['rgb(200, 200, 200)', 'rgb(255,140,66)'],
-  });
+  const dotStyle = {
+    backgroundColor: fadeAnim.current.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['rgb(200, 200, 200)', 'rgb(255,140,66)'],
+    }),
+    height: 10,
+    width: 10,
+  };
 
   return (
     <Pressable onPress={onPress}>
-      <Animated.View style={{ backgroundColor, height: 10, width: 10 }} className="size-3 rounded-full" />
+      <Animated.View style={dotStyle} className="size-3 rounded-full" />
     </Pressable>
   );
 };

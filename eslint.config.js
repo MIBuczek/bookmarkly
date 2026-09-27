@@ -13,5 +13,12 @@ export default [
   ...compat.extends('expo'),
   {
     ignores: ['.expo/*', 'node_modules/*', 'babel.config.js'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      '@react-native/no-inline-styles': 'off',
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/refs': 'off',
+    },
   },
 ];

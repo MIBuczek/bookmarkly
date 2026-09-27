@@ -1,6 +1,7 @@
 import { Appearance } from 'react-native';
 
-export const getSystemAppearance = () => {
+export const getSystemAppearance = (): 'light' | 'dark' | 'system' => {
   const colorScheme = Appearance.getColorScheme();
-  return colorScheme || 'light';
+  if (colorScheme === 'dark') return 'dark';
+  return 'light';
 };

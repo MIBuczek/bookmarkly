@@ -1,14 +1,13 @@
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import { IconSymbol, IconSymbolName } from '@/components/ui/IconSymbol';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import { SFSymbols6_0 } from 'sf-symbols-typescript';
 
 export default function ThemeButton({
                                       icon,
                                       active,
                                       onPress,
                                     }: Readonly<{
-  icon: SFSymbols6_0;
+  icon: IconSymbolName;
   active: boolean;
   onPress: () => void;
 }>) {

@@ -63,22 +63,18 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
   const [theme, setTheme] = useState<ThemeType>('light');
   const [hasChanged, setHasChanged] = useState(false);
 
-  const setInitialState = () => {
-    const _theme = getSelectedSettings<ThemeType>('appearance');
-    setTheme(_theme ?? 'light');
-    const _fontSize = getSelectedSettings<number>('fontSize');
-    setFontSize(_fontSize ?? 14);
-  };
+  useEffect(() => {
+    const _theme = getSelectedSettings<ThemeType>('appearance') ?? 'light';
+    setTheme(_theme);
+    const _fontSize = getSelectedSettings<number>('fontSize') ?? 14;
+    setFontSize(_fontSize);
+  }, [getSelectedSettings]);
 
-  useEffect(setInitialState, [getSelectedSettings]);
-
-  const handleChange = () => {
+  useEffect(() => {
     const _theme = getSelectedSettings<ThemeType>('appearance');
     const _fontSize = getSelectedSettings<number>('fontSize');
     setHasChanged(_theme !== theme || _fontSize !== fontSize);
-  };
-
-  useEffect(handleChange, [theme, fontSize, getSelectedSettings]);
+  }, [theme, fontSize, getSelectedSettings]);
 
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
@@ -125,20 +121,16 @@ export const Language = ({ handleClose }: SettingsProps) => {
 
   const langList = useMemo(() => LAND_OPTIONS, []);
 
-  const setInitialState = () => {
+  useEffect(() => {
     const _lang = getSelectedSettings<string>('language');
     if (_lang) setLang(_lang);
     else setLang(Localization.getLocales()[0].languageCode);
-  };
+  }, [getSelectedSettings]);
 
-  useEffect(setInitialState, []);
-
-  const handleChange = () => {
+  useEffect(() => {
     const _lang = getSelectedSettings<string>('language');
     setHasChanged(_lang !== lang);
-  };
-
-  useEffect(handleChange, [lang]);
+  }, [lang, getSelectedSettings]);
 
   const applyChanges = async () => {
     if (!lang) return;
@@ -190,9 +182,14 @@ export const Storage = ({ handleClose }: SettingsProps) => {
   const { t } = useTranslation();
   const [showClearConfirmationModal, setShowClearConfirmationModal] = useState(false);
 
-  const totalSize = useMemo(async () => {
-    const _size = await reduxStorage?.getTotalSize();
-    return (_size / (1024 * 1024)).toFixed(2);
+  const [totalSize, setTotalSize] = useState<string>('0.00');
+
+  useEffect(() => {
+    const fetchSize = async () => {
+      const _size = await reduxStorage?.getTotalSize();
+      setTotalSize((_size / (1024 * 1024)).toFixed(2));
+    };
+    void fetchSize();
   }, []);
 
   return (

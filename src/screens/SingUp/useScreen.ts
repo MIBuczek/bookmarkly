@@ -100,7 +100,6 @@ export default function useScreen() {
       language,
       appearance,
       fontSize: 16,
-      avatar: 'Ryker',
     };
   }, []);
 
