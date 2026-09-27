@@ -10,7 +10,6 @@
     "prebuild:clean": "expo prebuild --clean",
     "ios:build": "expo prebuild --platform ios --clean",
     "ios": "expo run:ios",
-    "web": "expo start --web",
     "lint": "eslint src",
     "test": "jest src",
     "format": "prettier --write .",
@@ -27,13 +26,13 @@
     ]
   },
   "dependencies": {
-    "@dicebear/collection": "^9.4.2",
-    "@dicebear/core": "^9.4.2",
+    "@ai-sdk/openai": "^3.0.64",
     "@expo/vector-icons": "^15.1.1",
     "@hookform/resolvers": "^5.2.2",
     "@react-navigation/bottom-tabs": "^7.15.5",
     "@react-navigation/native": "^7.1.33",
     "@reduxjs/toolkit": "^2.11.2",
+    "ai": "^6.0.183",
     "axios": "^1.16.1",
     "country-list": "^2.4.1",
     "country-telephone-data": "^0.6.3",
@@ -82,7 +81,8 @@
     "redux-persist": "^6.0.0",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^3.4.19",
-    "yup": "^1.7.1"
+    "yup": "^1.7.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",

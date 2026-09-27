@@ -3,7 +3,8 @@ export const APP_ROUTES = {
   SIGN_IN: '/(login)/sign-in',
   SIGN_UP: '/(login)/sign-up',
   VERIFY_CODE: '/(login)/verify-code',
-  DASHBOARD: '/(main)/(dashboard)',
-  DETAILS: '/(main)/(dashboard)/details',
-  SETTINGS: '/(main)/(settings)',
+  LIBRARY: '/(main)/library',
+  DETAILS: '/(main)/details',
+  ADD_LINK: '/(main)/read-me',
+  SETTINGS: '/(main)/settings',
 } as const;

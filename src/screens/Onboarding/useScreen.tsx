@@ -57,7 +57,7 @@ export default function useScreen() {
   }, []);
 
   const checkHasOnboardingBeenDone = () => {
-    if (onboarded) router.navigate(APP_ROUTES.SIGN_IN);
+    if (!onboarded) router.navigate(APP_ROUTES.SIGN_IN);
   };
 
   const handleSwipeContent = () => {

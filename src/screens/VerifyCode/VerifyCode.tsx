@@ -56,7 +56,7 @@ export default function VerifyCodeScreen() {
           textContentType="oneTimeCode"
           renderCell={({ index, symbol, isFocused }) => (
             <Text
-              className="text-primary-500 m-2 rounded-lg"
+              className="m-2 rounded-lg text-dark-800"
               key={index}
               style={[styles.cell, isFocused && styles.focusCell]}
               onLayout={getCellOnLayoutHandler(index)}

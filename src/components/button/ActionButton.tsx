@@ -8,6 +8,7 @@ interface ActionButtonProps extends PropsWithChildren {
   onPress: () => void;
   containerClassName?: string;
   buttonClassName?: string;
+  titleClassName?: string;
 }
 
 export const ActionButton = ({
@@ -16,14 +17,21 @@ export const ActionButton = ({
                                children,
                                containerClassName,
                                buttonClassName,
+                               titleClassName,
                              }: Readonly<ActionButtonProps>) => (
   <View
     className={twMerge(
-      'bg-primary-100 mb-8 flex h-12 w-full items-center justify-center rounded-xl px-4',
+      'mb-8 flex h-12 w-full items-center justify-center rounded-xl bg-primary-100 px-4',
       containerClassName,
     )}
   >
-    <Button buttonClassName={buttonClassName} type={'primary'} title={title} onPress={onPress}>
+    <Button
+      buttonClassName={buttonClassName}
+      titleClassName={titleClassName}
+      type={'primary'}
+      title={title}
+      onPress={onPress}
+    >
       {children}
     </Button>
   </View>

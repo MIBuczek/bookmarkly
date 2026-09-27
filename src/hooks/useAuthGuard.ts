@@ -25,7 +25,7 @@ export const useAuthGuard = () => {
 
       if (valid && user) {
         dispatch(storeActions.user.setUser({ user }));
-        router.navigate(APP_ROUTES.DASHBOARD);
+        router.navigate(APP_ROUTES.ADD_LINK);
         return;
       }
 

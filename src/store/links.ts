@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TLink, TUpdateLink } from '@/types/links.type';
+import { mockLinks } from './mockData';
 
 type LinksState = {
   links: TLink[];
@@ -7,8 +8,8 @@ type LinksState = {
 };
 
 const initialState: LinksState = {
-  links: [],
-  total: 0,
+  links: mockLinks,
+  total: mockLinks.length,
 };
 
 export const linksSlice = createSlice({

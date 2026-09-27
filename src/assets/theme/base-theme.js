@@ -14,7 +14,7 @@ export const baseColors = {
     gray: {
       100: '#FFFFFF',
       200: '#FAFAFA',
-      300: '#F5F5F5', // Jasne tło
+      300: '#FBFBFB', // Jasne tło
       400: '#EAEAEA',
       500: '#DDDDDD',
       600: '#D1D1D1',
@@ -29,9 +29,9 @@ export const baseColors = {
       400: '#999999',
       500: '#808080',
       600: '#666666',
-      700: '#4D4D4D',
-      800: '#333333', // Ciemny tekst
-      900: '#1A1A1A', // Ciemne tło
+      700: '#555555', // Pomocniczy tekst
+      800: '#121212', // Ciemne tło
+      900: '#000000', // Główny tekst
     },
   },
 };

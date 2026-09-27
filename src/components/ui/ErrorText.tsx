@@ -8,7 +8,7 @@ interface ErrorTextProps {
 }
 
 export const ErrorText = ({ errorMsg }: Readonly<ErrorTextProps>) => (
-  <View className={'flex flex-row gap-1'}>
+  <View className={'flex flex-row gap-1 py-2'}>
     <IconSymbol name={'exclamationmark.circle'} color={'#ef4444'} size={16} />
     <ThemedText className={'text-red-500 dark:text-red-400'} size="sm">
       {errorMsg}

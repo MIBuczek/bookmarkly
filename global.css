@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'sans-serif';
-    src: url('src/assets/fonts/Inter-Regular.ttf') format('truetype');
+    font-family: 'SpaceMono';
+    src: url('src/assets/fonts/SpaceMono-Regular.ttf') format('truetype');
 }

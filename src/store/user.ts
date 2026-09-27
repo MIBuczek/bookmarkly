@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Country } from 'country-telephone-data';
 import { TUser, TUserSettings } from '@/types/uset.type';
 import { reduxStorage } from '@/store/storage';
+import { mockUser } from './mockData';
 
 type UserState = {
   user: TUser | null;
@@ -16,14 +17,14 @@ type UserState = {
 };
 
 const initialState: UserState = {
-  user: null,
-  phone: null,
-  token: null,
+  user: mockUser,
+  phone: mockUser.phone,
+  token: 'mock-token',
   phoneCode: null,
-  onboarded: false,
-  termsAndConditions: false,
-  isLoggedIn: false,
-  lastLoggedIn: null,
+  onboarded: true,
+  termsAndConditions: true,
+  isLoggedIn: true,
+  lastLoggedIn: new Date().toISOString(),
   error: null,
 };
 

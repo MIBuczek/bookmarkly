@@ -17,23 +17,22 @@ export default function AppInitialSettings({ children }: PropsWithChildren) {
   const colorNativeWindScheme = useNativeWindColorScheme();
 
   const [loaded] = useFonts({
-    InterRegular: require('../assets/fonts/Inter-Regular.ttf'),
-    InterMedium: require('../assets/fonts/Inter-Medium.ttf'),
-    InterSemiBold: require('../assets/fonts/Inter-SemiBold.ttf'),
-    InterBold: require('../assets/fonts/Inter-Bold.ttf'),
-    InterExtraBold: require('../assets/fonts/Inter-ExtraBold.ttf'),
+    SpaceMonoRegular: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMonoBold: require('../assets/fonts/SpaceMono-Bold.ttf'),
   });
 
   const { user, onboarded } = useAppSelector((state: RootState) => state.user);
 
   const initApp = useCallback(async () => {
-    await SplashScreen.hideAsync();
-    if (!onboarded) {
-      router.navigate(APP_ROUTES.ONBOARDING);
-      return;
+    if (loaded) {
+      await SplashScreen.hideAsync();
+      if (!onboarded) {
+        router.navigate(APP_ROUTES.ONBOARDING);
+        return;
+      }
+      await checkToken();
     }
-    await checkToken();
-  }, [checkToken]);
+  }, [checkToken, loaded, onboarded]);
 
   const initTranslationLang = useCallback(async () => {
     let lang = 'en';
@@ -55,11 +54,12 @@ export default function AppInitialSettings({ children }: PropsWithChildren) {
   }, [colorScheme, user]);
 
   useEffect(() => {
-    initApp().then(() => {
+    if (loaded) {
+      void initApp();
       void initTranslationLang();
       void initColorSchema();
-    });
-  }, [loaded]);
+    }
+  }, [loaded, initApp, initTranslationLang, initColorSchema]);
 
   return children;
 }

@@ -48,7 +48,7 @@ const PhoneCodeBottomSheet = ({ selectedItem, onDismiss, onPress }: Readonly<Pho
       <View className={'h-20 px-4 py-6'}>
         <Input placeholder={'search'} value={searchPhase} onChangeText={setSearchPhase} />
       </View>
-      <View className={'border-t-primary-500 flex-1 items-start py-2'}>
+      <View className={'flex-1 items-start border-t-black py-2'}>
         <FlatList
           style={{ width: ScreenWidth }}
           data={filteredPhoneCodes}
@@ -56,7 +56,7 @@ const PhoneCodeBottomSheet = ({ selectedItem, onDismiss, onPress }: Readonly<Pho
           renderItem={({ item }) => (
             <PhoneCodeItem
               {...item}
-              className={`rounded-none border-0 border-b px-4 py-6 ${item.dialCode === selectedItem?.dialCode ? 'bg-primary-200' : 'bg-transparent'}`}
+              className={`rounded-none border-0 border-b px-4 py-6 ${item.dialCode === selectedItem?.dialCode ? 'bg-black' : 'bg-transparent'}`}
               onPress={() => onPress(item)}
             />
           )}

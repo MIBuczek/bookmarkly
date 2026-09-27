@@ -1,4 +1,3 @@
-import { IS_WEB } from '@/utils/device-info';
 import { safeJsonParse } from '@/utils/helper';
 import { createMMKV } from 'react-native-mmkv';
 
@@ -8,7 +7,6 @@ export const LOCAL_STORAGE_KEY = {
   THEME: 'THEME',
   FONT_SIZE: 'FONT_SIZE',
   LANGUAGE: 'LANGUAGE',
-  AVATAR: 'AVATAR',
   PHONE_CODE: 'PHONE_CODE',
   TOKEN: 'TOKEN',
   PHONE_NUMBER: 'PHONE_NUMBER',
@@ -25,27 +23,14 @@ class LocalAppStorage {
   }
 
   getLocalData<T extends LocalStorageValueType>(key: KeyOfLocalStorage) {
-    if (IS_WEB) {
-      const _localData = sessionStorage.getItem(key);
-      if (!_localData) return null;
-      return safeJsonParse<T>(_localData);
-    }
     return this.getLocalStorageData<T>(key);
   }
 
   setLocalData<T extends LocalStorageValueType>(key: KeyOfLocalStorage, data: T) {
-    if (IS_WEB) {
-      sessionStorage.setItem(key, JSON.stringify(data));
-      return;
-    }
     this.setLocalStorageData(key, data);
   }
 
   deleteLocalData(key: KeyOfLocalStorage) {
-    if (IS_WEB) {
-      sessionStorage.removeItem(key);
-      return;
-    }
     this.deleteLocalStorageData(key);
   }
 

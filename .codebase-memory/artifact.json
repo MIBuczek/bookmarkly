@@ -1,0 +1,11 @@
+{
+  "schema_version": 2,
+  "commit": "b8e9a42bd4163c75af76d4d9e9a4fee078252f36",
+  "indexed_at": "2026-09-27T19:07:06Z",
+  "project": "bookmarkly",
+  "nodes": 1171,
+  "edges": 2053,
+  "original_size": 3538944,
+  "compressed_size": 470288,
+  "compression_level": 9
+}

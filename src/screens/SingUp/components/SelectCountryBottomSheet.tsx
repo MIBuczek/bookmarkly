@@ -53,7 +53,7 @@ const SelectCountryBottomSheet = ({
       <View className={'px-4 py-6'}>
         <Input placeholder={t('search_your_country')} value={searchPhase} onChangeText={setSearchPhase} />
       </View>
-      <View className={'border-t-primary-500 flex h-5/6 items-start py-2'}>
+      <View className={'flex h-5/6 items-start border-t-black py-2'}>
         <FlatList
           style={{ width: ScreenWidth }}
           data={filteredCountries}
@@ -63,13 +63,13 @@ const SelectCountryBottomSheet = ({
               isoCode={code}
               icon={false}
               countryName={name}
-              className={`border-dark-100 rounded-none border-0 border-b px-4 py-6 ${code === selectedCountry.code ? 'bg-primary-200' : 'bg-transparent'}`}
+              className={`rounded-none border-0 border-b border-dark-200 px-4 py-6 ${code === selectedCountry.code ? 'bg-dark-200' : 'bg-transparent'}`}
               onPress={() => handleSelection({ name, code })}
             />
           )}
         />
         <View className={'w-full p-4'}>
-          <Button type={'secondary'} title={t('cancel')} onPress={() => handleSelection(selectedCountry)} />
+          <Button type={'primary'} title={t('cancel')} onPress={() => handleSelection(selectedCountry)} />
         </View>
       </View>
     </View>

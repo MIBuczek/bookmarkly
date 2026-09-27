@@ -24,10 +24,7 @@ export const CountryItem = memo(function({
   return (
     <Pressable
       onPress={onPress}
-      className={twMerge(
-        `border-dark-400 h-[50px] flex-row items-center justify-between gap-1 rounded-lg border p-4`,
-        className,
-      )}
+      className={twMerge(`h-[50px] flex-row items-center justify-between gap-1 border border-black p-4`, className)}
     >
       <View className={'flex-row gap-2'}>
         <CountryFlag isoCode={isoCode} size={16} />

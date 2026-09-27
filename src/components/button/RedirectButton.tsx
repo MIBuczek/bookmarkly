@@ -8,11 +8,11 @@ export default function RedirectButton({ url, title }: Readonly<{ url: string; t
   return (
     <ExternalLink href={url}>
       <View className={'w-full flex-row items-center justify-center gap-3 px-4 py-6'}>
-        <ThemedText type={'subtitle'} className={'pt-1 text-blue-600 uppercase'} size={'sm'}>
+        <ThemedText type={'subtitle'} className={'pt-1 uppercase text-white underline'} size={'sm'}>
           {title}
         </ThemedText>
         <View className={'flex items-center justify-center'}>
-          <Feather name="external-link" size={16} color={'#2563eb'} />
+          <Feather name="external-link" size={16} color={'#FFF'} />
         </View>
       </View>
     </ExternalLink>

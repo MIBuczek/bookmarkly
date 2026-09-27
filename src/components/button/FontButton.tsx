@@ -11,7 +11,7 @@ export default function FontButton({
                                    }: Readonly<{ icon: SFSymbols6_0; disabled: boolean; onPress: () => void }>) {
   return (
     <TouchableOpacity
-      className={'border-primary-500 rounded-md border p-2 disabled:bg-gray-600'}
+      className={'rounded-md border border-primary-500 p-2 disabled:bg-gray-600'}
       disabled={disabled}
       onPress={onPress}
     >

@@ -10,8 +10,7 @@ import { Button } from '@/components/button/Button';
 import React, { useState } from 'react';
 import { BottomSheet } from '@/components/bottom-sheet/BottomSheet';
 import { LinkForm } from '@/components/forms/LinkForm';
-import { Colors } from '@/constants/colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useThemeColor } from '@/hooks/useThemeColor';
 import { twMerge } from 'tailwind-merge';
 import { useTranslation } from 'react-i18next';
 import { TLink } from '@/types/links.type';
@@ -36,9 +35,10 @@ interface NewLinkFormProps {
 }
 
 export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormProps>) => {
-  const theme = useColorScheme() ?? 'light';
   const { t } = useTranslation();
   const toast = useToast();
+  const iconColor = useThemeColor('icon');
+  const primaryColor = useThemeColor('primary');
 
   const [metadataGenerated, setMetadataGenerated] = useState(false);
   const [metadata, setMetadata] = useState<TLink | undefined>();
@@ -83,7 +83,7 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
       onRequestClose={onRequestClose}
     >
       <View className={'flex items-stretch justify-start gap-6 px-8 py-2'}>
-        <ThemedText size={'sm'} className={'w-full'}>
+        <ThemedText size={'sm'} className={'w-full capitalize'}>
           {t('add_link_description')}
         </ThemedText>
         <Controller
@@ -101,7 +101,7 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
             >
               <View
                 className={twMerge(
-                  'border-primary-500 bg-primary-500 absolute top-0 right-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 p-1',
+                  'absolute right-0 top-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 border-dark-500 bg-dark-500 p-1',
                   metadataGenerated ? 'border-gray-800 bg-gray-600' : '',
                 )}
               >
@@ -113,7 +113,7 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
                       setValue('url', '');
                     }}
                   >
-                    <FontAwesome name="trash" size={18} color={metadataGenerated ? Colors[theme].icon : '#ef4444'} />
+                    <FontAwesome name="trash" size={18} color={metadataGenerated ? iconColor : '#ef4444'} />
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
@@ -125,11 +125,7 @@ export const NewLinkForm = ({ visible, onRequestClose }: Readonly<NewLinkFormPro
                       });
                     }}
                   >
-                    <Octicons
-                      name="paste"
-                      size={18}
-                      color={metadataGenerated ? Colors[theme].icon : Colors[theme].primary}
-                    />
+                    <Octicons name="paste" size={18} color={metadataGenerated ? iconColor : primaryColor} />
                   </TouchableOpacity>
                 )}
               </View>

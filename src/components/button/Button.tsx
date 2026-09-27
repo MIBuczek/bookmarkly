@@ -13,28 +13,28 @@ interface ButtonProps extends TouchableOpacityProps {
 
 export const Button = ({ type, title, titleClassName, buttonClassName, children, onPress, ...rest }: ButtonProps) => {
   const buttonStyles = {
-    primary: 'bg-primary-500 border border-primary-500',
-    secondary: 'bg-transparent border border-primary-500',
+    primary: 'bg-black border border-black',
+    secondary: 'bg-white border border-black',
     tertiary: 'bg-transparent disabled:opacity-50',
   };
 
   const textStyles = {
     primary: 'text-white',
-    secondary: 'text-primary-500',
-    tertiary: 'text-primary-500',
+    secondary: 'text-black',
+    tertiary: 'text-black',
   };
 
   return (
     <TouchableOpacity
-      className={twMerge('flex items-center justify-center rounded-lg p-4', buttonStyles[type], buttonClassName)}
+      className={twMerge('rounded-xs flex h-fit items-center justify-center p-4', buttonStyles[type], buttonClassName)}
       onPress={onPress}
       {...rest}
     >
       {title && (
         <ThemedText
           type="subtitle"
-          size={'sm'}
-          className={twMerge(['font-semibold', textStyles[type], titleClassName])}
+          size={'md'}
+          className={twMerge(['font-semibold uppercase', textStyles[type], titleClassName])}
         >
           {title}
         </ThemedText>

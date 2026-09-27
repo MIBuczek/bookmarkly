@@ -42,19 +42,19 @@ const LinkItem = memo(({ link }: Readonly<LinkItemProps>) => {
   return (
     <>
       <FadeInView isActive={true} className="h-fit">
-        <View className={'border-b-dark-200 flex-row gap-2 border-b px-2 py-4'}>
+        <View className={'flex-row gap-2 border-b border-b-dark-200 px-2 py-4'}>
           <Pressable className={'flex w-5/6'} onPress={handleActionBottomSheet}>
-            <ThemedText size={'md'} type={'title'} className={'text-primary-700'}>
+            <ThemedText size={'md'} type={'title'} className={'text-dark-800'}>
               {link.title}
             </ThemedText>
             <ThemedText size={'sm'}>{link.description}</ThemedText>
             <Tags containerClassName={'py-0 pt-3'} tags={link.tags.slice(0, 3)} />
           </Pressable>
           <TouchableOpacity
-            className={'my-auto flex h-20 w-1/6 items-center justify-center rounded-xl'}
+            className={'my-auto flex h-20 w-1/6 items-center justify-center'}
             onPress={handleDetailsPress}
           >
-            <IconSymbol name={'chevron.right'} color={baseColors.colors.primary['500']} size={16} />
+            <IconSymbol name={'chevron.right'} color={baseColors.colors.dark['900']} size={16} />
           </TouchableOpacity>
         </View>
         <ActionLinkItemBottomSheet

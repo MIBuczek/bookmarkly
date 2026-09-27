@@ -7,13 +7,13 @@ import { baseColors } from '@/assets/theme/base-theme';
 const { colors } = baseColors;
 export const Colors = {
   light: {
-    primary: colors.primary['500'], // Main brand color (Orange)
-    secondary: colors['dark']['700'], // Slightly darker for contrast
-    title: colors['dark']['900'], // Strong contrast for titles
-    textColor: colors['dark']['800'], // High readability for text
-    background: colors.gray['300'], // Lighter background for clarity
+    primary: colors.dark['900'], // Main brand color (Orange)
+    secondary: colors['dark']['700'], // Pomocniczy tekst (#555555)
+    title: colors['dark']['900'], // Główny tekst (#000000)
+    textColor: colors['dark']['900'], // Główny tekst (#000000)
+    background: colors.gray['300'], // Jasne tło (#FBFBFB)
     tint: colors.primary['500'], // Accent color (Orange)
-    icon: colors['dark']['700'], // Darker icons for visibility
+    icon: colors['dark']['700'], // Pomocniczy kolor dla ikon
     tabIconDefault: colors['dark']['600'], // Neutral tab icons
     tabIconSelected: colors.primary['500'], // Highlighted tab icon
     switchActive: colors.primary['500'], // Active switch color
@@ -21,11 +21,11 @@ export const Colors = {
     switchTrack: colors.gray['500'], // Subtle track for inactive state
   },
   dark: {
-    primary: colors.primary['600'], // Main accent color (orange)
-    secondary: colors['dark']['500'], // Slightly lighter for contrast
-    title: colors.gray['300'], // Lighter title for readability
-    textColor: colors.gray['400'], // Slightly lighter text for better contrast
-    background: colors['dark']['800'], // Deep dark background
+    primary: colors.dark['100'], // Main accent color (orange)
+    secondary: colors.gray['400'], // Slightly lighter for contrast
+    title: colors.gray['200'], // Lighter title for readability (#FAFAFA)
+    textColor: colors.gray['300'], // Lighter text for better contrast
+    background: colors['dark']['800'], // Ciemne tło (#121212)
     tint: colors.primary['600'], // Accent color (orange)
     icon: colors.gray['500'], // Slightly lighter icons for visibility
     tabIconDefault: colors.gray['500'], // More visible tab icons

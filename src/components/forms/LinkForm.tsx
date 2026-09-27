@@ -8,15 +8,14 @@ import { storeActions, useAppDispatch } from '@/store';
 import { Button } from '@/components/button/Button';
 import { Tags } from '@/components/Tags';
 import { FontAwesome } from '@expo/vector-icons';
-import { Colors } from '@/constants/colors';
 import { ErrorText } from '@/components/ui/ErrorText';
 import { cloneDeep, isNumber } from 'lodash-es';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import { useTranslation } from 'react-i18next';
 import { TLink } from '@/types/links.type';
 import linkServices from '@/services/link.services';
 import { useToast } from 'react-native-toast-notifications';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 const linkFormSchema = yup.object().shape({
   title: yup.string().min(2, 'title_min_length').max(100, 'title_max_length').required('title_required'),
@@ -47,9 +46,9 @@ interface LinkFormProps {
 }
 
 export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProps>) => {
-  const theme = useColorScheme() ?? 'light';
   const { t } = useTranslation();
   const toast = useToast();
+  const primaryColor = useThemeColor('primary');
 
   const dispatch = useAppDispatch();
 
@@ -215,7 +214,7 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
           >
             <View
               className={
-                'border-primary-500 bg-primary-500 absolute right-0 bottom-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 p-1'
+                'absolute bottom-0 right-0 h-[50px] flex-row gap-1 rounded-r-xl border-2 border-primary-500 bg-primary-500 p-1'
               }
             >
               {editTagIndex !== null && (
@@ -231,9 +230,9 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
                 onPress={addTag}
               >
                 {isNumber(editTagIndex) ? (
-                  <MaterialIcons name="swap-horizontal-circle" size={24} color={Colors[theme].primary} />
+                  <MaterialIcons name="swap-horizontal-circle" size={24} color={primaryColor} />
                 ) : (
-                  <FontAwesome name="plus-circle" size={24} color={Colors[theme].primary} />
+                  <FontAwesome name="plus-circle" size={24} color={primaryColor} />
                 )}
               </TouchableOpacity>
             </View>

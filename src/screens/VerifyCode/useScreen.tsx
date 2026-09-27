@@ -38,7 +38,7 @@ export default function useScreen() {
       const { user, token } = await authServices.verifyCode({ phone, otp });
       dispatch(storeActions.user.setUser({ user }));
       dispatch(storeActions.user.setToken({ token }));
-      router.navigate(APP_ROUTES.DASHBOARD);
+      router.navigate(APP_ROUTES.ADD_LINK);
     } catch (e) {
       console.error(e);
     } finally {

@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { TLink } from '@/types/links.type';
 import { useAppSelector } from '@/store';
+import { router } from 'expo-router';
+import { APP_ROUTES } from '@/utils/routes';
 
 export type DashboardBaseFilters = 'unread' | 'read' | 'all';
 
@@ -17,7 +19,7 @@ export default function useScreen() {
     setSelectedFilterLinks(_setFilterOption);
   };
 
-  const toggleAddLink = () => setShowAddLink(!showAddLink);
+  const toggleAddLink = () => router.navigate(APP_ROUTES.ADD_LINK);
 
   const filteredLinks = useMemo(() => {
     let _filteredLinks = links;

@@ -37,21 +37,14 @@ project.
 - `src/store`: Redux slices and store configuration.
 - `src/locales`: JSON files for internationalization (en, de, etc.).
 
-### 4. Platform-Specific Development
-
-- Use `.web.tsx` suffix for web-specific implementations when the standard `.tsx` doesn't suffice (e.g.,
-  `BottomSheet.web.tsx`).
-- Be mindful of React Native vs. Web differences, especially regarding libraries like `react-native-reanimated` or
-  `expo-blur`.
-
-### 5. Best Practices
+### 4. Best Practices
 
 - **UI Consistency**: Use `ThemedText` instead of standard `Text` to ensure font and size consistency across the app.
 - **Type Safety**: Avoid `any`. Always define interfaces or types for API responses and component props.
 - **Localization**: Never hardcode strings. Use the `useTranslation` hook or `i18n.t()`.
 - **State**: Keep component local state minimal. Use Redux for global application state (user session, global settings).
 
-### 6. Common Commands
+### 5. Common Commands
 
 - `npm run start`: Start Expo dev server.
 - `npm run lint`: Run ESLint.

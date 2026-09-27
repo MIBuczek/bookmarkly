@@ -51,7 +51,7 @@ export const Input = ({
           multiline={multiline}
           numberOfLines={numberOfLines}
           className={twMerge(
-            'border-dark-400 text-dark-600 dark:text-dark-400 h-[50px] rounded-xl border p-4 dark:border-gray-400',
+            'h-[50px] border border-black p-4 text-black dark:border-white dark:text-white',
             inputClassName,
             multiline && 'h-32',
           )}

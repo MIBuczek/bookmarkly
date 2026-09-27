@@ -8,10 +8,6 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { LAND_OPTIONS } from '@/utils/setting.const';
 import { CountryItem } from '@/components/CountryItem';
 import { ModalBackDrop } from '@/components/modal/ModalBackDrop';
-import { AVATARS_OPTIONS } from '@/constants/avatars';
-import { AvatarSvg } from '@/components/svg/AvatarIcon';
-import { Options } from '@dicebear/core';
-import { twMerge } from 'tailwind-merge';
 import { useTranslation } from 'react-i18next';
 import * as Localization from 'expo-localization';
 import { useUpdateSettings } from '@/hooks/useUpdateSettings';
@@ -249,73 +245,6 @@ export const Storage = ({ handleClose }: SettingsProps) => {
           </View>
         </View>
       </ModalBackDrop>
-    </View>
-  );
-};
-
-interface AvatarsProps extends SettingsProps {
-  avatar: Options | null;
-  updateAvatar: (_avatar: Options) => void;
-}
-
-export const Avatars = ({ avatar, updateAvatar, handleClose }: Readonly<AvatarsProps>) => {
-  const { t } = useTranslation();
-  const { updateSettings } = useUpdateSettings();
-  const [hasChanged, setHasChanged] = useState<boolean>(false);
-  const [selectedAvatar, setSelectedAvatar] = useState<Options | null>(avatar);
-
-  const avatars = useMemo(() => AVATARS_OPTIONS, []);
-
-  const handleChange = () => {
-    setHasChanged(avatar?.seed !== selectedAvatar?.seed);
-  };
-
-  useEffect(handleChange, [selectedAvatar]);
-
-  const applyChanges = async () => {
-    if (!selectedAvatar) return;
-    try {
-      await updateSettings({ avatar: selectedAvatar.seed });
-      updateAvatar(selectedAvatar);
-    } catch (error) {
-      console.log('[applyChanges]:', error);
-    } finally {
-      handleClose();
-    }
-  };
-  return (
-    <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>
-      <ThemedText size={'sm'} className={'w-full'}>
-        {t('avatars_preview_text')}
-      </ThemedText>
-      <View className={'flex w-full items-start py-2'}>
-        <ThemedText size={'md'} type={'subtitle'}>
-          {t('choice_your_avatar')}
-        </ThemedText>
-      </View>
-      <View className="flex w-full flex-row flex-wrap justify-center gap-4">
-        {avatars.map((option, index) => (
-          <TouchableOpacity
-            key={`${option.seed}_${index}`}
-            onPress={() => {
-              setSelectedAvatar(option);
-            }}
-            className={twMerge(
-              'border-dark-400 relative size-28 rounded-3xl border',
-              `${option.seed === selectedAvatar?.seed ? 'border-primary-500' : 'border-dark-400'}`,
-            )}
-          >
-            <AvatarSvg options={option} size={100} />
-          </TouchableOpacity>
-        ))}
-      </View>
-      <SettingsFooter
-        hasChanged={hasChanged}
-        onApply={() => {
-          void applyChanges();
-        }}
-        onClose={handleClose}
-      />
     </View>
   );
 };

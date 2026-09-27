@@ -14,7 +14,7 @@ export default function ThemeButton({
 }>) {
   return (
     <TouchableOpacity
-      className={`border-dark-400 rounded-full border p-2 ${active ? 'bg-dark-600' : 'bg-transparent'}`}
+      className={`rounded-full border border-dark-400 p-2 ${active ? 'bg-dark-600' : 'bg-transparent'}`}
       onPress={onPress}
     >
       <IconSymbol name={icon} color={active ? '#FFF' : '#4b5563'} size={14} />

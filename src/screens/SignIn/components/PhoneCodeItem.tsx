@@ -17,7 +17,7 @@ const PhoneCodeItem = memo(function({ onPress, name, dialCode, iso2, className }
     <Pressable
       onPress={onPress}
       className={twMerge(
-        `border-dark-200 flex-row items-center justify-between gap-1 rounded-lg border p-4`,
+        `flex-row items-center justify-between gap-1 rounded-lg border border-dark-200 p-4`,
         className,
       )}
     >

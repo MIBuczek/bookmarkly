@@ -18,6 +18,7 @@ import { ArrowBackButton } from '@/components/button/ArrowBackButton';
 import { storeActions } from '@/store';
 import useScreen from '@/screens/SingUp/useScreen';
 import { SelectCountryBottomSheet } from '@/screens/SingUp/components/SelectCountryBottomSheet';
+import { ScreenTitle } from '@/components/ui/ScreenTitle';
 
 /**
  * SignUp component for user registration.
@@ -54,12 +55,7 @@ export default function SignUpScreen(): React.JSX.Element {
           router.back();
         }}
       />
-      <View className={'mt-4 mb-10 flex w-full gap-2'}>
-        <ThemedText type="title" size={'xl'}>
-          {t('register')}
-        </ThemedText>
-        <ThemedText size={'sm'}>{t('create_an_account_to_get_started')}</ThemedText>
-      </View>
+      <ScreenTitle title={'register yourself'} />
       <View className="flex-1 justify-start gap-6">
         <Controller
           name="name"
@@ -130,7 +126,7 @@ export default function SignUpScreen(): React.JSX.Element {
               <CheckBox
                 title={
                   <Pressable onPress={() => setShowTermsAndConditions(true)}>
-                    <ThemedText size={'sm'} className={twMerge('text-dark-700', errors.terms ? 'text-red-500' : '')}>
+                    <ThemedText size={'sm'} className={twMerge('text-dark-800', errors.terms ? 'text-red-500' : '')}>
                       {t('terms_and_conditions')}
                     </ThemedText>
                   </Pressable>
@@ -142,7 +138,7 @@ export default function SignUpScreen(): React.JSX.Element {
                 checkedIcon="checkbox-outline"
                 uncheckedIcon={'checkbox-blank-outline'}
                 size={30}
-                checkedColor={baseColors.colors.primary['500']}
+                checkedColor={baseColors.colors.dark['900']}
                 wrapperStyle={{
                   backgroundColor: 'transparent',
                   borderWidth: 0,
@@ -157,7 +153,13 @@ export default function SignUpScreen(): React.JSX.Element {
             )}
           />
         </View>
-        <Button type={'primary'} title={t('register')} buttonClassName={'mt-2'} onPress={handleSubmit(onSubmit)} />
+        <Button
+          type={'primary'}
+          title={t('register')}
+          buttonClassName={'mt-2 h-16 rounded-none bg-black dark:bg-white'}
+          titleClassName={'text-white dark:text-black font-black'}
+          onPress={handleSubmit(onSubmit)}
+        />
       </View>
       <BottomSheet
         height={90}
