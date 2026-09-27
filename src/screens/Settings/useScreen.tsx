@@ -20,10 +20,10 @@ export default function useScreen() {
 
   const settingsButtons: TSettingsOptions[] = useMemo(() => SETTING_CONTENT_OPTIONS, []);
 
-  const handleCloseSettingOption = () => {
+  const handleCloseSettingOption = useCallback(() => {
     setSettingOption('none');
     setShowBottomSheet(false);
-  };
+  }, []);
 
   const settingsContent = useMemo(
     (): TSettingsContent => ({
@@ -33,7 +33,7 @@ export default function useScreen() {
       storage: <Storage handleClose={handleCloseSettingOption} />,
       none: null,
     }),
-    [],
+    [handleCloseSettingOption],
   );
 
   const settingContentSize = useMemo((): TSettingsContentSize => SETTINGS_CONTENT_SIZE, []);
@@ -42,7 +42,7 @@ export default function useScreen() {
     router.navigate(APP_ROUTES.SIGN_IN);
     dispatch(storeActions.user.logout());
     setLogoutModalVisible(false);
-  }, [router, dispatch]);
+  }, [dispatch]);
 
   return {
     setSettingOption,

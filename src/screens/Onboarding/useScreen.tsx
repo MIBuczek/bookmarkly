@@ -3,7 +3,7 @@ import { ScreenHeight } from 'react-native-elements/dist/helpers';
 import { PastLink } from '@/components/svg/PastLink';
 import { LinkContent } from '@/components/svg/LinkContent';
 import { CompleteLink } from '@/components/svg/CompleteLink';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { APP_ROUTES } from '@/utils/routes';
 import { RootState, storeActions, useAppDispatch, useAppSelector } from '@/store';
@@ -54,20 +54,20 @@ export default function useScreen() {
         description: t('slide_three_description'),
       },
     };
-  }, []);
+  }, [t]);
 
-  const checkHasOnboardingBeenDone = () => {
+  const checkHasOnboardingBeenDone = useCallback(() => {
     if (!onboarded) router.navigate(APP_ROUTES.SIGN_IN);
-  };
+  }, [onboarded, router]);
 
-  const handleSwipeContent = () => {
+  const handleSwipeContent = useCallback(() => {
     if (slideIndex === '3') {
       dispatch(storeActions.user.setOnboarded({ onboarded: true }));
       router.navigate(APP_ROUTES.SIGN_IN);
     }
     const nextSwipe = slideIndex === '3' ? '3' : `${Number(slideIndex) + 1}`;
     setSlideIndex(nextSwipe);
-  };
+  }, [slideIndex, dispatch, router]);
 
   return {
     slideIndex,

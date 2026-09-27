@@ -74,7 +74,7 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
       description: link?.description || '',
     });
     setFormTags(link?.tags ?? []);
-  }, []);
+  }, [link, reset]);
 
   const addTag = useCallback(() => {
     if (formTags.length > 10) return;
@@ -91,7 +91,7 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
       setFormTags([...formTags, tag]);
     }
     setValue('tag', '');
-  }, [formTags, editTagIndex]);
+  }, [formTags, editTagIndex, watch, setValue]);
 
   const editTag = useCallback(
     (_tag: string) => {
@@ -100,7 +100,7 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
       setEditTagIndex(_index);
       setValue('tag', _tag);
     },
-    [formTags],
+    [formTags, setValue],
   );
 
   const removeTag = useCallback(() => {
@@ -110,45 +110,51 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
     });
     setEditTagIndex(null);
     setValue('tag', '');
-  }, [formTags, editTagIndex]);
+  }, [editTagIndex, setValue]);
 
-  const saveNewLinkCallback = async (_link: TLink) => {
-    try {
-      const { data } = await linkServices.addLink(_link);
-      dispatch(
-        storeActions.links.addLink({
-          link: data,
-        }),
-      );
-      toast.show('[Success] : Link was saved', { type: 'success' });
-    } catch (e) {
-      toast.show('[Error] : Link could not be saved', { type: 'error' });
-      console.error('[saveNewLinkCallback]:', e);
-    } finally {
-      setFormTags([]);
-      reset(INITIAL_LINK_FORM);
-      handleClose();
-    }
-  };
+  const saveNewLinkCallback = useCallback(
+    async (_link: TLink) => {
+      try {
+        const { data } = await linkServices.addLink(_link);
+        dispatch(
+          storeActions.links.addLink({
+            link: data,
+          }),
+        );
+        toast.show('[Success] : Link was saved', { type: 'success' });
+      } catch (e) {
+        toast.show('[Error] : Link could not be saved', { type: 'error' });
+        console.error('[saveNewLinkCallback]:', e);
+      } finally {
+        setFormTags([]);
+        reset(INITIAL_LINK_FORM);
+        handleClose();
+      }
+    },
+    [dispatch, toast, reset, handleClose],
+  );
 
-  const updateLinkCallback = async (_link: TLink) => {
-    try {
-      const { data } = await linkServices.updateLink(_link.id, _link);
-      dispatch(
-        storeActions.links.updateLink({
-          link: data,
-        }),
-      );
-      toast.show('[Success] : Link was updated', { type: 'success' });
-    } catch (e) {
-      toast.show('[Error] : Link could not be updated', { type: 'error' });
-      console.error('[updateLinkCallback]:', e);
-    } finally {
-      setFormTags([]);
-      reset(INITIAL_LINK_FORM);
-      handleClose();
-    }
-  };
+  const updateLinkCallback = useCallback(
+    async (_link: TLink) => {
+      try {
+        const { data } = await linkServices.updateLink(_link.id, _link);
+        dispatch(
+          storeActions.links.updateLink({
+            link: data,
+          }),
+        );
+        toast.show('[Success] : Link was updated', { type: 'success' });
+      } catch (e) {
+        toast.show('[Error] : Link could not be updated', { type: 'error' });
+        console.error('[updateLinkCallback]:', e);
+      } finally {
+        setFormTags([]);
+        reset(INITIAL_LINK_FORM);
+        handleClose();
+      }
+    },
+    [dispatch, toast, reset, handleClose],
+  );
 
   const onSubmit = useCallback(
     async (data: TLinkForm) => {
@@ -161,7 +167,7 @@ export const LinkForm = ({ handleClose, link, formState }: Readonly<LinkFormProp
       }
       await updateLinkCallback(_link);
     },
-    [link, dispatch, reset, handleClose, formTags],
+    [link, formTags, formState, saveNewLinkCallback, updateLinkCallback],
   );
 
   return (

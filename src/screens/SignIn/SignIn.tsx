@@ -36,7 +36,9 @@ export default function SignInScreen() {
     onSubmit,
   } = useScreen();
 
-  useEffect(preselectPhoneCode, []);
+  useEffect(() => {
+    preselectPhoneCode();
+  }, [preselectPhoneCode]);
 
   return (
     <ScreenContainer>

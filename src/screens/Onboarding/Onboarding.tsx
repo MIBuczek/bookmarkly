@@ -13,7 +13,9 @@ export default function OnboardingScreen() {
 
   const { slideIndex, setSlideIndex, handleSwipeContent, swipeContent, checkHasOnboardingBeenDone } = useScreen();
 
-  useEffect(checkHasOnboardingBeenDone, []);
+  useEffect(() => {
+    checkHasOnboardingBeenDone();
+  }, [checkHasOnboardingBeenDone]);
 
   return (
     <ScreenContainer>

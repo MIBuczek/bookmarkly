@@ -1,6 +1,6 @@
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ScreenContainer } from '@/components/ui/ScreenContainer';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { BottomSheet } from '@/components/bottom-sheet/BottomSheet';
@@ -31,10 +31,7 @@ export default function SettingScreen() {
     settingsButtons,
     settingsContent,
     settingContentSize,
-    initialAvatarState,
   } = useScreen();
-
-  useEffect(initialAvatarState, []);
 
   return (
     <ScreenContainer>

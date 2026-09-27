@@ -46,7 +46,9 @@ export default function SignUpScreen(): React.JSX.Element {
     onSubmit,
   } = useScreen();
 
-  useEffect(loadCountries, []);
+  useEffect(() => {
+    loadCountries();
+  }, [loadCountries]);
 
   return (
     <ScreenContainer>

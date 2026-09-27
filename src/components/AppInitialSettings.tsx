@@ -51,7 +51,7 @@ export default function AppInitialSettings({ children }: PropsWithChildren) {
       return;
     }
     colorNativeWindScheme.setColorScheme('light');
-  }, [colorScheme, user]);
+  }, [colorScheme, user, colorNativeWindScheme]);
 
   useEffect(() => {
     if (loaded) {

@@ -1,6 +1,6 @@
 import { useToast } from 'react-native-toast-notifications';
 import { storeActions, useAppDispatch } from '@/store';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import countryList, { Country } from 'country-list';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -77,20 +77,21 @@ export default function useScreen() {
     if (systemCountry) {
       registrationForm.setValue('country', systemCountry);
     }
-  }, [registrationForm, countryList, setCountries]);
+  }, [registrationForm]);
 
-  useEffect(loadCountries, []);
-
-  const handleCountrySelection = (_country: Country) => {
-    registrationForm.setValue('country', _country);
-    setShowCountryList(false);
-  };
+  const handleCountrySelection = useCallback(
+    (_country: Country) => {
+      registrationForm.setValue('country', _country);
+      setShowCountryList(false);
+    },
+    [registrationForm],
+  );
 
   const countriesPhoneCodes: PhoneCountryCode[] = useMemo(() => {
     return countryTelData.allCountries;
   }, []);
 
-  const generateUserInitialSettings = async (): Promise<TUserSettings> => {
+  const generateUserInitialSettings = useCallback(async (): Promise<TUserSettings> => {
     const notification = await checkPushNotificationsStatus();
     const language = getSystemLanguage().languageCode || 'en';
     const appearance = getSystemAppearance();
@@ -101,24 +102,27 @@ export default function useScreen() {
       fontSize: 16,
       avatar: 'Ryker',
     };
-  };
+  }, []);
 
-  const onSubmit = async (data: TRegistrationForm) => {
-    const selectedPhoneCodes = countriesPhoneCodes.find((c) => c.iso2 === data.country.code);
-    const phone = `+${selectedPhoneCodes?.dialCode}${data.phone}`;
-    try {
-      const settings = await generateUserInitialSettings();
-      const user: TAddUser = { ...data, phone, settings };
-      await authServices.singUp({ user });
-      toast.show('[Success] : You will get verification code', { type: 'success' });
-      dispatch(storeActions.user.setPhone({ phone }));
-      router.navigate(APP_ROUTES.VERIFY_CODE);
-      registrationForm.reset(INITIAL_REGISTRATION_FORM);
-    } catch (error) {
-      console.error('[onSubmit]:', error);
-      toast.show('[Error] : Wrong phone number', { type: 'error' });
-    }
-  };
+  const onSubmit = useCallback(
+    async (data: TRegistrationForm) => {
+      const selectedPhoneCodes = countriesPhoneCodes.find((c) => c.iso2 === data.country.code.toLowerCase());
+      const phone = `+${selectedPhoneCodes?.dialCode}${data.phone}`;
+      try {
+        const settings = await generateUserInitialSettings();
+        const user: TAddUser = { ...data, phone, settings };
+        await authServices.singUp({ user });
+        toast.show('[Success] : You will get verification code', { type: 'success' });
+        dispatch(storeActions.user.setPhone({ phone }));
+        router.navigate(APP_ROUTES.VERIFY_CODE);
+        registrationForm.reset(INITIAL_REGISTRATION_FORM);
+      } catch (error) {
+        console.error('[onSubmit]:', error);
+        toast.show('[Error] : Wrong phone number', { type: 'error' });
+      }
+    },
+    [countriesPhoneCodes, dispatch, generateUserInitialSettings, registrationForm, toast],
+  );
 
   return {
     dispatch,

@@ -28,7 +28,7 @@ export default function DashboardScreen() {
 
   useEffect(() => {
     void loadLinks();
-  }, []);
+  }, [loadLinks]);
 
   useEffect(() => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);

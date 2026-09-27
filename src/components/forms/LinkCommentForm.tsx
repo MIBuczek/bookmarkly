@@ -47,7 +47,7 @@ export const LinkCommentForm = ({ handleClose, link }: Readonly<LinkCommentFormP
 
   useEffect(() => {
     setValue('comment', link?.comments || '');
-  }, []);
+  }, [link?.comments, setValue]);
 
   const onSubmit = useCallback(
     async (data: TCommentForm) => {
@@ -55,10 +55,10 @@ export const LinkCommentForm = ({ handleClose, link }: Readonly<LinkCommentFormP
       const { comment } = data;
       try {
         const updatedLink = Object.assign({ ...link }, { comments: comment });
-        const { data } = await linkServices.updateLink(link.id, updatedLink);
+        const { data: updatedData } = await linkServices.updateLink(link.id, updatedLink);
         dispatch(
           storeActions.links.updateLink({
-            link: data,
+            link: updatedData,
           }),
         );
         toast.show('[Success] : Link was updated', { type: 'success' });
@@ -70,7 +70,7 @@ export const LinkCommentForm = ({ handleClose, link }: Readonly<LinkCommentFormP
         handleClose();
       }
     },
-    [link?.id, dispatch, reset, handleClose],
+    [link, dispatch, toast, reset, handleClose],
   );
 
   return (

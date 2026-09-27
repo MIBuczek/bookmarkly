@@ -70,7 +70,7 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
     setFontSize(_fontSize ?? 14);
   };
 
-  useEffect(setInitialState, []);
+  useEffect(setInitialState, [getSelectedSettings]);
 
   const handleChange = () => {
     const _theme = getSelectedSettings<ThemeType>('appearance');
@@ -78,7 +78,7 @@ export const Appearance = ({ handleClose }: SettingsProps) => {
     setHasChanged(_theme !== theme || _fontSize !== fontSize);
   };
 
-  useEffect(handleChange, [theme, fontSize]);
+  useEffect(handleChange, [theme, fontSize, getSelectedSettings]);
 
   return (
     <View className={'flex-1 items-center justify-start gap-4 px-8 pt-6'}>

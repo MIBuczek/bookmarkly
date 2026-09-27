@@ -14,7 +14,8 @@
     "test": "jest src",
     "format": "prettier --write .",
     "prepare": "husky",
-    "update": "npx ncu -u"
+    "update": "npx ncu -u",
+    "junie:load-task": "node ./scripts/load-task.js"
   },
   "jest": {
     "preset": "jest-expo"

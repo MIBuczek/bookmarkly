@@ -28,7 +28,7 @@ export default function VerifyCodeScreen() {
       return () => clearInterval(interval);
     }
     return;
-  }, [countDown]);
+  }, [countDown, setCountDown]);
 
   return (
     <ScreenContainer>

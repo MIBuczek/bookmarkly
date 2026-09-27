@@ -37,7 +37,7 @@ const LinkItem = memo(({ link }: Readonly<LinkItemProps>) => {
 
   const handleDeletePress = useCallback(() => {
     dispatch(storeActions.links.deleteLink({ id: link.id }));
-  }, [link.id]);
+  }, [dispatch, link.id]);
 
   return (
     <>

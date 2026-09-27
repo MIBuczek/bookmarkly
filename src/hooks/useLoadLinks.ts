@@ -21,13 +21,13 @@ export const useLoadLinks = () => {
     }
 
     try {
-      let { links, count } = await linkServices.getAllLink();
-      dispatch(storeActions.links.setLinks({ links, count }));
+      let { links: _links, count } = await linkServices.getAllLink();
+      dispatch(storeActions.links.setLinks({ links: _links, count }));
     } catch (error) {
       console.error('[fetchLinks]:', error);
       toast.show('[Error] : Could not load your links', { type: 'error' });
     }
-  }, [dispatch, toast, links]);
+  }, [dispatch, toast, links, authGuard.checkUser]);
 
   return { loadLinks };
 };

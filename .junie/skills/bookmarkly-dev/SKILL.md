@@ -63,3 +63,10 @@ Expo.
 - `npm run lint`: Run ESLint.
 - `npm run test`: Run Jest tests.
 - `npm run format`: Format code with Prettier.
+- `npm run junie:load-task -- <issue_number>`: Load a task directly from a GitHub issue. Requires `gh` and `jq` to be
+  installed and authenticated.
+
+## GitHub Task Template
+
+Use the template at `.github/ISSUE_TEMPLATE/junie-task.md` when creating tasks for Junie. It is structured to provide
+clear goals, technical requirements, and verification steps.

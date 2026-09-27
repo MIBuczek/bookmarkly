@@ -14,12 +14,11 @@ import { I18nextProvider } from 'react-i18next';
 import i18Settings from '../../i18n';
 import { ToastProvider } from 'react-native-toast-notifications';
 import { ToastMessage } from '@/components/ToastMessage';
-import { ActivityIndicator, View } from 'react-native';
 import AppInitialSettings from '@/components/AppInitialSettings';
+import { LoadingScreen } from '@/components/ui/LoadingScreen';
 
 /**
  * TODO LIST
- * - Separate duplicated component
  */
 
 void SplashScreen.preventAutoHideAsync();
@@ -29,14 +28,7 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <PersistGate
-        loading={
-          <View style={{ flex: 1, justifyContent: 'center' }}>
-            <ActivityIndicator size="large" />
-          </View>
-        }
-        persistor={persistor}
-      >
+      <PersistGate loading={<LoadingScreen />} persistor={persistor}>
         <I18nextProvider i18n={i18Settings}>
           <GestureHandlerRootView style={{ flex: 1 }}>
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

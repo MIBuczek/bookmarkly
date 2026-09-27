@@ -24,7 +24,7 @@ export default function useScreen(id: string) {
         dispatch(storeActions.links.updateLink({ link: { ...selectedLink, read: value } }));
       }
     },
-    [selectedLink],
+    [dispatch, selectedLink],
   );
 
   const handleActionBottomSheet = useCallback(() => {
@@ -58,7 +58,7 @@ export default function useScreen(id: string) {
       console.error('[handleDeletePress]', e);
       toast.show('[Error] : Could not delete selected link', { type: 'error' });
     }
-  }, [selectedLink?.id]);
+  }, [dispatch, selectedLink, toast]);
 
   return {
     showCommentForm,

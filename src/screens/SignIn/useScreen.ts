@@ -38,34 +38,37 @@ export default function useScreen() {
     resolver: yupResolver(signInSchema),
   });
 
-  const onSubmit = async (data: TLoginForm) => {
-    if (!selectedPhoneCodes) return toast.show('[Error] : Please select country', { type: 'error' });
-    try {
-      const phone = `+${selectedPhoneCodes?.dialCode}${data.phone}`;
-      await authServices.singIn({ phone });
-      toast.show('[Success] : You will get verification code', { type: 'success' });
-      dispatch(storeActions.user.setPhone({ phone }));
-      router.navigate(APP_ROUTES.VERIFY_CODE);
-      signInForm.reset(INITIAL_LOGIN_FORM);
-    } catch (e) {
-      toast.show('[Error] : Wrong phone number', { type: 'error' });
-      console.log(e);
-    }
-  };
+  const onSubmit = useCallback(
+    async (data: TLoginForm) => {
+      if (!selectedPhoneCodes) return toast.show('[Error] : Please select country', { type: 'error' });
+      try {
+        const phone = `+${selectedPhoneCodes?.dialCode}${data.phone}`;
+        await authServices.singIn({ phone });
+        toast.show('[Success] : You will get verification code', { type: 'success' });
+        dispatch(storeActions.user.setPhone({ phone }));
+        router.navigate(APP_ROUTES.VERIFY_CODE);
+        signInForm.reset(INITIAL_LOGIN_FORM);
+      } catch (e) {
+        toast.show('[Error] : Wrong phone number', { type: 'error' });
+        console.log(e);
+      }
+    },
+    [selectedPhoneCodes, toast, dispatch, router, signInForm],
+  );
 
   const preselectPhoneCode = useCallback(() => {
-    let preselectPhoneCode = phoneCode;
-    if (!preselectPhoneCode) {
+    let _preselectPhoneCode = phoneCode;
+    if (!_preselectPhoneCode) {
       const language = getSystemLanguage();
       const systemRegionCode = (language.regionCode || language.languageCode?.split('-')[1] || 'US').toLowerCase();
 
-      preselectPhoneCode =
+      _preselectPhoneCode =
         countryTelData.allCountries.find((c) => c.iso2 === systemRegionCode) ||
         countryTelData.allCountries.find((c) => c.iso2 === 'us') ||
         countryTelData.allCountries[0];
     }
-    setSelectedPhoneCodes(preselectPhoneCode);
-  }, [phoneCode, getSystemLanguage, countryTelData]);
+    setSelectedPhoneCodes(_preselectPhoneCode);
+  }, [phoneCode]);
 
   return {
     signInForm,
