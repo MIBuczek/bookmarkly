@@ -2,10 +2,18 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "customConditions": [],
     "strict": true,
     "skipLibCheck": true,
     "noEmit": true,
     "paths": {
+      "react-native-toast-notifications": [
+        "./node_modules/react-native-toast-notifications/lib/typescript/index.d.ts"
+      ],
+      "react-native-toast-notifications/src/toast": [
+        "./node_modules/react-native-toast-notifications/lib/typescript/toast.d.ts"
+      ],
       "@/*": [
         "./src/*"
       ]
